@@ -1,27 +1,15 @@
 import $ from 'jquery';
 import _ from 'lodash';
 import assert from 'assert';
-import NovaTableLoader from '!!vue-loader?inject!../src/NovaTable.vue';
+import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
 import AbstractFilter from '../src/abstract-filter.js';
 
 module.exports = function () {
 
-    let vm, theNovaTable, csvDownload;
-
-    const NovaTable = NovaTableLoader({
-        'vue-csv-downloader': {
-            template: '<span>CSV: {{ data }}</span>',
-            props: ['data'],
-            mounted() {
-                csvDownload = this;
-            },
-        }
-    });
+    let vm, theNovaTable;
 
     beforeEach('setup the Vue instance', function (done) {
-
-        csvDownload = null;
 
         vm = new Vue({
             template: `
@@ -70,10 +58,13 @@ module.exports = function () {
     });
 
     it('should have csv-download child', function () {
-        Vue.waitTicks(9)
-            .then(() => {
-                assert(csvDownload);
-                assert.equal(theNovaTable.csvData, csvDownload.data);
-            });
+        let el = $(theNovaTable.$el);
+        let a = el.find('a[download="export.csv"]');
+        assert(a[0], 'No CSV anchor tag found');
+        let href = a[0].href;
+        assert(/Dan/.test(href), 'Dan is not in CSV link');
+        assert(/Dave/.test(href), 'Dave is not in CSV link');
+        assert(/High/.test(href), 'High is not in CSV link');
+        assert(/Medium/.test(href), 'Medium is not in CSV link');
     });
 }
