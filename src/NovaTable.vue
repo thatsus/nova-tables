@@ -387,7 +387,7 @@ export default {
                         //show error icon
                         this.showError = true;
 
-                        console.log('Error when accessing filtered data:', msg, err);
+                        console && console.log && console.log('Error when accessing filtered data:', msg, err);
                     }
                 })
                 .then(() => {
