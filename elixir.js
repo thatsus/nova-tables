@@ -17,7 +17,6 @@ elixir.ready(function () {
       }
     },
     externals: {
-      json2csv: 'json2csv'
     },
     module: {
       loaders: [

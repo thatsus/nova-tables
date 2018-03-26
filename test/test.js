@@ -1,10 +1,16 @@
 import Vue from 'vue';
+import VueResource from 'vue-resource';
+import VueResourceMocker from 'vue-resource-mocker';
 
 // PhantomJS doesn't have Promises, so we need to supply them. But if it ever
 // gets them, this should let us seamlessly use the native ones.
 if (!global.Promise) {
     global.Promise = require('promise');
 }
+
+Vue.use(VueResource);
+Vue.httpMocker = new VueResourceMocker();
+Vue.use(Vue.httpMocker);
 
 /**
  * In many tests we have to wait for more than one call to nextTick() before 
