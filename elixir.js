@@ -17,6 +17,12 @@ elixir.ready(function () {
       }
     },
     externals: {
+      'jquery': 'jquery',
+      'js-cookie': 'js-cookie',
+      'lodash': 'lodash',
+      'vue': 'vue',
+      'qs': 'qs',
+      'vue-csv-downloader': 'vue-csv-downloader',
     },
     module: {
       loaders: [
