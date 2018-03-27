@@ -20,8 +20,8 @@ elixir.ready(function () {
       'jquery': 'jquery',
       'js-cookie': 'js-cookie',
       'lodash': 'lodash',
-      'vue': 'vue',
       'qs': 'qs',
+      'vue': 'vue',
       'vue-csv-downloader': 'vue-csv-downloader',
     },
     module: {

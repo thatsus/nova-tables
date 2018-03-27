@@ -40,7 +40,7 @@
     "laravel-elixir-webpack-official": "^1.0.10",
     "mocha": "^3.2.0",
     "phantomjs-prebuilt": "^2.1.14",
-    "vue-loader": "^14.2.2",
+    "vue-loader": "^10.0.0",
     "vue-resource-mocker": "^1.0.2"
   }
 }
