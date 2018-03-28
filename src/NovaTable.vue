@@ -75,21 +75,21 @@
                     </tr>
                 </thead>
                 <transition-group tag="tbody" class="tableBody" name="nova-rows">
-                    <tr v-for="item in filteredItems" :key="keyFor(item)">
+                    <tr v-for="item in pagedItems" :key="keyFor(item)">
                         <td v-for="(name, field) in activeColumns" :class="'td-' + field + '-styles'" :ref="'cell.' + keyFor(item) + '.' + field">
                             <slot :name="field" :item="item">
                                 {{ valueFor(item, field) }}
                             </slot>
                         </td>
                     </tr>
-                    <tr v-if="filteredItems.length === 0" key="no-items">
+                    <tr v-if="pagedItems.length === 0" key="no-items">
                         <td :colspan="activeFields.length || 1"> No matching items.</td>
                     </tr>
                 </transition-group>
                 <tfoot v-if="footer">
                     <tr class="sorting-header-gray">
                         <td v-for="(name, field) in activeColumns">
-                            <slot :name="field + '-footer'" :items="filteredItems" :response="response">
+                            <slot :name="field + '-footer'" :items="pagedItems" :response="response">
                             </slot>
                         </td>
                     </tr>
@@ -129,9 +129,9 @@
 </template>
 
 <script>
-import ArrayFilter from './array-filter.js';
+import ArraySource from './array-source.js';
 import Vue from 'vue';
-import ServerSideFilter from './server-side-filter.js';
+import ServerSideSource from './server-side-source.js';
 import QueryParamSaver from './query-param-saver.js';
 import Cookies from 'js-cookie';
 import _ from 'lodash';
@@ -154,7 +154,7 @@ export default {
         'defaultSortField',
         'csvExportable',
         'defaultActiveFields',
-        'itemFilter',
+        'itemSource',
         'pageLength',
         'pageLengthOptions',
         'footer',
@@ -168,8 +168,8 @@ export default {
             sortField: '',
             sortOrder: 'A',
             search: '',
-            filter: new ArrayFilter([]),
-            filteredItems: [],
+            source: new ArraySource([]),
+            pagedItems: [],
             response: null,
             totalCount: 0,
             pageCount: 1,
@@ -186,23 +186,23 @@ export default {
     },
     mounted() {
         Vue.nextTick(() => {
-            if (this.itemFilter) {
-                this.filter = this.itemFilter;
+            if (this.itemSource) {
+                this.source = this.itemSource;
             } else if (this.items) {
-                this.filter = new ArrayFilter(this.items);
+                this.source = new ArraySource(this.items);
             } else if (this.endpoint) {
-                this.filter = new ServerSideFilter(this.endpoint);
-                this.filter.addFilter((params) => {
+                this.source = new ServerSideSource(this.endpoint);
+                this.source.addParamMerger((params) => {
                     if (this.endpointParams) {
                         _.merge(params, this.endpointParams);
                     }
                 });
             } else {
-                throw new Error('No item-filter specified');
+                throw new Error('No item-source specified');
             }
             this.pageLengthSelection = this.pageLength;
-            this.filter.setPage(this.page, this.pageLengthSelection);
-            this.filter.onChange(() => this.refreshFilter());
+            this.source.setPage(this.page, this.pageLengthSelection);
+            this.source.onChange(() => this.refreshSource());
 
             if (this.getCookies('fields')) {
                 this.activeFields = this.getActiveFieldsFromCookies();
@@ -225,40 +225,40 @@ export default {
 
             Vue.nextTick(() => {
                 this.blockRefresh = false;
-                this.refreshFilter();
+                this.refreshSource();
             });
         });
     },
     watch: {
         search() {
-            this.filter.setSearch(this.search, this.activeFields);
+            this.source.setSearch(this.search, this.activeFields);
         },
         activeFields() {
             this.storeActiveFieldsToCookies();
-            this.filter.setSearch(this.search, this.activeFields);
+            this.source.setSearch(this.search, this.activeFields);
         },
         sortField() {
-            this.filter.setSort(this.sortField, this.sortOrder)
+            this.source.setSort(this.sortField, this.sortOrder)
         },
         sortOrder() {
-            this.filter.setSort(this.sortField, this.sortOrder)
+            this.source.setSort(this.sortField, this.sortOrder)
         },
         page() {
             if (this.pageLengthSelection == 'All') {
-                this.filter.setPage(null, null);
+                this.source.setPage(null, null);
             } else {
-                this.filter.setPage(this.page, this.pageLengthSelection);
+                this.source.setPage(this.page, this.pageLengthSelection);
             }
         },
         pageLengthSelection() {
             if (this.pageLengthSelection == 'All') {
-                this.filter.setPage(null, null);
+                this.source.setPage(null, null);
             } else {
-                this.filter.setPage(this.page, this.pageLengthSelection);
+                this.source.setPage(this.page, this.pageLengthSelection);
             }
         },
         endpointParams() {
-            this.filter.fireChangeEvent();
+            this.source.fireChangeEvent();
         },
         queryParamsToSave() {
             if (this.queryParamSaver) {
@@ -351,7 +351,7 @@ export default {
         },
     },
     methods: {
-        refreshFilter() {
+        refreshSource() {
             if (this.blockRefresh) {
                 return;
             }
@@ -360,11 +360,11 @@ export default {
             this.loading = true;
             this.showError = false;
 
-            this.filter
-                .filter()
+            this.source
+                .get()
                 .then((response) => {
                     this.response = response;
-                    this.filteredItems = response.items;
+                    this.pagedItems = response.items;
                     this.pageCount = response.pageCount;
                     let page = response.page >= 1 ? response.page : 1;
                     if (this.page != page) {
@@ -387,7 +387,7 @@ export default {
                         //show error icon
                         this.showError = true;
 
-                        console && console.log && console.log('Error when accessing filtered data:', msg, err);
+                        console && console.log && console.log('Error when accessing paged data:', msg, err);
                     }
                 })
                 .then(() => {
@@ -518,7 +518,7 @@ export default {
         },
         generateCsvData() {
             // This method depends on this.$refs, so it cannot be a computed property
-            this.csvData = this.filteredItems.map((item) => {
+            this.csvData = this.pagedItems.map((item) => {
                 var id = this.keyFor(item);
                 var textItem = {};
                 _.each(this.activeFields, (field) => {
