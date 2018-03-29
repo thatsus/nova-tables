@@ -3,7 +3,7 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
-import AbstractFilter from '../src/abstract-filter.js';
+import AbstractSource from '../src/abstract-source.js';
 
 module.exports = function () {
 

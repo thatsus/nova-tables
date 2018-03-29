@@ -3,7 +3,7 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
-import ServerSideFilter from '../src/server-side-filter.js';
+import ServerSideSource from '../src/server-side-source.js';
 
 module.exports = function () {
 
@@ -61,8 +61,8 @@ module.exports = function () {
         assert(theNovaTable !== null, "theNovaTable is null")
     });
 
-    it('should have a ServerSideFilter', function () {
-        assert(theNovaTable.filter instanceof ServerSideFilter);
+    it('should have a ServerSideSource', function () {
+        assert(theNovaTable.source instanceof ServerSideSource);
     });
 
     it('should have tags and data in alphabetical order by name', function () {

@@ -3,7 +3,7 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaPageSelect from '../src/NovaPageSelect.vue';
 import Vue from 'vue';
-import AbstractFilter from '../src/abstract-filter.js';
+import AbstractSource from '../src/abstract-source.js';
 
 describe('NovaPageSelect', function () {
 

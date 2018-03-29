@@ -3,16 +3,16 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
-import AbstractFilter from '../src/abstract-filter.js';
+import AbstractSource from '../src/abstract-source.js';
 
 module.exports = function () {
 
-    let vm, theNovaTable, filter;
+    let vm, theNovaTable, source;
 
     beforeEach('setup the Vue instance', function (done) {
 
-        filter = new AbstractFilter();
-        filter.filter = function () {
+        source = new AbstractSource();
+        source.get = function () {
             return Promise.resolve({
                 items: [
                     {name: 'Dave', objectiveQuality: 'Medium'},
@@ -27,7 +27,7 @@ module.exports = function () {
         vm = new Vue({
             template: `
                 <nova-table ref="theNovaTable"
-                    :itemFilter="filter"
+                    :item-source="source"
                     :columns="columns"
                     :searchable="true"
                 >
@@ -38,7 +38,7 @@ module.exports = function () {
             },
             data() {
                 return {
-                    filter: filter,
+                    source: source,
                     columns: {
                         name: 'Name',
                         objectiveQuality: 'Quality',
@@ -75,7 +75,7 @@ module.exports = function () {
 
         Vue.waitTicks(3)
             .then(() => {
-                assert.equal('Dave', filter.search, 'search did not make it to the filter');
+                assert.equal('Dave', source.search, 'search did not make it to the source');
             })
             .then(done, done);
     });
@@ -89,7 +89,7 @@ module.exports = function () {
 
         Vue.waitTicks(3)
             .then(() => {
-                assert.equal('', filter.search, 'search did not make it to the filter');
+                assert.equal('', source.search, 'search did not make it to the source');
             })
             .then(done, done);
     });
