@@ -130,7 +130,6 @@
 
 <script>
 import ArraySource from './array-source.js';
-import Vue from 'vue';
 import ServerSideSource from './server-side-source.js';
 import QueryParamSaver from './query-param-saver.js';
 import Cookies from 'js-cookie';
@@ -185,7 +184,7 @@ export default {
         };
     },
     mounted() {
-        Vue.nextTick(() => {
+        this.$nextTick(() => {
             if (this.itemSource) {
                 this.source = this.itemSource;
             } else if (this.items) {
@@ -223,7 +222,7 @@ export default {
 
             this.applyQueryParams();
 
-            Vue.nextTick(() => {
+            this.$nextTick(() => {
                 this.blockRefresh = false;
                 this.refreshSource();
             });
@@ -392,7 +391,7 @@ export default {
                 })
                 .then(() => {
                     if (this.csvExportable) {
-                        Vue.nextTick(() => this.generateCsvData());
+                        this.$nextTick(() => this.generateCsvData());
                     }
                 });
         },
