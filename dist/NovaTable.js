@@ -69,21 +69,19 @@
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array_filter_js__ = __webpack_require__(8);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array_filter_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__array_filter_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__server_side_filter_js__ = __webpack_require__(11);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__server_side_filter_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__server_side_filter_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__query_param_saver_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__query_param_saver_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__query_param_saver_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_js_cookie__ = __webpack_require__(20);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_js_cookie___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_js_cookie__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_csv_downloader__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_vue_csv_downloader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6_vue_csv_downloader__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__NovaPageSelect__ = __webpack_require__(16);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array_source_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__array_source_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__server_side_source_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__server_side_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__server_side_source_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__query_param_saver_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__query_param_saver_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__query_param_saver_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_js_cookie__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_js_cookie___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_js_cookie__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__NovaPageSelect__ = __webpack_require__(15);
 //
 //
 //
@@ -214,7 +212,6 @@
 //
 //
 //
-
 
 
 
@@ -226,8 +223,8 @@
 
 /* harmony default export */ exports["a"] = {
     components: {
-        CsvDownload: __WEBPACK_IMPORTED_MODULE_6_vue_csv_downloader___default.a,
-        NovaPageSelect: __WEBPACK_IMPORTED_MODULE_7__NovaPageSelect__["a" /* default */],
+        CsvDownload: __WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader___default.a,
+        NovaPageSelect: __WEBPACK_IMPORTED_MODULE_6__NovaPageSelect__["a" /* default */],
     },
     props: [
         'items',
@@ -240,7 +237,7 @@
         'defaultSortField',
         'csvExportable',
         'defaultActiveFields',
-        'itemFilter',
+        'itemSource',
         'pageLength',
         'pageLengthOptions',
         'footer',
@@ -254,8 +251,8 @@
             sortField: '',
             sortOrder: 'A',
             search: '',
-            filter: new __WEBPACK_IMPORTED_MODULE_0__array_filter_js___default.a([]),
-            filteredItems: [],
+            source: new __WEBPACK_IMPORTED_MODULE_0__array_source_js___default.a([]),
+            pagedItems: [],
             response: null,
             totalCount: 0,
             pageCount: 1,
@@ -267,30 +264,30 @@
             initialQueryParams: {},
             generatedItemKeys: {},
             csvData: [],
-            queryParamSaver: this.name ? new __WEBPACK_IMPORTED_MODULE_3__query_param_saver_js___default.a(this.name) : null,
+            queryParamSaver: this.name ? new __WEBPACK_IMPORTED_MODULE_2__query_param_saver_js___default.a(this.name) : null,
         };
     },
     mounted: function mounted() {
         var this$1 = this;
 
-        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.nextTick(function () {
-            if (this$1.itemFilter) {
-                this$1.filter = this$1.itemFilter;
+        this.$nextTick(function () {
+            if (this$1.itemSource) {
+                this$1.source = this$1.itemSource;
             } else if (this$1.items) {
-                this$1.filter = new __WEBPACK_IMPORTED_MODULE_0__array_filter_js___default.a(this$1.items);
+                this$1.source = new __WEBPACK_IMPORTED_MODULE_0__array_source_js___default.a(this$1.items);
             } else if (this$1.endpoint) {
-                this$1.filter = new __WEBPACK_IMPORTED_MODULE_2__server_side_filter_js___default.a(this$1.endpoint);
-                this$1.filter.addFilter(function (params) {
+                this$1.source = new __WEBPACK_IMPORTED_MODULE_1__server_side_source_js___default.a(this$1.endpoint);
+                this$1.source.addParamMerger(function (params) {
                     if (this$1.endpointParams) {
-                        __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.merge(params, this$1.endpointParams);
+                        __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.merge(params, this$1.endpointParams);
                     }
                 });
             } else {
-                throw new Error('No item-filter specified');
+                throw new Error('No item-source specified');
             }
             this$1.pageLengthSelection = this$1.pageLength;
-            this$1.filter.setPage(this$1.page, this$1.pageLengthSelection);
-            this$1.filter.onChange(function () { return this$1.refreshFilter(); });
+            this$1.source.setPage(this$1.page, this$1.pageLengthSelection);
+            this$1.source.onChange(function () { return this$1.refreshSource(); });
 
             if (this$1.getCookies('fields')) {
                 this$1.activeFields = this$1.getActiveFieldsFromCookies();
@@ -311,42 +308,42 @@
 
             this$1.applyQueryParams();
 
-            __WEBPACK_IMPORTED_MODULE_1_vue___default.a.nextTick(function () {
+            this$1.$nextTick(function () {
                 this$1.blockRefresh = false;
-                this$1.refreshFilter();
+                this$1.refreshSource();
             });
         });
     },
     watch: {
         search: function search() {
-            this.filter.setSearch(this.search, this.activeFields);
+            this.source.setSearch(this.search, this.activeFields);
         },
         activeFields: function activeFields() {
             this.storeActiveFieldsToCookies();
-            this.filter.setSearch(this.search, this.activeFields);
+            this.source.setSearch(this.search, this.activeFields);
         },
         sortField: function sortField() {
-            this.filter.setSort(this.sortField, this.sortOrder)
+            this.source.setSort(this.sortField, this.sortOrder)
         },
         sortOrder: function sortOrder() {
-            this.filter.setSort(this.sortField, this.sortOrder)
+            this.source.setSort(this.sortField, this.sortOrder)
         },
         page: function page() {
             if (this.pageLengthSelection == 'All') {
-                this.filter.setPage(null, null);
+                this.source.setPage(null, null);
             } else {
-                this.filter.setPage(this.page, this.pageLengthSelection);
+                this.source.setPage(this.page, this.pageLengthSelection);
             }
         },
         pageLengthSelection: function pageLengthSelection() {
             if (this.pageLengthSelection == 'All') {
-                this.filter.setPage(null, null);
+                this.source.setPage(null, null);
             } else {
-                this.filter.setPage(this.page, this.pageLengthSelection);
+                this.source.setPage(this.page, this.pageLengthSelection);
             }
         },
         endpointParams: function endpointParams() {
-            this.filter.fireChangeEvent();
+            this.source.fireChangeEvent();
         },
         queryParamsToSave: function queryParamsToSave() {
             if (this.queryParamSaver) {
@@ -381,14 +378,14 @@
 
             var columns = {};
             Object.keys(this.columns).map(function (field) {
-                if (__WEBPACK_IMPORTED_MODULE_5_lodash___default.a.includes(this$1.activeFields, field)) {
+                if (__WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(this$1.activeFields, field)) {
                     columns[field] = this$1.columns[field];
                 }
             });
             return columns;
         },
         csvColumns: function csvColumns() {
-            return __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.values(this.activeColumns);
+            return __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.values(this.activeColumns);
         },
         pages: function pages() {
             var start = parseInt(this.page) - 3;
@@ -426,7 +423,7 @@
                 page_length: this.pageLengthSelection,
             }
             if (this.endpointParams) {
-                __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.merge(params, this.endpointParams);
+                __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.merge(params, this.endpointParams);
             }
             // Now that we have all the params, let's check if any of them
             // would be set to those values by default. If so, we can keep
@@ -443,7 +440,7 @@
         },
     },
     methods: {
-        refreshFilter: function refreshFilter() {
+        refreshSource: function refreshSource() {
             var this$1 = this;
 
             if (this.blockRefresh) {
@@ -454,11 +451,11 @@
             this.loading = true;
             this.showError = false;
 
-            this.filter
-                .filter()
+            this.source
+                .get()
                 .then(function (response) {
                     this$1.response = response;
-                    this$1.filteredItems = response.items;
+                    this$1.pagedItems = response.items;
                     this$1.pageCount = response.pageCount;
                     var page = response.page >= 1 ? response.page : 1;
                     if (this$1.page != page) {
@@ -481,12 +478,12 @@
                         //show error icon
                         this$1.showError = true;
 
-                        console && console.log && console.log('Error when accessing filtered data:', msg, err);
+                        console && console.log && console.log('Error when accessing paged data:', msg, err);
                     }
                 })
                 .then(function () {
                     if (this$1.csvExportable) {
-                        __WEBPACK_IMPORTED_MODULE_1_vue___default.a.nextTick(function () { return this$1.generateCsvData(); });
+                        this$1.$nextTick(function () { return this$1.generateCsvData(); });
                     }
                 });
         },
@@ -496,7 +493,7 @@
         isSortable: function isSortable(field)
         {
             if (this.sortable instanceof Array) {
-                return __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.includes(this.sortable, field);
+                return __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(this.sortable, field);
             } else if (this.sortable) {
                 return true;
             } else {
@@ -538,18 +535,18 @@
             }
         },
         getCookies: function getCookies(field) {
-            if (!this.name || !field || __WEBPACK_IMPORTED_MODULE_4_js_cookie___default.a.get(this.name) === undefined) {
+            if (!this.name || !field || __WEBPACK_IMPORTED_MODULE_3_js_cookie___default.a.get(this.name) === undefined) {
                 return null;
             }
 
-            return JSON.parse(__WEBPACK_IMPORTED_MODULE_4_js_cookie___default.a.get(this.name))[field];
+            return JSON.parse(__WEBPACK_IMPORTED_MODULE_3_js_cookie___default.a.get(this.name))[field];
         },
         setCookies: function setCookies(field, value) {
             if (!this.name || !field) {
                 return false;
             }
 
-            var cookie = __WEBPACK_IMPORTED_MODULE_4_js_cookie___default.a.get(this.name);
+            var cookie = __WEBPACK_IMPORTED_MODULE_3_js_cookie___default.a.get(this.name);
 
             if (cookie) {
                 cookie = JSON.parse(cookie);
@@ -558,7 +555,7 @@
             }
 
             cookie[field] = value;
-            if (__WEBPACK_IMPORTED_MODULE_4_js_cookie___default.a.set(this.name, cookie)) {
+            if (__WEBPACK_IMPORTED_MODULE_3_js_cookie___default.a.set(this.name, cookie)) {
                 return true;
             }
 
@@ -598,7 +595,7 @@
         },
         generateKeyFor: function generateKeyFor(item) {
             var found = null;
-            __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.each(this.generatedItemKeys, function (saved_item, key) {
+            __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.each(this.generatedItemKeys, function (saved_item, key) {
                 if (item === saved_item) {
                     found = key;
                 }
@@ -614,10 +611,10 @@
             var this$1 = this;
 
             // This method depends on this.$refs, so it cannot be a computed property
-            this.csvData = this.filteredItems.map(function (item) {
+            this.csvData = this.pagedItems.map(function (item) {
                 var id = this$1.keyFor(item);
                 var textItem = {};
-                __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.each(this$1.activeFields, function (field) {
+                __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.each(this$1.activeFields, function (field) {
                     textItem[this$1.columns[field]] = this$1.$refs['cell.' + id + '.' + field] && this$1.$refs['cell.' + id + '.' + field][0] ? this$1.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;
                 });
                 return textItem;
@@ -634,7 +631,7 @@
                 off: [],
             };
             for (var field in this.columns) {
-                if (__WEBPACK_IMPORTED_MODULE_5_lodash___default.a.includes(this$1.activeFields, field)) {
+                if (__WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(this$1.activeFields, field)) {
                     fields.on.push(field);
                 } else {
                     fields.off.push(field);
@@ -647,9 +644,9 @@
             var fields = this.getCookies('fields');
             var defaultOn = this.defaultActiveFields || Object.keys(this.columns);
             return Object.keys(this.columns).filter(function (field) {
-                var fieldIsSelected = __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.includes(fields.on, field);
-                var fieldIsDeselected = __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.includes(fields.off, field);
-                var fieldDefaultsToOn = __WEBPACK_IMPORTED_MODULE_5_lodash___default.a.includes(defaultOn, field);
+                var fieldIsSelected = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(fields.on, field);
+                var fieldIsDeselected = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(fields.off, field);
+                var fieldDefaultsToOn = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(defaultOn, field);
                 return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);
             });
         },
@@ -772,14 +769,14 @@ function normalizeComponent (
 
 /*
 |--------------------------------------------------------------------------
-| AbstractFilter
+| AbstractSource
 |--------------------------------------------------------------------------
 |
-| A base class for filter objects that work with NovaTable.
+| A base class for Source objects that work with NovaTable.
 |
 */
 
-var AbstractFilter = function AbstractFilter() {
+var AbstractSource = function AbstractSource() {
     this.search = '';
     this.search_fields = [];
     this.sort_field = '';
@@ -789,40 +786,40 @@ var AbstractFilter = function AbstractFilter() {
     this.page_length = null;
 };
 
-AbstractFilter.prototype.setPage = function setPage (page, page_length) {
+AbstractSource.prototype.setPage = function setPage (page, page_length) {
     this.page = page;
     this.page_length = page_length;
     this.fireChangeEvent();
     return this;
 };
 
-AbstractFilter.prototype.setSearch = function setSearch (search, fields) {
+AbstractSource.prototype.setSearch = function setSearch (search, fields) {
     this.search = search;
     this.search_fields = fields;
     this.fireChangeEvent();
     return this;
 };
 
-AbstractFilter.prototype.setSort = function setSort (field, direction) {
+AbstractSource.prototype.setSort = function setSort (field, direction) {
     this.sort_field = field;
     this.sort_direction = direction;
     this.fireChangeEvent();
     return this;
 };
 
-AbstractFilter.prototype.onChange = function onChange (closure) {
+AbstractSource.prototype.onChange = function onChange (closure) {
     this.onChangeClosures.push(closure);
 };
 
-AbstractFilter.prototype.fireChangeEvent = function fireChangeEvent () {
+AbstractSource.prototype.fireChangeEvent = function fireChangeEvent () {
     this.onChangeClosures.map(function (closure) { return closure(); });
 };
 
-AbstractFilter.prototype.filter = function filter () {
-    throw new Error('`filter` has not been defined on this class');
+AbstractSource.prototype.get = function get () {
+    throw new Error('`get` has not been defined on this class');
 };
 
-module.exports = AbstractFilter;
+module.exports = AbstractSource;
 
 
 /***/ },
@@ -938,12 +935,6 @@ module.exports = require(undefined);
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
-
-module.exports = require(undefined);
-
-/***/ },
-/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1196,7 +1187,7 @@ var render = function() {
               attrs: { tag: "tbody", name: "nova-rows" }
             },
             [
-              _vm._l(_vm.filteredItems, function(item) {
+              _vm._l(_vm.pagedItems, function(item) {
                 return _c(
                   "tr",
                   { key: _vm.keyFor(item) },
@@ -1227,7 +1218,7 @@ var render = function() {
                 )
               }),
               _vm._v(" "),
-              _vm.filteredItems.length === 0
+              _vm.pagedItems.length === 0
                 ? _c("tr", { key: "no-items" }, [
                     _c(
                       "td",
@@ -1250,7 +1241,7 @@ var render = function() {
                       "td",
                       [
                         _vm._t(field + "-footer", null, {
-                          items: _vm.filteredItems,
+                          items: _vm.pagedItems,
                           response: _vm.response
                         })
                       ],
@@ -1386,17 +1377,17 @@ if (false) {
 }
 
 /***/ },
-/* 7 */
+/* 6 */
 /***/ function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(15);
+var content = __webpack_require__(14);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var add = __webpack_require__(18).default
+var add = __webpack_require__(17).default
 var update = add("70b70474", content, false, {});
 // Hot Module Replacement
 if(false) {
@@ -1413,34 +1404,34 @@ if(false) {
 }
 
 /***/ },
-/* 8 */
+/* 7 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_filter_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_filter_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__abstract_filter_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__abstract_source_js__);
 
 
 
-var ArrayFilter = (function (AbstractFilter) {
-    function ArrayFilter(items, matcher) {
-        AbstractFilter.call(this);
+var ArraySource = (function (AbstractSource) {
+    function ArraySource(items, matcher) {
+        AbstractSource.call(this);
         this.items = items;
         this.filterClosures = [];
         this.matcher = matcher || new __WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js___default.a();
     }
 
-    if ( AbstractFilter ) ArrayFilter.__proto__ = AbstractFilter;
-    ArrayFilter.prototype = Object.create( AbstractFilter && AbstractFilter.prototype );
-    ArrayFilter.prototype.constructor = ArrayFilter;
+    if ( AbstractSource ) ArraySource.__proto__ = AbstractSource;
+    ArraySource.prototype = Object.create( AbstractSource && AbstractSource.prototype );
+    ArraySource.prototype.constructor = ArraySource;
 
-    ArrayFilter.prototype.addFilter = function addFilter (filter) {
+    ArraySource.prototype.addFilter = function addFilter (filter) {
         this.filterClosures.push(filter);
     };
 
-    ArrayFilter.prototype.filter = function filter () {
+    ArraySource.prototype.get = function get () {
         var this$1 = this;
 
         var promise = Promise.resolve(this.items);
@@ -1490,14 +1481,14 @@ var ArrayFilter = (function (AbstractFilter) {
             });
     };
 
-    return ArrayFilter;
-}(__WEBPACK_IMPORTED_MODULE_1__abstract_filter_js___default.a));
+    return ArraySource;
+}(__WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default.a));
 
-module.exports = ArrayFilter;
+module.exports = ArraySource;
 
 
 /***/ },
-/* 9 */
+/* 8 */
 /***/ function(module, exports) {
 
 
@@ -1526,11 +1517,11 @@ module.exports = FuzzyMatcher;
 
 
 /***/ },
-/* 10 */
+/* 9 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_qs__ = __webpack_require__(21);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_qs__ = __webpack_require__(20);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_qs___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_qs__);
 
 
@@ -1566,41 +1557,41 @@ module.exports = QueryParamSaver;
 
 
 /***/ },
-/* 11 */
+/* 10 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_filter_js__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_filter_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__abstract_filter_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__abstract_source_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery__ = __webpack_require__(18);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_jquery___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_jquery__);
 
 
 
 
 
-var ServerSideFilter = (function (AbstractFilter) {
-    function ServerSideFilter(endpoint) {
-        AbstractFilter.call(this);
+var ServerSideSource = (function (AbstractSource) {
+    function ServerSideSource(endpoint) {
+        AbstractSource.call(this);
         this.endpoint = endpoint;
-        this.filterClosures = [];
+        this.paramMergers = [];
         this.throttle = new __WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js___default.a();
         this.slug = null;
     }
 
-    if ( AbstractFilter ) ServerSideFilter.__proto__ = AbstractFilter;
-    ServerSideFilter.prototype = Object.create( AbstractFilter && AbstractFilter.prototype );
-    ServerSideFilter.prototype.constructor = ServerSideFilter;
+    if ( AbstractSource ) ServerSideSource.__proto__ = AbstractSource;
+    ServerSideSource.prototype = Object.create( AbstractSource && AbstractSource.prototype );
+    ServerSideSource.prototype.constructor = ServerSideSource;
 
-    ServerSideFilter.prototype.addFilter = function addFilter (closure) {
-        this.filterClosures.push(closure);
+    ServerSideSource.prototype.addParamMerger = function addParamMerger (closure) {
+        this.paramMergers.push(closure);
     };
 
-    ServerSideFilter.prototype.buildRequestData = function buildRequestData ()
+    ServerSideSource.prototype.buildRequestData = function buildRequestData ()
     {
         var data = {
             search: this.search,
@@ -1610,11 +1601,11 @@ var ServerSideFilter = (function (AbstractFilter) {
             page: this.page,
             page_length: this.page_length,
         };
-        this.filterClosures.map(function (closure) { return closure(data); });
+        this.paramMergers.map(function (closure) { return closure(data); });
         return data;
     };
 
-    ServerSideFilter.prototype.buildRequestUrl = function buildRequestUrl ()
+    ServerSideSource.prototype.buildRequestUrl = function buildRequestUrl ()
     {
         var request_data = this.buildRequestData();
         if (/\?/.test(this.endpoint)) {
@@ -1624,7 +1615,7 @@ var ServerSideFilter = (function (AbstractFilter) {
         }
     };
 
-    ServerSideFilter.prototype.filter = function filter () 
+    ServerSideSource.prototype.get = function get () 
     {
         var this$1 = this;
 
@@ -1651,14 +1642,14 @@ var ServerSideFilter = (function (AbstractFilter) {
         });
     };
 
-    return ServerSideFilter;
-}(__WEBPACK_IMPORTED_MODULE_1__abstract_filter_js___default.a));
+    return ServerSideSource;
+}(__WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default.a));
 
-module.exports = ServerSideFilter;
+module.exports = ServerSideSource;
 
 
 /***/ },
-/* 12 */
+/* 11 */
 /***/ function(module, exports, __webpack_require__) {
 
 /*----------------------------------------------------------------------------
@@ -1742,7 +1733,7 @@ module.exports = TimeoutThrottle;
 
 
 /***/ },
-/* 13 */
+/* 12 */
 /***/ function(module, exports) {
 
 /*
@@ -1802,7 +1793,7 @@ module.exports = function() {
 
 
 /***/ },
-/* 14 */
+/* 13 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1837,26 +1828,26 @@ function listToStyles (parentId, list) {
 
 
 /***/ },
-/* 15 */
+/* 14 */
 /***/ function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(13)();
+exports = module.exports = __webpack_require__(12)();
 // imports
 
 
 // module
-exports.push([module.i, "\n.nova-table div.form-group.pull-left.margin-left {\n    margin-left: .5em;\n}\n.table-loader{\n    opacity: .6;\n    position: absolute;\n    width: 100%;\n    height: 920px;\n    padding-top: 100px;\n    z-index: 1;\n}\n.pagination{\n    margin: 0 0 20px 0;\n}\ntd.td-scheduled_or_posted_at-styles {\n    width: 115px;\n}\n.sortable {\n    white-space: nowrap;\n}\n.sortable i {\n    margin-top: 3px;\n}\n", "", {"version":3,"sources":["/home/dkuck/work/nova-tables/src/src/NovaTable.vue"],"names":[],"mappings":";AAkjBA;IACA,kBAAA;CACA;AAEA;IACA,YAAA;IACA,mBAAA;IACA,YAAA;IACA,cAAA;IACA,mBAAA;IACA,WAAA;CACA;AAEA;IACA,mBAAA;CACA;AAEA;IACA,aAAA;CACA;AAEA;IACA,oBAAA;CACA;AAEA;IACA,gBAAA;CACA","file":"NovaTable.vue","sourcesContent":["\n<template>\n    <div class=\"nova-table clearfix\">\n        <div class=\"toggle-columns form-group pull-left\">\n            <div class=\"form-inline\">\n\n                <div class=\"form-group pull-left\">\n                    <input v-if=\"searchable\" v-model=\"search\" placeholder=\"Search\" class=\"form-control\">\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <button class=\"btn btn-default btn-spacing\" type=\"button\" data-toggle=\"dropdown\" aria-expanded=\"false\" v-if=\"adjustableColumns\">\n                        <i class=\"fa fa-columns\"></i>\n                    </button>\n\n                    <ul v-if=\"adjustableColumns\" class=\"dropdown-menu dropdown-menu--toggle-col\">\n                        <li v-for=\"(name, field) in columns\">\n                            <a @click.stop>\n                                <label>\n                                    <input type=\"checkbox\" :value=\"field\" v-model=\"activeFields\"> {{ name }}\n                                </label>\n                            </a>\n                        </li>\n                        <li v-if=\"savingToCookies\">\n                            <a @click=\"resetActiveFields\" class=\"btn\">\n                                Reset to Default\n                            </a>\n                        </li>\n                    </ul>\n                    <i class=\"fa fa-exclamation-circle\" title=\"There was a problem with your last request.\" v-if=\"showError\"></i>\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <slot name=\"top-left-bar\"></slot>\n                </div>\n\n            </div>\n        </div>\n\n        <div class=\"pull-right\">\n            <slot name=\"top-right-bar\"></slot>\n            <csv-download\n                    v-if=\"csvExportable\"\n                    :fields=\"csvColumns\"\n                    :data=\"csvData\"\n            >\n                <button class=\"btn btn-default btn-spacing\" type=\"button\" >\n                    <i class=\"fa fa-file-excel-o\" aria-hidden=\"true\"></i> CSV\n                </button>\n            </csv-download>\n        </div>\n        <!-- loading indicator -->\n        <div v-if=\"loading\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 text-center\">\n                    <div class=\"well table-loader\">\n                        <i class=\"fa fa-circle-o-notch fa-4x fa-spin\"></i>\n                        <br>\n                        Loading...\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"nova-table-container\">\n            <table class=\"display table table-bordered table-condensed fb-table table-striped responsive\"\n                   width=\"100%\">\n                <thead>\n                    <tr class='sorting-header-gray'>\n                        <th v-for=\"(name, field) in activeColumns\" :style=\"{ cursor: isSortable(field) ? 'pointer' : 'default' }\" :class=\"{ sortable: isSortable(field) }\" @click=\"isSortable(field) ? setSort(field) : null\">\n                            <div>\n                                <i v-if=\"isSortable(field)\" class=\"fa\" :class=\"sortClass(field)\" aria-hidden=\"true\"></i>\n                                <span>{{ name }}</span>\n                            </div>\n                        </th>\n                    </tr>\n                </thead>\n                <transition-group tag=\"tbody\" class=\"tableBody\" name=\"nova-rows\">\n                    <tr v-for=\"item in filteredItems\" :key=\"keyFor(item)\">\n                        <td v-for=\"(name, field) in activeColumns\" :class=\"'td-' + field + '-styles'\" :ref=\"'cell.' + keyFor(item) + '.' + field\">\n                            <slot :name=\"field\" :item=\"item\">\n                                {{ valueFor(item, field) }}\n                            </slot>\n                        </td>\n                    </tr>\n                    <tr v-if=\"filteredItems.length === 0\" key=\"no-items\">\n                        <td :colspan=\"activeFields.length || 1\"> No matching items.</td>\n                    </tr>\n                </transition-group>\n                <tfoot v-if=\"footer\">\n                    <tr class=\"sorting-header-gray\">\n                        <td v-for=\"(name, field) in activeColumns\">\n                            <slot :name=\"field + '-footer'\" :items=\"filteredItems\" :response=\"response\">\n                            </slot>\n                        </td>\n                    </tr>\n                </tfoot>\n            </table>\n        </div>\n        <div class=\"pull-left inline\">\n            <div class=\"dropup\" v-if=\"pageLengthSelection\">\n                <template v-if=\"pageLengthOptions\">\n                    Show\n                    <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"page-length-dropdown\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                        {{ pageLengthSelection }}\n                        <span class=\"caret\"></span>\n                    </button>\n                    <ul class=\"dropdown-menu\" aria-labelledby=\"page-length-dropdown\">\n                        <li v-for=\"option in pageLengthOptions\"><a href=\"javascript:void(0);\" @click=\"pageLengthSelection = option\">{{ option }}</a></li>\n                    </ul>\n                    entries |\n                </template>\n                <span>\n                    {{ pageDescriptor }}\n                </span>\n            </div>\n        </div>\n        <div class=\"pull-right\">\n            <slot name=\"bottom-right-bar\"></slot>\n\n            <nova-page-select \n                v-if=\"pageLengthSelection && pageCount > 1\" \n                v-model=\"page\" \n                :page-count=\"pageCount\"\n            >\n            </nova-page-select>\n\n        </div>\n    </div>\n</template>\n\n<script>\nimport ArrayFilter from './array-filter.js';\nimport Vue from 'vue';\nimport ServerSideFilter from './server-side-filter.js';\nimport QueryParamSaver from './query-param-saver.js';\nimport Cookies from 'js-cookie';\nimport _ from 'lodash';\nimport CsvDownload from 'vue-csv-downloader';\nimport NovaPageSelect from './NovaPageSelect';\n\nexport default {\n    components: {\n        CsvDownload,\n        NovaPageSelect,\n    },\n    props: [\n        'items',\n        'endpoint',\n        'endpointParams',\n        'columns',\n        'searchable',\n        'adjustableColumns',\n        'sortable',\n        'defaultSortField',\n        'csvExportable',\n        'defaultActiveFields',\n        'itemFilter',\n        'pageLength',\n        'pageLengthOptions',\n        'footer',\n        'defaultSortOrders',\n        'name',\n        'keyField',\n    ],\n    data() {\n        return {\n            activeFields: [],\n            sortField: '',\n            sortOrder: 'A',\n            search: '',\n            filter: new ArrayFilter([]),\n            filteredItems: [],\n            response: null,\n            totalCount: 0,\n            pageCount: 1,\n            page: 1,\n            pageLengthSelection: null,\n            loading: false,\n            showError: false,\n            blockRefresh: true,\n            initialQueryParams: {},\n            generatedItemKeys: {},\n            csvData: [],\n            queryParamSaver: this.name ? new QueryParamSaver(this.name) : null,\n        };\n    },\n    mounted() {\n        Vue.nextTick(() => {\n            if (this.itemFilter) {\n                this.filter = this.itemFilter;\n            } else if (this.items) {\n                this.filter = new ArrayFilter(this.items);\n            } else if (this.endpoint) {\n                this.filter = new ServerSideFilter(this.endpoint);\n                this.filter.addFilter((params) => {\n                    if (this.endpointParams) {\n                        _.merge(params, this.endpointParams);\n                    }\n                });\n            } else {\n                throw new Error('No item-filter specified');\n            }\n            this.pageLengthSelection = this.pageLength;\n            this.filter.setPage(this.page, this.pageLengthSelection);\n            this.filter.onChange(() => this.refreshFilter());\n\n            if (this.getCookies('fields')) {\n                this.activeFields = this.getActiveFieldsFromCookies();\n            } else {\n                this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n            }\n\n            if (this.defaultSortField) {\n                this.sortField = this.defaultSortField;\n            } else {\n                this.sortField = this.activeFields[0];\n            }\n            if (this.defaultSortOrders && this.defaultSortOrders[this.sortField]) {\n                this.sortOrder = this.defaultSortOrders[this.sortField];\n            }\n\n            this.initialQueryParams = this.queryParamsToSave;\n\n            this.applyQueryParams();\n\n            Vue.nextTick(() => {\n                this.blockRefresh = false;\n                this.refreshFilter();\n            });\n        });\n    },\n    watch: {\n        search() {\n            this.filter.setSearch(this.search, this.activeFields);\n        },\n        activeFields() {\n            this.storeActiveFieldsToCookies();\n            this.filter.setSearch(this.search, this.activeFields);\n        },\n        sortField() {\n            this.filter.setSort(this.sortField, this.sortOrder)\n        },\n        sortOrder() {\n            this.filter.setSort(this.sortField, this.sortOrder)\n        },\n        page() {\n            if (this.pageLengthSelection == 'All') {\n                this.filter.setPage(null, null);\n            } else {\n                this.filter.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        pageLengthSelection() {\n            if (this.pageLengthSelection == 'All') {\n                this.filter.setPage(null, null);\n            } else {\n                this.filter.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        endpointParams() {\n            this.filter.fireChangeEvent();\n        },\n        queryParamsToSave() {\n            if (this.queryParamSaver) {\n                this.queryParamSaver.set(this.queryParamsToSave);\n            }\n        },\n    },\n    computed: {\n        pageDescriptor() {\n            if (this.pageLengthSelection == 'All') {\n                return 'Showing ' + this.totalCount + ' entries';\n            }\n            var start = ((this.page - 1) * this.pageLengthSelection) + 1;\n            var end = start + this.pageLengthSelection - 1;\n            if (start < 0) {\n                start = 1;\n            }\n            if (end < start) {\n                end = start;\n            }\n            if (end > this.totalCount) {\n                end = this.totalCount;\n            }\n            if (this.totalCount === 0) {\n                return '0 entries';\n            } else {\n                return 'Showing ' + start + (start === end ? '' : ' to ' + end) + ' of ' + this.totalCount + ' entries';\n            }\n        },\n        activeColumns() {\n            var columns = {};\n            Object.keys(this.columns).map(field => {\n                if (_.includes(this.activeFields, field)) {\n                    columns[field] = this.columns[field];\n                }\n            });\n            return columns;\n        },\n        csvColumns() {\n            return _.values(this.activeColumns);\n        },\n        pages() {\n            var start = parseInt(this.page) - 3;\n            var end = parseInt(this.page) + 3;\n            // if start is too low, shift all of [start,end] up\n            if (start < 1) {\n                var diff = 1 - start;\n                start += diff;\n                end += diff;\n            }\n            // if end is too high, shift all of [start,end] down\n            if (end > this.pageCount) {\n                var diff = end - this.pageCount;\n                start -= diff;\n                end -= diff;\n            }\n            // if start is too low again, just set it to 1\n            if (start < 1) {\n                start = 1;\n            }\n            var pages = [];\n            for (var i = start; i <= end; i++) {\n                pages.push(i);\n            }\n            return pages;\n        },\n        queryParamsToSave() {\n            var params = {\n                sort_field: this.sortField,\n                sort_order: this.sortOrder,\n                search: this.search,\n                page: this.page,\n                page_length: this.pageLengthSelection,\n            }\n            if (this.endpointParams) {\n                _.merge(params, this.endpointParams);\n            }\n            // Now that we have all the params, let's check if any of them\n            // would be set to those values by default. If so, we can keep\n            // the URL small by taking them out entirely.\n            for (var field in params) {\n                if (params[field] == this.initialQueryParams[field]) {\n                    delete params[field];\n                }\n            }\n            return params;\n        },\n        savingToCookies() {\n            return Boolean(this.name);\n        },\n    },\n    methods: {\n        refreshFilter() {\n            if (this.blockRefresh) {\n                return;\n            }\n\n            //show loading indicator\n            this.loading = true;\n            this.showError = false;\n\n            this.filter\n                .filter()\n                .then((response) => {\n                    this.response = response;\n                    this.filteredItems = response.items;\n                    this.pageCount = response.pageCount;\n                    let page = response.page >= 1 ? response.page : 1;\n                    if (this.page != page) {\n                        this.page = page;\n                    }\n                    this.totalCount = response.totalCount;\n                    this.generatedItemKeys = {};\n                    //stop loading indicator\n                    this.loading = false;\n                })\n                .catch(err => {\n                    var msg = err && err.data && err.data.message ? err.data.message : '';\n\n                    //stop loading indicator\n                    this.loading = false;\n\n                    if (err == 'Error: Request overridden by newer request.') {\n                        this.showError = false;\n                    } else {\n                        //show error icon\n                        this.showError = true;\n\n                        console && console.log && console.log('Error when accessing filtered data:', msg, err);\n                    }\n                })\n                .then(() => {\n                    if (this.csvExportable) {\n                        Vue.nextTick(() => this.generateCsvData());\n                    }\n                });\n        },\n        fieldName(columnName) {\n            return this.columns[columnName];\n        },\n        isSortable(field)\n        {\n            if (this.sortable instanceof Array) {\n                return _.includes(this.sortable, field);\n            } else if (this.sortable) {\n                return true;\n            } else {\n                return false;\n            }\n        },\n        setSort(field) {\n            if (this.sortField === field) {\n                this.sortOrder = this.sortOrder === 'D' ? 'A' : 'D';\n                return;\n            } else if (this.defaultSortOrders && this.defaultSortOrders[field]) {\n                this.sortOrder = this.defaultSortOrders[field];\n            } else {\n                this.sortOrder = 'A';\n            }\n\n            this.sortField = field;\n        },\n        sortClass(field) {\n            if (field === this.sortField) {\n                return this.sortOrder === 'D' ? 'fa-sort-amount-desc active-sort pull-right' : 'fa-sort-amount-asc active-sort pull-right';\n            }\n            return 'fa-arrows-v text-muted pull-right';\n        },\n        /**\n         * Return item.field or, if field is a dot-delimited field,\n         * follow the chain of references to the last value.\n         */\n        valueFor(item, field) {\n            var obj = item;\n            var chain = field.split(/\\./);\n            while (obj && chain.length > 0) {\n                obj = obj[chain.shift()];\n            }\n            if (chain.length > 0) {\n                return undefined;\n            } else {\n                return obj;\n            }\n        },\n        getCookies(field) {\n            if (!this.name || !field || Cookies.get(this.name) === undefined) {\n                return null;\n            }\n\n            return JSON.parse(Cookies.get(this.name))[field];\n        },\n        setCookies(field, value) {\n            if (!this.name || !field) {\n                return false;\n            }\n\n            var cookie = Cookies.get(this.name);\n\n            if (cookie) {\n                cookie = JSON.parse(cookie);\n            } else {\n                cookie = {};\n            }\n\n            cookie[field] = value;\n            if (Cookies.set(this.name, cookie)) {\n                return true;\n            }\n\n            return false;\n        },\n        applyQueryParams() {\n            if (this.queryParamSaver) {\n                var params = this.queryParamSaver.get();\n                if (params) {\n                    if (typeof params.sort_field != 'undefined') {\n                        this.sortField = params.sort_field;\n                    }\n                    if (typeof params.sort_order != 'undefined') {\n                        this.sortOrder = params.sort_order;\n                    }\n                    if (typeof params.search != 'undefined') {\n                        this.search = params.search\n                    }\n                    if (typeof params.page != 'undefined') {\n                        this.page = params.page;\n                    }\n                    if (typeof params.page_length != 'undefined') {\n                        this.pageLengthSelection = params.page_length;\n                    }\n                    this.$emit('load-endpoint-params', params);\n                }\n            }\n        },\n        keyFor(item) {\n            if (this.keyField) {\n                return item[this.keyField];\n            }\n            if (item.id) {\n                return item.id;\n            }\n            return this.generateKeyFor(item);\n        },\n        generateKeyFor(item) {\n            var found = null;\n            _.each(this.generatedItemKeys, (saved_item, key) => {\n                if (item === saved_item) {\n                    found = key;\n                }\n            });\n            if (!found) {\n                // make a random key\n                found = new Date().valueOf() + '_' + new String(Math.random()).substr(2);\n                this.generatedItemKeys[found] = item;\n            }\n            return found;\n        },\n        generateCsvData() {\n            // This method depends on this.$refs, so it cannot be a computed property\n            this.csvData = this.filteredItems.map((item) => {\n                var id = this.keyFor(item);\n                var textItem = {};\n                _.each(this.activeFields, (field) => {\n                    textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0] ? this.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;\n                });\n                return textItem;\n            });\n        },\n        resetActiveFields() {\n            this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n        },\n        storeActiveFieldsToCookies() {\n            var fields = {\n                on: [],\n                off: [],\n            };\n            for (var field in this.columns) {\n                if (_.includes(this.activeFields, field)) {\n                    fields.on.push(field);\n                } else {\n                    fields.off.push(field);\n                }\n            }\n\n            this.setCookies('fields', fields);\n        },\n        getActiveFieldsFromCookies() {\n            var fields = this.getCookies('fields');\n            var defaultOn = this.defaultActiveFields || Object.keys(this.columns);\n            return Object.keys(this.columns).filter(field => {\n                var fieldIsSelected = _.includes(fields.on, field);\n                var fieldIsDeselected = _.includes(fields.off, field);\n                var fieldDefaultsToOn = _.includes(defaultOn, field);\n                return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);\n            });\n        },\n    },\n}\n</script>\n\n<style>\n    .nova-table div.form-group.pull-left.margin-left {\n        margin-left: .5em;\n    }\n\n    .table-loader{\n        opacity: .6;\n        position: absolute;\n        width: 100%;\n        height: 920px;\n        padding-top: 100px;\n        z-index: 1;\n    }\n\n    .pagination{\n        margin: 0 0 20px 0;\n    }\n\n    td.td-scheduled_or_posted_at-styles {\n        width: 115px;\n    }\n\n    .sortable {\n        white-space: nowrap;\n    }\n\n    .sortable i {\n        margin-top: 3px;\n    }\n</style>\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.nova-table div.form-group.pull-left.margin-left {\n    margin-left: .5em;\n}\n.table-loader{\n    opacity: .6;\n    position: absolute;\n    width: 100%;\n    height: 920px;\n    padding-top: 100px;\n    z-index: 1;\n}\n.pagination{\n    margin: 0 0 20px 0;\n}\ntd.td-scheduled_or_posted_at-styles {\n    width: 115px;\n}\n.sortable {\n    white-space: nowrap;\n}\n.sortable i {\n    margin-top: 3px;\n}\n", "", {"version":3,"sources":["/home/dkuck/work/nova-tables/src/src/NovaTable.vue"],"names":[],"mappings":";AAijBA;IACA,kBAAA;CACA;AAEA;IACA,YAAA;IACA,mBAAA;IACA,YAAA;IACA,cAAA;IACA,mBAAA;IACA,WAAA;CACA;AAEA;IACA,mBAAA;CACA;AAEA;IACA,aAAA;CACA;AAEA;IACA,oBAAA;CACA;AAEA;IACA,gBAAA;CACA","file":"NovaTable.vue","sourcesContent":["\n<template>\n    <div class=\"nova-table clearfix\">\n        <div class=\"toggle-columns form-group pull-left\">\n            <div class=\"form-inline\">\n\n                <div class=\"form-group pull-left\">\n                    <input v-if=\"searchable\" v-model=\"search\" placeholder=\"Search\" class=\"form-control\">\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <button class=\"btn btn-default btn-spacing\" type=\"button\" data-toggle=\"dropdown\" aria-expanded=\"false\" v-if=\"adjustableColumns\">\n                        <i class=\"fa fa-columns\"></i>\n                    </button>\n\n                    <ul v-if=\"adjustableColumns\" class=\"dropdown-menu dropdown-menu--toggle-col\">\n                        <li v-for=\"(name, field) in columns\">\n                            <a @click.stop>\n                                <label>\n                                    <input type=\"checkbox\" :value=\"field\" v-model=\"activeFields\"> {{ name }}\n                                </label>\n                            </a>\n                        </li>\n                        <li v-if=\"savingToCookies\">\n                            <a @click=\"resetActiveFields\" class=\"btn\">\n                                Reset to Default\n                            </a>\n                        </li>\n                    </ul>\n                    <i class=\"fa fa-exclamation-circle\" title=\"There was a problem with your last request.\" v-if=\"showError\"></i>\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <slot name=\"top-left-bar\"></slot>\n                </div>\n\n            </div>\n        </div>\n\n        <div class=\"pull-right\">\n            <slot name=\"top-right-bar\"></slot>\n            <csv-download\n                    v-if=\"csvExportable\"\n                    :fields=\"csvColumns\"\n                    :data=\"csvData\"\n            >\n                <button class=\"btn btn-default btn-spacing\" type=\"button\" >\n                    <i class=\"fa fa-file-excel-o\" aria-hidden=\"true\"></i> CSV\n                </button>\n            </csv-download>\n        </div>\n        <!-- loading indicator -->\n        <div v-if=\"loading\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 text-center\">\n                    <div class=\"well table-loader\">\n                        <i class=\"fa fa-circle-o-notch fa-4x fa-spin\"></i>\n                        <br>\n                        Loading...\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"nova-table-container\">\n            <table class=\"display table table-bordered table-condensed fb-table table-striped responsive\"\n                   width=\"100%\">\n                <thead>\n                    <tr class='sorting-header-gray'>\n                        <th v-for=\"(name, field) in activeColumns\" :style=\"{ cursor: isSortable(field) ? 'pointer' : 'default' }\" :class=\"{ sortable: isSortable(field) }\" @click=\"isSortable(field) ? setSort(field) : null\">\n                            <div>\n                                <i v-if=\"isSortable(field)\" class=\"fa\" :class=\"sortClass(field)\" aria-hidden=\"true\"></i>\n                                <span>{{ name }}</span>\n                            </div>\n                        </th>\n                    </tr>\n                </thead>\n                <transition-group tag=\"tbody\" class=\"tableBody\" name=\"nova-rows\">\n                    <tr v-for=\"item in pagedItems\" :key=\"keyFor(item)\">\n                        <td v-for=\"(name, field) in activeColumns\" :class=\"'td-' + field + '-styles'\" :ref=\"'cell.' + keyFor(item) + '.' + field\">\n                            <slot :name=\"field\" :item=\"item\">\n                                {{ valueFor(item, field) }}\n                            </slot>\n                        </td>\n                    </tr>\n                    <tr v-if=\"pagedItems.length === 0\" key=\"no-items\">\n                        <td :colspan=\"activeFields.length || 1\"> No matching items.</td>\n                    </tr>\n                </transition-group>\n                <tfoot v-if=\"footer\">\n                    <tr class=\"sorting-header-gray\">\n                        <td v-for=\"(name, field) in activeColumns\">\n                            <slot :name=\"field + '-footer'\" :items=\"pagedItems\" :response=\"response\">\n                            </slot>\n                        </td>\n                    </tr>\n                </tfoot>\n            </table>\n        </div>\n        <div class=\"pull-left inline\">\n            <div class=\"dropup\" v-if=\"pageLengthSelection\">\n                <template v-if=\"pageLengthOptions\">\n                    Show\n                    <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"page-length-dropdown\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                        {{ pageLengthSelection }}\n                        <span class=\"caret\"></span>\n                    </button>\n                    <ul class=\"dropdown-menu\" aria-labelledby=\"page-length-dropdown\">\n                        <li v-for=\"option in pageLengthOptions\"><a href=\"javascript:void(0);\" @click=\"pageLengthSelection = option\">{{ option }}</a></li>\n                    </ul>\n                    entries |\n                </template>\n                <span>\n                    {{ pageDescriptor }}\n                </span>\n            </div>\n        </div>\n        <div class=\"pull-right\">\n            <slot name=\"bottom-right-bar\"></slot>\n\n            <nova-page-select \n                v-if=\"pageLengthSelection && pageCount > 1\" \n                v-model=\"page\" \n                :page-count=\"pageCount\"\n            >\n            </nova-page-select>\n\n        </div>\n    </div>\n</template>\n\n<script>\nimport ArraySource from './array-source.js';\nimport ServerSideSource from './server-side-source.js';\nimport QueryParamSaver from './query-param-saver.js';\nimport Cookies from 'js-cookie';\nimport _ from 'lodash';\nimport CsvDownload from 'vue-csv-downloader';\nimport NovaPageSelect from './NovaPageSelect';\n\nexport default {\n    components: {\n        CsvDownload,\n        NovaPageSelect,\n    },\n    props: [\n        'items',\n        'endpoint',\n        'endpointParams',\n        'columns',\n        'searchable',\n        'adjustableColumns',\n        'sortable',\n        'defaultSortField',\n        'csvExportable',\n        'defaultActiveFields',\n        'itemSource',\n        'pageLength',\n        'pageLengthOptions',\n        'footer',\n        'defaultSortOrders',\n        'name',\n        'keyField',\n    ],\n    data() {\n        return {\n            activeFields: [],\n            sortField: '',\n            sortOrder: 'A',\n            search: '',\n            source: new ArraySource([]),\n            pagedItems: [],\n            response: null,\n            totalCount: 0,\n            pageCount: 1,\n            page: 1,\n            pageLengthSelection: null,\n            loading: false,\n            showError: false,\n            blockRefresh: true,\n            initialQueryParams: {},\n            generatedItemKeys: {},\n            csvData: [],\n            queryParamSaver: this.name ? new QueryParamSaver(this.name) : null,\n        };\n    },\n    mounted() {\n        this.$nextTick(() => {\n            if (this.itemSource) {\n                this.source = this.itemSource;\n            } else if (this.items) {\n                this.source = new ArraySource(this.items);\n            } else if (this.endpoint) {\n                this.source = new ServerSideSource(this.endpoint);\n                this.source.addParamMerger((params) => {\n                    if (this.endpointParams) {\n                        _.merge(params, this.endpointParams);\n                    }\n                });\n            } else {\n                throw new Error('No item-source specified');\n            }\n            this.pageLengthSelection = this.pageLength;\n            this.source.setPage(this.page, this.pageLengthSelection);\n            this.source.onChange(() => this.refreshSource());\n\n            if (this.getCookies('fields')) {\n                this.activeFields = this.getActiveFieldsFromCookies();\n            } else {\n                this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n            }\n\n            if (this.defaultSortField) {\n                this.sortField = this.defaultSortField;\n            } else {\n                this.sortField = this.activeFields[0];\n            }\n            if (this.defaultSortOrders && this.defaultSortOrders[this.sortField]) {\n                this.sortOrder = this.defaultSortOrders[this.sortField];\n            }\n\n            this.initialQueryParams = this.queryParamsToSave;\n\n            this.applyQueryParams();\n\n            this.$nextTick(() => {\n                this.blockRefresh = false;\n                this.refreshSource();\n            });\n        });\n    },\n    watch: {\n        search() {\n            this.source.setSearch(this.search, this.activeFields);\n        },\n        activeFields() {\n            this.storeActiveFieldsToCookies();\n            this.source.setSearch(this.search, this.activeFields);\n        },\n        sortField() {\n            this.source.setSort(this.sortField, this.sortOrder)\n        },\n        sortOrder() {\n            this.source.setSort(this.sortField, this.sortOrder)\n        },\n        page() {\n            if (this.pageLengthSelection == 'All') {\n                this.source.setPage(null, null);\n            } else {\n                this.source.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        pageLengthSelection() {\n            if (this.pageLengthSelection == 'All') {\n                this.source.setPage(null, null);\n            } else {\n                this.source.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        endpointParams() {\n            this.source.fireChangeEvent();\n        },\n        queryParamsToSave() {\n            if (this.queryParamSaver) {\n                this.queryParamSaver.set(this.queryParamsToSave);\n            }\n        },\n    },\n    computed: {\n        pageDescriptor() {\n            if (this.pageLengthSelection == 'All') {\n                return 'Showing ' + this.totalCount + ' entries';\n            }\n            var start = ((this.page - 1) * this.pageLengthSelection) + 1;\n            var end = start + this.pageLengthSelection - 1;\n            if (start < 0) {\n                start = 1;\n            }\n            if (end < start) {\n                end = start;\n            }\n            if (end > this.totalCount) {\n                end = this.totalCount;\n            }\n            if (this.totalCount === 0) {\n                return '0 entries';\n            } else {\n                return 'Showing ' + start + (start === end ? '' : ' to ' + end) + ' of ' + this.totalCount + ' entries';\n            }\n        },\n        activeColumns() {\n            var columns = {};\n            Object.keys(this.columns).map(field => {\n                if (_.includes(this.activeFields, field)) {\n                    columns[field] = this.columns[field];\n                }\n            });\n            return columns;\n        },\n        csvColumns() {\n            return _.values(this.activeColumns);\n        },\n        pages() {\n            var start = parseInt(this.page) - 3;\n            var end = parseInt(this.page) + 3;\n            // if start is too low, shift all of [start,end] up\n            if (start < 1) {\n                var diff = 1 - start;\n                start += diff;\n                end += diff;\n            }\n            // if end is too high, shift all of [start,end] down\n            if (end > this.pageCount) {\n                var diff = end - this.pageCount;\n                start -= diff;\n                end -= diff;\n            }\n            // if start is too low again, just set it to 1\n            if (start < 1) {\n                start = 1;\n            }\n            var pages = [];\n            for (var i = start; i <= end; i++) {\n                pages.push(i);\n            }\n            return pages;\n        },\n        queryParamsToSave() {\n            var params = {\n                sort_field: this.sortField,\n                sort_order: this.sortOrder,\n                search: this.search,\n                page: this.page,\n                page_length: this.pageLengthSelection,\n            }\n            if (this.endpointParams) {\n                _.merge(params, this.endpointParams);\n            }\n            // Now that we have all the params, let's check if any of them\n            // would be set to those values by default. If so, we can keep\n            // the URL small by taking them out entirely.\n            for (var field in params) {\n                if (params[field] == this.initialQueryParams[field]) {\n                    delete params[field];\n                }\n            }\n            return params;\n        },\n        savingToCookies() {\n            return Boolean(this.name);\n        },\n    },\n    methods: {\n        refreshSource() {\n            if (this.blockRefresh) {\n                return;\n            }\n\n            //show loading indicator\n            this.loading = true;\n            this.showError = false;\n\n            this.source\n                .get()\n                .then((response) => {\n                    this.response = response;\n                    this.pagedItems = response.items;\n                    this.pageCount = response.pageCount;\n                    let page = response.page >= 1 ? response.page : 1;\n                    if (this.page != page) {\n                        this.page = page;\n                    }\n                    this.totalCount = response.totalCount;\n                    this.generatedItemKeys = {};\n                    //stop loading indicator\n                    this.loading = false;\n                })\n                .catch(err => {\n                    var msg = err && err.data && err.data.message ? err.data.message : '';\n\n                    //stop loading indicator\n                    this.loading = false;\n\n                    if (err == 'Error: Request overridden by newer request.') {\n                        this.showError = false;\n                    } else {\n                        //show error icon\n                        this.showError = true;\n\n                        console && console.log && console.log('Error when accessing paged data:', msg, err);\n                    }\n                })\n                .then(() => {\n                    if (this.csvExportable) {\n                        this.$nextTick(() => this.generateCsvData());\n                    }\n                });\n        },\n        fieldName(columnName) {\n            return this.columns[columnName];\n        },\n        isSortable(field)\n        {\n            if (this.sortable instanceof Array) {\n                return _.includes(this.sortable, field);\n            } else if (this.sortable) {\n                return true;\n            } else {\n                return false;\n            }\n        },\n        setSort(field) {\n            if (this.sortField === field) {\n                this.sortOrder = this.sortOrder === 'D' ? 'A' : 'D';\n                return;\n            } else if (this.defaultSortOrders && this.defaultSortOrders[field]) {\n                this.sortOrder = this.defaultSortOrders[field];\n            } else {\n                this.sortOrder = 'A';\n            }\n\n            this.sortField = field;\n        },\n        sortClass(field) {\n            if (field === this.sortField) {\n                return this.sortOrder === 'D' ? 'fa-sort-amount-desc active-sort pull-right' : 'fa-sort-amount-asc active-sort pull-right';\n            }\n            return 'fa-arrows-v text-muted pull-right';\n        },\n        /**\n         * Return item.field or, if field is a dot-delimited field,\n         * follow the chain of references to the last value.\n         */\n        valueFor(item, field) {\n            var obj = item;\n            var chain = field.split(/\\./);\n            while (obj && chain.length > 0) {\n                obj = obj[chain.shift()];\n            }\n            if (chain.length > 0) {\n                return undefined;\n            } else {\n                return obj;\n            }\n        },\n        getCookies(field) {\n            if (!this.name || !field || Cookies.get(this.name) === undefined) {\n                return null;\n            }\n\n            return JSON.parse(Cookies.get(this.name))[field];\n        },\n        setCookies(field, value) {\n            if (!this.name || !field) {\n                return false;\n            }\n\n            var cookie = Cookies.get(this.name);\n\n            if (cookie) {\n                cookie = JSON.parse(cookie);\n            } else {\n                cookie = {};\n            }\n\n            cookie[field] = value;\n            if (Cookies.set(this.name, cookie)) {\n                return true;\n            }\n\n            return false;\n        },\n        applyQueryParams() {\n            if (this.queryParamSaver) {\n                var params = this.queryParamSaver.get();\n                if (params) {\n                    if (typeof params.sort_field != 'undefined') {\n                        this.sortField = params.sort_field;\n                    }\n                    if (typeof params.sort_order != 'undefined') {\n                        this.sortOrder = params.sort_order;\n                    }\n                    if (typeof params.search != 'undefined') {\n                        this.search = params.search\n                    }\n                    if (typeof params.page != 'undefined') {\n                        this.page = params.page;\n                    }\n                    if (typeof params.page_length != 'undefined') {\n                        this.pageLengthSelection = params.page_length;\n                    }\n                    this.$emit('load-endpoint-params', params);\n                }\n            }\n        },\n        keyFor(item) {\n            if (this.keyField) {\n                return item[this.keyField];\n            }\n            if (item.id) {\n                return item.id;\n            }\n            return this.generateKeyFor(item);\n        },\n        generateKeyFor(item) {\n            var found = null;\n            _.each(this.generatedItemKeys, (saved_item, key) => {\n                if (item === saved_item) {\n                    found = key;\n                }\n            });\n            if (!found) {\n                // make a random key\n                found = new Date().valueOf() + '_' + new String(Math.random()).substr(2);\n                this.generatedItemKeys[found] = item;\n            }\n            return found;\n        },\n        generateCsvData() {\n            // This method depends on this.$refs, so it cannot be a computed property\n            this.csvData = this.pagedItems.map((item) => {\n                var id = this.keyFor(item);\n                var textItem = {};\n                _.each(this.activeFields, (field) => {\n                    textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0] ? this.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;\n                });\n                return textItem;\n            });\n        },\n        resetActiveFields() {\n            this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n        },\n        storeActiveFieldsToCookies() {\n            var fields = {\n                on: [],\n                off: [],\n            };\n            for (var field in this.columns) {\n                if (_.includes(this.activeFields, field)) {\n                    fields.on.push(field);\n                } else {\n                    fields.off.push(field);\n                }\n            }\n\n            this.setCookies('fields', fields);\n        },\n        getActiveFieldsFromCookies() {\n            var fields = this.getCookies('fields');\n            var defaultOn = this.defaultActiveFields || Object.keys(this.columns);\n            return Object.keys(this.columns).filter(field => {\n                var fieldIsSelected = _.includes(fields.on, field);\n                var fieldIsDeselected = _.includes(fields.off, field);\n                var fieldDefaultsToOn = _.includes(defaultOn, field);\n                return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);\n            });\n        },\n    },\n}\n</script>\n\n<style>\n    .nova-table div.form-group.pull-left.margin-left {\n        margin-left: .5em;\n    }\n\n    .table-loader{\n        opacity: .6;\n        position: absolute;\n        width: 100%;\n        height: 920px;\n        padding-top: 100px;\n        z-index: 1;\n    }\n\n    .pagination{\n        margin: 0 0 20px 0;\n    }\n\n    td.td-scheduled_or_posted_at-styles {\n        width: 115px;\n    }\n\n    .sortable {\n        white-space: nowrap;\n    }\n\n    .sortable i {\n        margin-top: 3px;\n    }\n</style>\n"],"sourceRoot":""}]);
 
 // exports
 
 
 /***/ },
-/* 16 */
+/* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__buble_loader_node_modules_vue_loader_lib_selector_type_script_index_0_NovaPageSelect_vue__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3842ae70_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_NovaPageSelect_vue__ = __webpack_require__(17);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3842ae70_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_NovaPageSelect_vue__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
 /* unused harmony namespace reexport */
 var disposed = false
@@ -1905,7 +1896,7 @@ if (false) {(function () {
 
 
 /***/ },
-/* 17 */
+/* 16 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2026,11 +2017,11 @@ if (false) {
 }
 
 /***/ },
-/* 18 */
+/* 17 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__listToStyles__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__listToStyles__ = __webpack_require__(13);
 /* harmony export (immutable) */ exports["default"] = addStylesClient;
 /*
   MIT License http://www.opensource.org/licenses/mit-license.php
@@ -2257,6 +2248,12 @@ function applyToTag (styleElement, obj) {
 
 
 /***/ },
+/* 18 */
+/***/ function(module, exports) {
+
+module.exports = require(undefined);
+
+/***/ },
 /* 19 */
 /***/ function(module, exports) {
 
@@ -2286,13 +2283,13 @@ module.exports = require(undefined);
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__buble_loader_node_modules_vue_loader_lib_selector_type_script_index_0_NovaTable_vue__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_79f12a59_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_NovaTable_vue__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_79f12a59_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_NovaTable_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
 /* empty harmony namespace reexport */
 var disposed = false
 function injectStyle (context) {
   if (disposed) return
-  __webpack_require__(7)
+  __webpack_require__(6)
 }
 /* script */
 
