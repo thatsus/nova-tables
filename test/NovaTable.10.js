@@ -12,7 +12,7 @@ module.exports = function () {
     beforeEach('setup the Vue instance', function (done) {
 
         source = new AbstractSource();
-        source.source = function () {
+        source.get = function () {
             return Promise.resolve({
                 items: [
                     {name: 'Dave', objectiveQuality: 'Medium'},
