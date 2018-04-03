@@ -16,14 +16,6 @@ elixir.ready(function () {
         objectAssign: 'Object.assign'
       }
     },
-    externals: {
-      'jquery': 'jquery',
-      'js-cookie': 'js-cookie',
-      'lodash': 'lodash',
-      'qs': 'qs',
-      'vue': 'vue',
-      'vue-csv-downloader': 'vue-csv-downloader',
-    },
     module: {
       loaders: [
         {
