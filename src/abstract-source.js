@@ -1,13 +1,13 @@
 /*
 |--------------------------------------------------------------------------
-| AbstractFilter
+| AbstractSource
 |--------------------------------------------------------------------------
 |
-| A base class for filter objects that work with NovaTable.
+| A base class for Source objects that work with NovaTable.
 |
 */
 
-class AbstractFilter
+class AbstractSource
 {
     constructor() {
         this.search = '';
@@ -48,9 +48,9 @@ class AbstractFilter
         this.onChangeClosures.map((closure) => closure());
     }
 
-    filter() {
-        throw new Error('`filter` has not been defined on this class');
+    get() {
+        throw new Error('`get` has not been defined on this class');
     }
 }
 
-module.exports = AbstractFilter;
+module.exports = AbstractSource;

@@ -3,16 +3,16 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
-import AbstractFilter from '../src/abstract-filter.js';
+import AbstractSource from '../src/abstract-source.js';
 
 module.exports = function () {
 
-    let vm, theNovaTable, filter;
+    let vm, theNovaTable, source;
 
     beforeEach('setup the Vue instance', function (done) {
 
-        filter = new AbstractFilter();
-        filter.filter = function () {
+        source = new AbstractSource();
+        source.get = function () {
             return Promise.resolve({
                 items: [
                     {name: 'Dave', objectiveQuality: 'Medium'},
@@ -27,7 +27,7 @@ module.exports = function () {
         vm = new Vue({
             template: `
                 <nova-table ref="theNovaTable"
-                    :item-filter="filter"
+                    :item-source="source"
                     :columns="columns"
                     :sortable="true"
                 >
@@ -38,7 +38,7 @@ module.exports = function () {
             },
             data() {
                 return {
-                    filter: filter,
+                    source: source,
                     columns: {
                         name: 'Name',
                         objectiveQuality: 'Quality',
@@ -70,7 +70,7 @@ module.exports = function () {
     });
 
     it('should have sorted by first column', function () {
-        assert.equal('name', filter.sort_field, `sort_field is ${filter.sort_field}`);
+        assert.equal('name', source.sort_field, `sort_field is ${source.sort_field}`);
     });
 
     it('should set new sort when the sorters are clicked', function (done) {
@@ -82,19 +82,19 @@ module.exports = function () {
 
         Vue.waitTicks(3)
             .then(() => {
-                assert.equal('objectiveQuality', filter.sort_field, `sort_field is ${filter.sort_field}`);
+                assert.equal('objectiveQuality', source.sort_field, `sort_field is ${source.sort_field}`);
             })
             .then(done, done);
     });
 
     it('should refresh when the sorters are clicked', function (done) {
         let el = $(theNovaTable.$el);
-        let filterRan = 0;
+        let sourceRan = 0;
 
-        filter.oldFilter = filter.filter;
-        filter.filter = function () {
-            filterRan++;
-            return this.oldFilter();
+        source.oldGet = source.get;
+        source.get = function () {
+            sourceRan++;
+            return this.oldGet();
         };
 
         let th = el.find('th');
@@ -102,7 +102,7 @@ module.exports = function () {
 
         Vue.waitTicks(3)
             .then(() => {
-                assert.equal(1, filterRan, `filter method ran ${filterRan} times`);
+                assert.equal(1, sourceRan, `source method ran ${sourceRan} times`);
             })
             .then(done, done);
     });

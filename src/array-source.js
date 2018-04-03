@@ -1,7 +1,7 @@
 import FuzzyMatcher from './fuzzy-matcher.js';
-import AbstractFilter from './abstract-filter.js';
+import AbstractSource from './abstract-source.js';
 
-class ArrayFilter extends AbstractFilter
+class ArraySource extends AbstractSource
 {
     constructor(items, matcher) {
         super();
@@ -14,7 +14,7 @@ class ArrayFilter extends AbstractFilter
         this.filterClosures.push(filter);
     }
 
-    filter() {
+    get() {
         var promise = Promise.resolve(this.items);
         this.filterClosures.map((filter) => {
             promise = promise.then(filter);
@@ -63,4 +63,4 @@ class ArrayFilter extends AbstractFilter
     }
 }
 
-module.exports = ArrayFilter;
+module.exports = ArraySource;

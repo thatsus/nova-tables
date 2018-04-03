@@ -1,20 +1,20 @@
 import Vue from 'vue';
-import AbstractFilter from './abstract-filter.js';
+import AbstractSource from './abstract-source.js';
 import TimeoutThrottle from './timeout-throttle.js';
 import $ from 'jquery';
 
-class ServerSideFilter extends AbstractFilter
+class ServerSideSource extends AbstractSource
 {
     constructor(endpoint) {
         super();
         this.endpoint = endpoint;
-        this.filterClosures = [];
+        this.paramMergers = [];
         this.throttle = new TimeoutThrottle();
         this.slug = null;
     }
 
-    addFilter(closure) {
-        this.filterClosures.push(closure);
+    addParamMerger(closure) {
+        this.paramMergers.push(closure);
     }
 
     buildRequestData()
@@ -27,7 +27,7 @@ class ServerSideFilter extends AbstractFilter
             page: this.page,
             page_length: this.page_length,
         };
-        this.filterClosures.map(closure => closure(data));
+        this.paramMergers.map(closure => closure(data));
         return data;
     }
 
@@ -41,7 +41,7 @@ class ServerSideFilter extends AbstractFilter
         }
     }
 
-    filter() 
+    get() 
     {
         var slug = this.slug = Math.random();
         return new Promise((resolve) => {
@@ -67,4 +67,4 @@ class ServerSideFilter extends AbstractFilter
     }
 }
 
-module.exports = ServerSideFilter;
+module.exports = ServerSideSource;

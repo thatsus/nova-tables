@@ -10,22 +10,22 @@ elixir.ready(function () {
     },
     externals: {
       'jquery': {
-        commonjs2: 'jquery'
+        commonjs: 'jquery'
       },
       'js-cookie': {
-        commonjs2: 'js-cookie'
+        commonjs: 'js-cookie'
       },
       'lodash': {
-        commonjs2: 'lodash'
+        commonjs: 'lodash'
       },
       'vue': {
-        commonjs2: 'vue'
+        commonjs: 'vue'
       },
       'qs': {
-        commonjs2: 'qs'
+        commonjs: 'qs'
       },
       'vue-csv-downloader': {
-        commonjs2: 'vue-csv-downloader'
+        commonjs: 'vue-csv-downloader'
       },
     },
   });

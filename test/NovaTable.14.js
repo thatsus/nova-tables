@@ -3,16 +3,16 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
-import AbstractFilter from '../src/abstract-filter.js';
+import AbstractSource from '../src/abstract-source.js';
 
 module.exports = function () {
 
-    let vm, theNovaTable, filter;
+    let vm, theNovaTable, source;
 
     beforeEach('setup the Vue instance', function (done) {
 
-        filter = new AbstractFilter();
-        filter.filter = function () {
+        source = new AbstractSource();
+        source.get = function () {
             return Promise.resolve({
                 items: [
                     {name: 'Dave', objectiveQuality: 'Medium'},
@@ -30,7 +30,7 @@ module.exports = function () {
         vm = new Vue({
             template: `
                 <nova-table ref="theNovaTable"
-                    :item-filter="filter"
+                    :item-source="source"
                     :columns="columns"
                     :adjustable-columns="true"
                     :page-length="5"
@@ -43,7 +43,7 @@ module.exports = function () {
             },
             data() {
                 return {
-                    filter: filter,
+                    source: source,
                     columns: {
                         name: 'Name',
                         objectiveQuality: 'Quality',
@@ -87,7 +87,7 @@ module.exports = function () {
         assert.equal(8, $(selectors[3]).text(), '8 not found');
     });
 
-    it('should set the page length on itemFilter', function (done) {
+    it('should set the page length on itemSource', function (done) {
         let el = $(theNovaTable.$el);
         let dropups = el.find('.dropup');
         let selectors = dropups.find('ul li a');
@@ -99,18 +99,18 @@ module.exports = function () {
 
         Vue.nextTick()
             .then(() => {
-                assert.equal(6, filter.page_length, `page_length is wrong: ${filter.page_length}`);
+                assert.equal(6, source.page_length, `page_length is wrong: ${source.page_length}`);
             })
             .then(done, done);
     });
 
     it('should refresh on change', function (done) {
-        let filterRan = 0;
+        let sourceRan = 0;
 
-        filter.oldFilter = filter.filter;
-        filter.filter = function () {
-            filterRan++;
-            return this.oldFilter();
+        source.oldGet = source.get;
+        source.get = function () {
+            sourceRan++;
+            return this.oldGet();
         };
 
         let el = $(theNovaTable.$el);
@@ -125,7 +125,7 @@ module.exports = function () {
 
         Vue.nextTick()
             .then(() => {
-                assert(filterRan, 'no refresh happened');
+                assert(sourceRan, 'no refresh happened');
             })
             .then(done, done);
     });

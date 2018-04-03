@@ -3,16 +3,16 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
-import AbstractFilter from '../src/abstract-filter.js';
+import AbstractSource from '../src/abstract-source.js';
 
 module.exports = function () {
 
-    let vm, theNovaTable, filter;
+    let vm, theNovaTable, source;
 
     beforeEach('setup the Vue instance', function (done) {
 
-        filter = new AbstractFilter();
-        filter.filter = function () {
+        source = new AbstractSource();
+        source.get = function () {
             return Promise.resolve({
                 items: [
                     {name: 'Dave', objectiveQuality: 'Medium'},
@@ -27,7 +27,7 @@ module.exports = function () {
         vm = new Vue({
             template: `
                 <nova-table ref="theNovaTable"
-                    :item-filter="filter"
+                    :item-source="source"
                     :columns="columns"
                     :sortable="true"
                     default-sort-field="objectiveQuality"
@@ -39,7 +39,7 @@ module.exports = function () {
             },
             data() {
                 return {
-                    filter: filter,
+                    source: source,
                     columns: {
                         name: 'Name',
                         objectiveQuality: 'Quality',
@@ -61,6 +61,6 @@ module.exports = function () {
     });
 
     it('should have sorted by given column', function () {
-        assert('objectiveQuality', filter.sort_field, `filter sort_field is ${filter.sort_field}`);
+        assert('objectiveQuality', source.sort_field, `source sort_field is ${source.sort_field}`);
     });
 }

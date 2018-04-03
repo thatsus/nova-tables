@@ -3,16 +3,16 @@ import _ from 'lodash';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
-import AbstractFilter from '../src/abstract-filter.js';
+import AbstractSource from '../src/abstract-source.js';
 
 module.exports = function () {
 
-    let vm, theNovaTable, filter;
+    let vm, theNovaTable, source;
 
     beforeEach('setup the Vue instance', function (done) {
 
-        filter = new AbstractFilter();
-        filter.filter = function () {
+        source = new AbstractSource();
+        source.get = function () {
             return Promise.resolve({
                 items: [
                     {name: 'Dave', objectiveQuality: 'Medium', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
@@ -27,7 +27,7 @@ module.exports = function () {
         vm = new Vue({
             template: `
                 <nova-table ref="theNovaTable"
-                    :item-filter="filter"
+                    :item-source="source"
                     :columns="columns"
                     name="testName"
                     :endpoint-params="endpointParams"
@@ -39,7 +39,7 @@ module.exports = function () {
             },
             data() {
                 return {
-                    filter: filter,
+                    source: source,
                     columns: {
                         name: 'Name',
                         objectiveQuality: 'Quality',

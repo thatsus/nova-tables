@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import _ from 'lodash';
-import ArrayFilter from '../src/array-filter.js';
+import ArraySource from '../src/array-source.js';
 import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
@@ -78,8 +78,8 @@ module.exports = function () {
         assert.equal(headThs[1].innerText.trim(), 'Quality');
     });
 
-    it('should have an ArrayFilter', function () {
-        assert(theNovaTable.filter instanceof ArrayFilter);
+    it('should have an ArraySource', function () {
+        assert(theNovaTable.source instanceof ArraySource);
     });
 
     it('should not have other features', function () {
