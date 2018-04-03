@@ -47,4 +47,6 @@ describe('NovaTable', function () {
     describe('20. keyField with items', require('./NovaTable.20.js'));
 
     describe('21. csvExportable with itemSource', require('./NovaTable.21.js'));
+
+    describe('22. expose some things', require('./NovaTable.22.js'));
 });
