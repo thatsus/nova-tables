@@ -129,15 +129,23 @@
 </template>
 
 <script>
-import ArraySource from './array-source.js';
-import ServerSideSource from './server-side-source.js';
-import QueryParamSaver from './query-param-saver.js';
-import Cookies from 'js-cookie';
 import _ from 'lodash';
+import AbstractSource from './abstract-source.js';
+import ArraySource from './array-source.js';
+import Cookies from 'js-cookie';
 import CsvDownload from 'vue-csv-downloader';
 import NovaPageSelect from './NovaPageSelect';
+import QueryParamSaver from './query-param-saver.js';
+import ServerSideSource from './server-side-source.js';
 
 export default {
+    /* Expose Libraries */
+    AbstractSource,
+    ArraySource,
+    NovaPageSelect,
+    ServerSideSource,
+
+    /* Regular Stuff */
     components: {
         CsvDownload,
         NovaPageSelect,

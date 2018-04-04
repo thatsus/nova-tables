@@ -62,7 +62,7 @@ describe('NovaPageSelect', function () {
                 return Vue.nextTick();
             })
             .then(() => {
-                assert.equal(theNPS.page, 1, 'Should to to prev page, 1');
+                assert.equal(theNPS.page, 1, 'Should go to prev page, 1');
             })
             .then(done, done);
     });

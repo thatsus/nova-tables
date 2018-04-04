@@ -69,19 +69,21 @@
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array_source_js__ = __webpack_require__(7);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__array_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__array_source_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__server_side_source_js__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__server_side_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__server_side_source_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__query_param_saver_js__ = __webpack_require__(9);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__query_param_saver_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__query_param_saver_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_lodash__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__abstract_source_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__array_source_js__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__array_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__array_source_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_js_cookie__ = __webpack_require__(19);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_js_cookie___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_js_cookie__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_lodash___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_lodash__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader__ = __webpack_require__(22);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__NovaPageSelect__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_csv_downloader__ = __webpack_require__(22);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_vue_csv_downloader___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_vue_csv_downloader__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__NovaPageSelect__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__query_param_saver_js__ = __webpack_require__(9);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__query_param_saver_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__query_param_saver_js__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__server_side_source_js__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__server_side_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__server_side_source_js__);
 //
 //
 //
@@ -212,6 +214,7 @@
 //
 //
 //
+
 
 
 
@@ -222,9 +225,13 @@
 
 
 /* harmony default export */ exports["a"] = {
+    AbstractSource: __WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default.a,
+    ArraySource: __WEBPACK_IMPORTED_MODULE_2__array_source_js___default.a,
+    NovaPageSelect: __WEBPACK_IMPORTED_MODULE_5__NovaPageSelect__["a" /* default */],
+    ServerSideSource: __WEBPACK_IMPORTED_MODULE_7__server_side_source_js___default.a,
     components: {
-        CsvDownload: __WEBPACK_IMPORTED_MODULE_5_vue_csv_downloader___default.a,
-        NovaPageSelect: __WEBPACK_IMPORTED_MODULE_6__NovaPageSelect__["a" /* default */],
+        CsvDownload: __WEBPACK_IMPORTED_MODULE_4_vue_csv_downloader___default.a,
+        NovaPageSelect: __WEBPACK_IMPORTED_MODULE_5__NovaPageSelect__["a" /* default */],
     },
     props: [
         'items',
@@ -251,7 +258,7 @@
             sortField: '',
             sortOrder: 'A',
             search: '',
-            source: new __WEBPACK_IMPORTED_MODULE_0__array_source_js___default.a([]),
+            source: new __WEBPACK_IMPORTED_MODULE_2__array_source_js___default.a([]),
             pagedItems: [],
             response: null,
             totalCount: 0,
@@ -264,7 +271,7 @@
             initialQueryParams: {},
             generatedItemKeys: {},
             csvData: [],
-            queryParamSaver: this.name ? new __WEBPACK_IMPORTED_MODULE_2__query_param_saver_js___default.a(this.name) : null,
+            queryParamSaver: this.name ? new __WEBPACK_IMPORTED_MODULE_6__query_param_saver_js___default.a(this.name) : null,
         };
     },
     mounted: function mounted() {
@@ -274,12 +281,12 @@
             if (this$1.itemSource) {
                 this$1.source = this$1.itemSource;
             } else if (this$1.items) {
-                this$1.source = new __WEBPACK_IMPORTED_MODULE_0__array_source_js___default.a(this$1.items);
+                this$1.source = new __WEBPACK_IMPORTED_MODULE_2__array_source_js___default.a(this$1.items);
             } else if (this$1.endpoint) {
-                this$1.source = new __WEBPACK_IMPORTED_MODULE_1__server_side_source_js___default.a(this$1.endpoint);
+                this$1.source = new __WEBPACK_IMPORTED_MODULE_7__server_side_source_js___default.a(this$1.endpoint);
                 this$1.source.addParamMerger(function (params) {
                     if (this$1.endpointParams) {
-                        __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.merge(params, this$1.endpointParams);
+                        __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(params, this$1.endpointParams);
                     }
                 });
             } else {
@@ -378,14 +385,14 @@
 
             var columns = {};
             Object.keys(this.columns).map(function (field) {
-                if (__WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(this$1.activeFields, field)) {
+                if (__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.includes(this$1.activeFields, field)) {
                     columns[field] = this$1.columns[field];
                 }
             });
             return columns;
         },
         csvColumns: function csvColumns() {
-            return __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.values(this.activeColumns);
+            return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.values(this.activeColumns);
         },
         pages: function pages() {
             var start = parseInt(this.page) - 3;
@@ -423,7 +430,7 @@
                 page_length: this.pageLengthSelection,
             }
             if (this.endpointParams) {
-                __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.merge(params, this.endpointParams);
+                __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.merge(params, this.endpointParams);
             }
             // Now that we have all the params, let's check if any of them
             // would be set to those values by default. If so, we can keep
@@ -493,7 +500,7 @@
         isSortable: function isSortable(field)
         {
             if (this.sortable instanceof Array) {
-                return __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(this.sortable, field);
+                return __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.includes(this.sortable, field);
             } else if (this.sortable) {
                 return true;
             } else {
@@ -595,7 +602,7 @@
         },
         generateKeyFor: function generateKeyFor(item) {
             var found = null;
-            __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.each(this.generatedItemKeys, function (saved_item, key) {
+            __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this.generatedItemKeys, function (saved_item, key) {
                 if (item === saved_item) {
                     found = key;
                 }
@@ -614,7 +621,7 @@
             this.csvData = this.pagedItems.map(function (item) {
                 var id = this$1.keyFor(item);
                 var textItem = {};
-                __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.each(this$1.activeFields, function (field) {
+                __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.each(this$1.activeFields, function (field) {
                     textItem[this$1.columns[field]] = this$1.$refs['cell.' + id + '.' + field] && this$1.$refs['cell.' + id + '.' + field][0] ? this$1.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;
                 });
                 return textItem;
@@ -631,7 +638,7 @@
                 off: [],
             };
             for (var field in this.columns) {
-                if (__WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(this$1.activeFields, field)) {
+                if (__WEBPACK_IMPORTED_MODULE_0_lodash___default.a.includes(this$1.activeFields, field)) {
                     fields.on.push(field);
                 } else {
                     fields.off.push(field);
@@ -644,9 +651,9 @@
             var fields = this.getCookies('fields');
             var defaultOn = this.defaultActiveFields || Object.keys(this.columns);
             return Object.keys(this.columns).filter(function (field) {
-                var fieldIsSelected = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(fields.on, field);
-                var fieldIsDeselected = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(fields.off, field);
-                var fieldDefaultsToOn = __WEBPACK_IMPORTED_MODULE_4_lodash___default.a.includes(defaultOn, field);
+                var fieldIsSelected = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.includes(fields.on, field);
+                var fieldIsDeselected = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.includes(fields.off, field);
+                var fieldDefaultsToOn = __WEBPACK_IMPORTED_MODULE_0_lodash___default.a.includes(defaultOn, field);
                 return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);
             });
         },
@@ -656,6 +663,65 @@
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+/*
+|--------------------------------------------------------------------------
+| AbstractSource
+|--------------------------------------------------------------------------
+|
+| A base class for Source objects that work with NovaTable.
+|
+*/
+
+var AbstractSource = function AbstractSource() {
+    this.search = '';
+    this.search_fields = [];
+    this.sort_field = '';
+    this.sort_direction = 'A';
+    this.onChangeClosures = [];
+    this.page = null;
+    this.page_length = null;
+};
+
+AbstractSource.prototype.setPage = function setPage (page, page_length) {
+    this.page = page;
+    this.page_length = page_length;
+    this.fireChangeEvent();
+    return this;
+};
+
+AbstractSource.prototype.setSearch = function setSearch (search, fields) {
+    this.search = search;
+    this.search_fields = fields;
+    this.fireChangeEvent();
+    return this;
+};
+
+AbstractSource.prototype.setSort = function setSort (field, direction) {
+    this.sort_field = field;
+    this.sort_direction = direction;
+    this.fireChangeEvent();
+    return this;
+};
+
+AbstractSource.prototype.onChange = function onChange (closure) {
+    this.onChangeClosures.push(closure);
+};
+
+AbstractSource.prototype.fireChangeEvent = function fireChangeEvent () {
+    this.onChangeClosures.map(function (closure) { return closure(); });
+};
+
+AbstractSource.prototype.get = function get () {
+    throw new Error('`get` has not been defined on this class');
+};
+
+module.exports = AbstractSource;
+
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -761,65 +827,6 @@ function normalizeComponent (
     options: options
   }
 }
-
-
-/***/ },
-/* 2 */
-/***/ function(module, exports) {
-
-/*
-|--------------------------------------------------------------------------
-| AbstractSource
-|--------------------------------------------------------------------------
-|
-| A base class for Source objects that work with NovaTable.
-|
-*/
-
-var AbstractSource = function AbstractSource() {
-    this.search = '';
-    this.search_fields = [];
-    this.sort_field = '';
-    this.sort_direction = 'A';
-    this.onChangeClosures = [];
-    this.page = null;
-    this.page_length = null;
-};
-
-AbstractSource.prototype.setPage = function setPage (page, page_length) {
-    this.page = page;
-    this.page_length = page_length;
-    this.fireChangeEvent();
-    return this;
-};
-
-AbstractSource.prototype.setSearch = function setSearch (search, fields) {
-    this.search = search;
-    this.search_fields = fields;
-    this.fireChangeEvent();
-    return this;
-};
-
-AbstractSource.prototype.setSort = function setSort (field, direction) {
-    this.sort_field = field;
-    this.sort_direction = direction;
-    this.fireChangeEvent();
-    return this;
-};
-
-AbstractSource.prototype.onChange = function onChange (closure) {
-    this.onChangeClosures.push(closure);
-};
-
-AbstractSource.prototype.fireChangeEvent = function fireChangeEvent () {
-    this.onChangeClosures.map(function (closure) { return closure(); });
-};
-
-AbstractSource.prototype.get = function get () {
-    throw new Error('`get` has not been defined on this class');
-};
-
-module.exports = AbstractSource;
 
 
 /***/ },
@@ -1410,7 +1417,7 @@ if(false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__fuzzy_matcher_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__abstract_source_js__);
 
 
@@ -1563,7 +1570,7 @@ module.exports = QueryParamSaver;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue__ = __webpack_require__(21);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__abstract_source_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__abstract_source_js__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__timeout_throttle_js__);
@@ -1836,7 +1843,7 @@ exports = module.exports = __webpack_require__(12)();
 
 
 // module
-exports.push([module.i, "\n.nova-table div.form-group.pull-left.margin-left {\n    margin-left: .5em;\n}\n.table-loader{\n    opacity: .6;\n    position: absolute;\n    width: 100%;\n    height: 920px;\n    padding-top: 100px;\n    z-index: 1;\n}\n.pagination{\n    margin: 0 0 20px 0;\n}\ntd.td-scheduled_or_posted_at-styles {\n    width: 115px;\n}\n.sortable {\n    white-space: nowrap;\n}\n.sortable i {\n    margin-top: 3px;\n}\n", "", {"version":3,"sources":["/home/dkuck/work/nova-tables/src/src/NovaTable.vue"],"names":[],"mappings":";AAijBA;IACA,kBAAA;CACA;AAEA;IACA,YAAA;IACA,mBAAA;IACA,YAAA;IACA,cAAA;IACA,mBAAA;IACA,WAAA;CACA;AAEA;IACA,mBAAA;CACA;AAEA;IACA,aAAA;CACA;AAEA;IACA,oBAAA;CACA;AAEA;IACA,gBAAA;CACA","file":"NovaTable.vue","sourcesContent":["\n<template>\n    <div class=\"nova-table clearfix\">\n        <div class=\"toggle-columns form-group pull-left\">\n            <div class=\"form-inline\">\n\n                <div class=\"form-group pull-left\">\n                    <input v-if=\"searchable\" v-model=\"search\" placeholder=\"Search\" class=\"form-control\">\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <button class=\"btn btn-default btn-spacing\" type=\"button\" data-toggle=\"dropdown\" aria-expanded=\"false\" v-if=\"adjustableColumns\">\n                        <i class=\"fa fa-columns\"></i>\n                    </button>\n\n                    <ul v-if=\"adjustableColumns\" class=\"dropdown-menu dropdown-menu--toggle-col\">\n                        <li v-for=\"(name, field) in columns\">\n                            <a @click.stop>\n                                <label>\n                                    <input type=\"checkbox\" :value=\"field\" v-model=\"activeFields\"> {{ name }}\n                                </label>\n                            </a>\n                        </li>\n                        <li v-if=\"savingToCookies\">\n                            <a @click=\"resetActiveFields\" class=\"btn\">\n                                Reset to Default\n                            </a>\n                        </li>\n                    </ul>\n                    <i class=\"fa fa-exclamation-circle\" title=\"There was a problem with your last request.\" v-if=\"showError\"></i>\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <slot name=\"top-left-bar\"></slot>\n                </div>\n\n            </div>\n        </div>\n\n        <div class=\"pull-right\">\n            <slot name=\"top-right-bar\"></slot>\n            <csv-download\n                    v-if=\"csvExportable\"\n                    :fields=\"csvColumns\"\n                    :data=\"csvData\"\n            >\n                <button class=\"btn btn-default btn-spacing\" type=\"button\" >\n                    <i class=\"fa fa-file-excel-o\" aria-hidden=\"true\"></i> CSV\n                </button>\n            </csv-download>\n        </div>\n        <!-- loading indicator -->\n        <div v-if=\"loading\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 text-center\">\n                    <div class=\"well table-loader\">\n                        <i class=\"fa fa-circle-o-notch fa-4x fa-spin\"></i>\n                        <br>\n                        Loading...\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"nova-table-container\">\n            <table class=\"display table table-bordered table-condensed fb-table table-striped responsive\"\n                   width=\"100%\">\n                <thead>\n                    <tr class='sorting-header-gray'>\n                        <th v-for=\"(name, field) in activeColumns\" :style=\"{ cursor: isSortable(field) ? 'pointer' : 'default' }\" :class=\"{ sortable: isSortable(field) }\" @click=\"isSortable(field) ? setSort(field) : null\">\n                            <div>\n                                <i v-if=\"isSortable(field)\" class=\"fa\" :class=\"sortClass(field)\" aria-hidden=\"true\"></i>\n                                <span>{{ name }}</span>\n                            </div>\n                        </th>\n                    </tr>\n                </thead>\n                <transition-group tag=\"tbody\" class=\"tableBody\" name=\"nova-rows\">\n                    <tr v-for=\"item in pagedItems\" :key=\"keyFor(item)\">\n                        <td v-for=\"(name, field) in activeColumns\" :class=\"'td-' + field + '-styles'\" :ref=\"'cell.' + keyFor(item) + '.' + field\">\n                            <slot :name=\"field\" :item=\"item\">\n                                {{ valueFor(item, field) }}\n                            </slot>\n                        </td>\n                    </tr>\n                    <tr v-if=\"pagedItems.length === 0\" key=\"no-items\">\n                        <td :colspan=\"activeFields.length || 1\"> No matching items.</td>\n                    </tr>\n                </transition-group>\n                <tfoot v-if=\"footer\">\n                    <tr class=\"sorting-header-gray\">\n                        <td v-for=\"(name, field) in activeColumns\">\n                            <slot :name=\"field + '-footer'\" :items=\"pagedItems\" :response=\"response\">\n                            </slot>\n                        </td>\n                    </tr>\n                </tfoot>\n            </table>\n        </div>\n        <div class=\"pull-left inline\">\n            <div class=\"dropup\" v-if=\"pageLengthSelection\">\n                <template v-if=\"pageLengthOptions\">\n                    Show\n                    <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"page-length-dropdown\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                        {{ pageLengthSelection }}\n                        <span class=\"caret\"></span>\n                    </button>\n                    <ul class=\"dropdown-menu\" aria-labelledby=\"page-length-dropdown\">\n                        <li v-for=\"option in pageLengthOptions\"><a href=\"javascript:void(0);\" @click=\"pageLengthSelection = option\">{{ option }}</a></li>\n                    </ul>\n                    entries |\n                </template>\n                <span>\n                    {{ pageDescriptor }}\n                </span>\n            </div>\n        </div>\n        <div class=\"pull-right\">\n            <slot name=\"bottom-right-bar\"></slot>\n\n            <nova-page-select \n                v-if=\"pageLengthSelection && pageCount > 1\" \n                v-model=\"page\" \n                :page-count=\"pageCount\"\n            >\n            </nova-page-select>\n\n        </div>\n    </div>\n</template>\n\n<script>\nimport ArraySource from './array-source.js';\nimport ServerSideSource from './server-side-source.js';\nimport QueryParamSaver from './query-param-saver.js';\nimport Cookies from 'js-cookie';\nimport _ from 'lodash';\nimport CsvDownload from 'vue-csv-downloader';\nimport NovaPageSelect from './NovaPageSelect';\n\nexport default {\n    components: {\n        CsvDownload,\n        NovaPageSelect,\n    },\n    props: [\n        'items',\n        'endpoint',\n        'endpointParams',\n        'columns',\n        'searchable',\n        'adjustableColumns',\n        'sortable',\n        'defaultSortField',\n        'csvExportable',\n        'defaultActiveFields',\n        'itemSource',\n        'pageLength',\n        'pageLengthOptions',\n        'footer',\n        'defaultSortOrders',\n        'name',\n        'keyField',\n    ],\n    data() {\n        return {\n            activeFields: [],\n            sortField: '',\n            sortOrder: 'A',\n            search: '',\n            source: new ArraySource([]),\n            pagedItems: [],\n            response: null,\n            totalCount: 0,\n            pageCount: 1,\n            page: 1,\n            pageLengthSelection: null,\n            loading: false,\n            showError: false,\n            blockRefresh: true,\n            initialQueryParams: {},\n            generatedItemKeys: {},\n            csvData: [],\n            queryParamSaver: this.name ? new QueryParamSaver(this.name) : null,\n        };\n    },\n    mounted() {\n        this.$nextTick(() => {\n            if (this.itemSource) {\n                this.source = this.itemSource;\n            } else if (this.items) {\n                this.source = new ArraySource(this.items);\n            } else if (this.endpoint) {\n                this.source = new ServerSideSource(this.endpoint);\n                this.source.addParamMerger((params) => {\n                    if (this.endpointParams) {\n                        _.merge(params, this.endpointParams);\n                    }\n                });\n            } else {\n                throw new Error('No item-source specified');\n            }\n            this.pageLengthSelection = this.pageLength;\n            this.source.setPage(this.page, this.pageLengthSelection);\n            this.source.onChange(() => this.refreshSource());\n\n            if (this.getCookies('fields')) {\n                this.activeFields = this.getActiveFieldsFromCookies();\n            } else {\n                this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n            }\n\n            if (this.defaultSortField) {\n                this.sortField = this.defaultSortField;\n            } else {\n                this.sortField = this.activeFields[0];\n            }\n            if (this.defaultSortOrders && this.defaultSortOrders[this.sortField]) {\n                this.sortOrder = this.defaultSortOrders[this.sortField];\n            }\n\n            this.initialQueryParams = this.queryParamsToSave;\n\n            this.applyQueryParams();\n\n            this.$nextTick(() => {\n                this.blockRefresh = false;\n                this.refreshSource();\n            });\n        });\n    },\n    watch: {\n        search() {\n            this.source.setSearch(this.search, this.activeFields);\n        },\n        activeFields() {\n            this.storeActiveFieldsToCookies();\n            this.source.setSearch(this.search, this.activeFields);\n        },\n        sortField() {\n            this.source.setSort(this.sortField, this.sortOrder)\n        },\n        sortOrder() {\n            this.source.setSort(this.sortField, this.sortOrder)\n        },\n        page() {\n            if (this.pageLengthSelection == 'All') {\n                this.source.setPage(null, null);\n            } else {\n                this.source.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        pageLengthSelection() {\n            if (this.pageLengthSelection == 'All') {\n                this.source.setPage(null, null);\n            } else {\n                this.source.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        endpointParams() {\n            this.source.fireChangeEvent();\n        },\n        queryParamsToSave() {\n            if (this.queryParamSaver) {\n                this.queryParamSaver.set(this.queryParamsToSave);\n            }\n        },\n    },\n    computed: {\n        pageDescriptor() {\n            if (this.pageLengthSelection == 'All') {\n                return 'Showing ' + this.totalCount + ' entries';\n            }\n            var start = ((this.page - 1) * this.pageLengthSelection) + 1;\n            var end = start + this.pageLengthSelection - 1;\n            if (start < 0) {\n                start = 1;\n            }\n            if (end < start) {\n                end = start;\n            }\n            if (end > this.totalCount) {\n                end = this.totalCount;\n            }\n            if (this.totalCount === 0) {\n                return '0 entries';\n            } else {\n                return 'Showing ' + start + (start === end ? '' : ' to ' + end) + ' of ' + this.totalCount + ' entries';\n            }\n        },\n        activeColumns() {\n            var columns = {};\n            Object.keys(this.columns).map(field => {\n                if (_.includes(this.activeFields, field)) {\n                    columns[field] = this.columns[field];\n                }\n            });\n            return columns;\n        },\n        csvColumns() {\n            return _.values(this.activeColumns);\n        },\n        pages() {\n            var start = parseInt(this.page) - 3;\n            var end = parseInt(this.page) + 3;\n            // if start is too low, shift all of [start,end] up\n            if (start < 1) {\n                var diff = 1 - start;\n                start += diff;\n                end += diff;\n            }\n            // if end is too high, shift all of [start,end] down\n            if (end > this.pageCount) {\n                var diff = end - this.pageCount;\n                start -= diff;\n                end -= diff;\n            }\n            // if start is too low again, just set it to 1\n            if (start < 1) {\n                start = 1;\n            }\n            var pages = [];\n            for (var i = start; i <= end; i++) {\n                pages.push(i);\n            }\n            return pages;\n        },\n        queryParamsToSave() {\n            var params = {\n                sort_field: this.sortField,\n                sort_order: this.sortOrder,\n                search: this.search,\n                page: this.page,\n                page_length: this.pageLengthSelection,\n            }\n            if (this.endpointParams) {\n                _.merge(params, this.endpointParams);\n            }\n            // Now that we have all the params, let's check if any of them\n            // would be set to those values by default. If so, we can keep\n            // the URL small by taking them out entirely.\n            for (var field in params) {\n                if (params[field] == this.initialQueryParams[field]) {\n                    delete params[field];\n                }\n            }\n            return params;\n        },\n        savingToCookies() {\n            return Boolean(this.name);\n        },\n    },\n    methods: {\n        refreshSource() {\n            if (this.blockRefresh) {\n                return;\n            }\n\n            //show loading indicator\n            this.loading = true;\n            this.showError = false;\n\n            this.source\n                .get()\n                .then((response) => {\n                    this.response = response;\n                    this.pagedItems = response.items;\n                    this.pageCount = response.pageCount;\n                    let page = response.page >= 1 ? response.page : 1;\n                    if (this.page != page) {\n                        this.page = page;\n                    }\n                    this.totalCount = response.totalCount;\n                    this.generatedItemKeys = {};\n                    //stop loading indicator\n                    this.loading = false;\n                })\n                .catch(err => {\n                    var msg = err && err.data && err.data.message ? err.data.message : '';\n\n                    //stop loading indicator\n                    this.loading = false;\n\n                    if (err == 'Error: Request overridden by newer request.') {\n                        this.showError = false;\n                    } else {\n                        //show error icon\n                        this.showError = true;\n\n                        console && console.log && console.log('Error when accessing paged data:', msg, err);\n                    }\n                })\n                .then(() => {\n                    if (this.csvExportable) {\n                        this.$nextTick(() => this.generateCsvData());\n                    }\n                });\n        },\n        fieldName(columnName) {\n            return this.columns[columnName];\n        },\n        isSortable(field)\n        {\n            if (this.sortable instanceof Array) {\n                return _.includes(this.sortable, field);\n            } else if (this.sortable) {\n                return true;\n            } else {\n                return false;\n            }\n        },\n        setSort(field) {\n            if (this.sortField === field) {\n                this.sortOrder = this.sortOrder === 'D' ? 'A' : 'D';\n                return;\n            } else if (this.defaultSortOrders && this.defaultSortOrders[field]) {\n                this.sortOrder = this.defaultSortOrders[field];\n            } else {\n                this.sortOrder = 'A';\n            }\n\n            this.sortField = field;\n        },\n        sortClass(field) {\n            if (field === this.sortField) {\n                return this.sortOrder === 'D' ? 'fa-sort-amount-desc active-sort pull-right' : 'fa-sort-amount-asc active-sort pull-right';\n            }\n            return 'fa-arrows-v text-muted pull-right';\n        },\n        /**\n         * Return item.field or, if field is a dot-delimited field,\n         * follow the chain of references to the last value.\n         */\n        valueFor(item, field) {\n            var obj = item;\n            var chain = field.split(/\\./);\n            while (obj && chain.length > 0) {\n                obj = obj[chain.shift()];\n            }\n            if (chain.length > 0) {\n                return undefined;\n            } else {\n                return obj;\n            }\n        },\n        getCookies(field) {\n            if (!this.name || !field || Cookies.get(this.name) === undefined) {\n                return null;\n            }\n\n            return JSON.parse(Cookies.get(this.name))[field];\n        },\n        setCookies(field, value) {\n            if (!this.name || !field) {\n                return false;\n            }\n\n            var cookie = Cookies.get(this.name);\n\n            if (cookie) {\n                cookie = JSON.parse(cookie);\n            } else {\n                cookie = {};\n            }\n\n            cookie[field] = value;\n            if (Cookies.set(this.name, cookie)) {\n                return true;\n            }\n\n            return false;\n        },\n        applyQueryParams() {\n            if (this.queryParamSaver) {\n                var params = this.queryParamSaver.get();\n                if (params) {\n                    if (typeof params.sort_field != 'undefined') {\n                        this.sortField = params.sort_field;\n                    }\n                    if (typeof params.sort_order != 'undefined') {\n                        this.sortOrder = params.sort_order;\n                    }\n                    if (typeof params.search != 'undefined') {\n                        this.search = params.search\n                    }\n                    if (typeof params.page != 'undefined') {\n                        this.page = params.page;\n                    }\n                    if (typeof params.page_length != 'undefined') {\n                        this.pageLengthSelection = params.page_length;\n                    }\n                    this.$emit('load-endpoint-params', params);\n                }\n            }\n        },\n        keyFor(item) {\n            if (this.keyField) {\n                return item[this.keyField];\n            }\n            if (item.id) {\n                return item.id;\n            }\n            return this.generateKeyFor(item);\n        },\n        generateKeyFor(item) {\n            var found = null;\n            _.each(this.generatedItemKeys, (saved_item, key) => {\n                if (item === saved_item) {\n                    found = key;\n                }\n            });\n            if (!found) {\n                // make a random key\n                found = new Date().valueOf() + '_' + new String(Math.random()).substr(2);\n                this.generatedItemKeys[found] = item;\n            }\n            return found;\n        },\n        generateCsvData() {\n            // This method depends on this.$refs, so it cannot be a computed property\n            this.csvData = this.pagedItems.map((item) => {\n                var id = this.keyFor(item);\n                var textItem = {};\n                _.each(this.activeFields, (field) => {\n                    textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0] ? this.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;\n                });\n                return textItem;\n            });\n        },\n        resetActiveFields() {\n            this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n        },\n        storeActiveFieldsToCookies() {\n            var fields = {\n                on: [],\n                off: [],\n            };\n            for (var field in this.columns) {\n                if (_.includes(this.activeFields, field)) {\n                    fields.on.push(field);\n                } else {\n                    fields.off.push(field);\n                }\n            }\n\n            this.setCookies('fields', fields);\n        },\n        getActiveFieldsFromCookies() {\n            var fields = this.getCookies('fields');\n            var defaultOn = this.defaultActiveFields || Object.keys(this.columns);\n            return Object.keys(this.columns).filter(field => {\n                var fieldIsSelected = _.includes(fields.on, field);\n                var fieldIsDeselected = _.includes(fields.off, field);\n                var fieldDefaultsToOn = _.includes(defaultOn, field);\n                return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);\n            });\n        },\n    },\n}\n</script>\n\n<style>\n    .nova-table div.form-group.pull-left.margin-left {\n        margin-left: .5em;\n    }\n\n    .table-loader{\n        opacity: .6;\n        position: absolute;\n        width: 100%;\n        height: 920px;\n        padding-top: 100px;\n        z-index: 1;\n    }\n\n    .pagination{\n        margin: 0 0 20px 0;\n    }\n\n    td.td-scheduled_or_posted_at-styles {\n        width: 115px;\n    }\n\n    .sortable {\n        white-space: nowrap;\n    }\n\n    .sortable i {\n        margin-top: 3px;\n    }\n</style>\n"],"sourceRoot":""}]);
+exports.push([module.i, "\n.nova-table div.form-group.pull-left.margin-left {\n    margin-left: .5em;\n}\n.table-loader{\n    opacity: .6;\n    position: absolute;\n    width: 100%;\n    height: 920px;\n    padding-top: 100px;\n    z-index: 1;\n}\n.pagination{\n    margin: 0 0 20px 0;\n}\ntd.td-scheduled_or_posted_at-styles {\n    width: 115px;\n}\n.sortable {\n    white-space: nowrap;\n}\n.sortable i {\n    margin-top: 3px;\n}\n", "", {"version":3,"sources":["/home/dkuck/work/nova-tables/src/src/NovaTable.vue"],"names":[],"mappings":";AAsjBA;IACA,kBAAA;CACA;AAEA;IACA,YAAA;IACA,mBAAA;IACA,YAAA;IACA,cAAA;IACA,mBAAA;IACA,WAAA;CACA;AAEA;IACA,mBAAA;CACA;AAEA;IACA,aAAA;CACA;AAEA;IACA,oBAAA;CACA;AAEA;IACA,gBAAA;CACA","file":"NovaTable.vue","sourcesContent":["\n<template>\n    <div class=\"nova-table clearfix\">\n        <div class=\"toggle-columns form-group pull-left\">\n            <div class=\"form-inline\">\n\n                <div class=\"form-group pull-left\">\n                    <input v-if=\"searchable\" v-model=\"search\" placeholder=\"Search\" class=\"form-control\">\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <button class=\"btn btn-default btn-spacing\" type=\"button\" data-toggle=\"dropdown\" aria-expanded=\"false\" v-if=\"adjustableColumns\">\n                        <i class=\"fa fa-columns\"></i>\n                    </button>\n\n                    <ul v-if=\"adjustableColumns\" class=\"dropdown-menu dropdown-menu--toggle-col\">\n                        <li v-for=\"(name, field) in columns\">\n                            <a @click.stop>\n                                <label>\n                                    <input type=\"checkbox\" :value=\"field\" v-model=\"activeFields\"> {{ name }}\n                                </label>\n                            </a>\n                        </li>\n                        <li v-if=\"savingToCookies\">\n                            <a @click=\"resetActiveFields\" class=\"btn\">\n                                Reset to Default\n                            </a>\n                        </li>\n                    </ul>\n                    <i class=\"fa fa-exclamation-circle\" title=\"There was a problem with your last request.\" v-if=\"showError\"></i>\n                </div>\n\n                <div class=\"form-group absolute pull-left margin-left\">\n                    <slot name=\"top-left-bar\"></slot>\n                </div>\n\n            </div>\n        </div>\n\n        <div class=\"pull-right\">\n            <slot name=\"top-right-bar\"></slot>\n            <csv-download\n                    v-if=\"csvExportable\"\n                    :fields=\"csvColumns\"\n                    :data=\"csvData\"\n            >\n                <button class=\"btn btn-default btn-spacing\" type=\"button\" >\n                    <i class=\"fa fa-file-excel-o\" aria-hidden=\"true\"></i> CSV\n                </button>\n            </csv-download>\n        </div>\n        <!-- loading indicator -->\n        <div v-if=\"loading\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 text-center\">\n                    <div class=\"well table-loader\">\n                        <i class=\"fa fa-circle-o-notch fa-4x fa-spin\"></i>\n                        <br>\n                        Loading...\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div class=\"nova-table-container\">\n            <table class=\"display table table-bordered table-condensed fb-table table-striped responsive\"\n                   width=\"100%\">\n                <thead>\n                    <tr class='sorting-header-gray'>\n                        <th v-for=\"(name, field) in activeColumns\" :style=\"{ cursor: isSortable(field) ? 'pointer' : 'default' }\" :class=\"{ sortable: isSortable(field) }\" @click=\"isSortable(field) ? setSort(field) : null\">\n                            <div>\n                                <i v-if=\"isSortable(field)\" class=\"fa\" :class=\"sortClass(field)\" aria-hidden=\"true\"></i>\n                                <span>{{ name }}</span>\n                            </div>\n                        </th>\n                    </tr>\n                </thead>\n                <transition-group tag=\"tbody\" class=\"tableBody\" name=\"nova-rows\">\n                    <tr v-for=\"item in pagedItems\" :key=\"keyFor(item)\">\n                        <td v-for=\"(name, field) in activeColumns\" :class=\"'td-' + field + '-styles'\" :ref=\"'cell.' + keyFor(item) + '.' + field\">\n                            <slot :name=\"field\" :item=\"item\">\n                                {{ valueFor(item, field) }}\n                            </slot>\n                        </td>\n                    </tr>\n                    <tr v-if=\"pagedItems.length === 0\" key=\"no-items\">\n                        <td :colspan=\"activeFields.length || 1\"> No matching items.</td>\n                    </tr>\n                </transition-group>\n                <tfoot v-if=\"footer\">\n                    <tr class=\"sorting-header-gray\">\n                        <td v-for=\"(name, field) in activeColumns\">\n                            <slot :name=\"field + '-footer'\" :items=\"pagedItems\" :response=\"response\">\n                            </slot>\n                        </td>\n                    </tr>\n                </tfoot>\n            </table>\n        </div>\n        <div class=\"pull-left inline\">\n            <div class=\"dropup\" v-if=\"pageLengthSelection\">\n                <template v-if=\"pageLengthOptions\">\n                    Show\n                    <button class=\"btn btn-default dropdown-toggle\" type=\"button\" id=\"page-length-dropdown\" data-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\">\n                        {{ pageLengthSelection }}\n                        <span class=\"caret\"></span>\n                    </button>\n                    <ul class=\"dropdown-menu\" aria-labelledby=\"page-length-dropdown\">\n                        <li v-for=\"option in pageLengthOptions\"><a href=\"javascript:void(0);\" @click=\"pageLengthSelection = option\">{{ option }}</a></li>\n                    </ul>\n                    entries |\n                </template>\n                <span>\n                    {{ pageDescriptor }}\n                </span>\n            </div>\n        </div>\n        <div class=\"pull-right\">\n            <slot name=\"bottom-right-bar\"></slot>\n\n            <nova-page-select \n                v-if=\"pageLengthSelection && pageCount > 1\" \n                v-model=\"page\" \n                :page-count=\"pageCount\"\n            >\n            </nova-page-select>\n\n        </div>\n    </div>\n</template>\n\n<script>\nimport _ from 'lodash';\nimport AbstractSource from './abstract-source.js';\nimport ArraySource from './array-source.js';\nimport Cookies from 'js-cookie';\nimport CsvDownload from 'vue-csv-downloader';\nimport NovaPageSelect from './NovaPageSelect';\nimport QueryParamSaver from './query-param-saver.js';\nimport ServerSideSource from './server-side-source.js';\n\nexport default {\n    AbstractSource,\n    ArraySource,\n    NovaPageSelect,\n    ServerSideSource,\n    components: {\n        CsvDownload,\n        NovaPageSelect,\n    },\n    props: [\n        'items',\n        'endpoint',\n        'endpointParams',\n        'columns',\n        'searchable',\n        'adjustableColumns',\n        'sortable',\n        'defaultSortField',\n        'csvExportable',\n        'defaultActiveFields',\n        'itemSource',\n        'pageLength',\n        'pageLengthOptions',\n        'footer',\n        'defaultSortOrders',\n        'name',\n        'keyField',\n    ],\n    data() {\n        return {\n            activeFields: [],\n            sortField: '',\n            sortOrder: 'A',\n            search: '',\n            source: new ArraySource([]),\n            pagedItems: [],\n            response: null,\n            totalCount: 0,\n            pageCount: 1,\n            page: 1,\n            pageLengthSelection: null,\n            loading: false,\n            showError: false,\n            blockRefresh: true,\n            initialQueryParams: {},\n            generatedItemKeys: {},\n            csvData: [],\n            queryParamSaver: this.name ? new QueryParamSaver(this.name) : null,\n        };\n    },\n    mounted() {\n        this.$nextTick(() => {\n            if (this.itemSource) {\n                this.source = this.itemSource;\n            } else if (this.items) {\n                this.source = new ArraySource(this.items);\n            } else if (this.endpoint) {\n                this.source = new ServerSideSource(this.endpoint);\n                this.source.addParamMerger((params) => {\n                    if (this.endpointParams) {\n                        _.merge(params, this.endpointParams);\n                    }\n                });\n            } else {\n                throw new Error('No item-source specified');\n            }\n            this.pageLengthSelection = this.pageLength;\n            this.source.setPage(this.page, this.pageLengthSelection);\n            this.source.onChange(() => this.refreshSource());\n\n            if (this.getCookies('fields')) {\n                this.activeFields = this.getActiveFieldsFromCookies();\n            } else {\n                this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n            }\n\n            if (this.defaultSortField) {\n                this.sortField = this.defaultSortField;\n            } else {\n                this.sortField = this.activeFields[0];\n            }\n            if (this.defaultSortOrders && this.defaultSortOrders[this.sortField]) {\n                this.sortOrder = this.defaultSortOrders[this.sortField];\n            }\n\n            this.initialQueryParams = this.queryParamsToSave;\n\n            this.applyQueryParams();\n\n            this.$nextTick(() => {\n                this.blockRefresh = false;\n                this.refreshSource();\n            });\n        });\n    },\n    watch: {\n        search() {\n            this.source.setSearch(this.search, this.activeFields);\n        },\n        activeFields() {\n            this.storeActiveFieldsToCookies();\n            this.source.setSearch(this.search, this.activeFields);\n        },\n        sortField() {\n            this.source.setSort(this.sortField, this.sortOrder)\n        },\n        sortOrder() {\n            this.source.setSort(this.sortField, this.sortOrder)\n        },\n        page() {\n            if (this.pageLengthSelection == 'All') {\n                this.source.setPage(null, null);\n            } else {\n                this.source.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        pageLengthSelection() {\n            if (this.pageLengthSelection == 'All') {\n                this.source.setPage(null, null);\n            } else {\n                this.source.setPage(this.page, this.pageLengthSelection);\n            }\n        },\n        endpointParams() {\n            this.source.fireChangeEvent();\n        },\n        queryParamsToSave() {\n            if (this.queryParamSaver) {\n                this.queryParamSaver.set(this.queryParamsToSave);\n            }\n        },\n    },\n    computed: {\n        pageDescriptor() {\n            if (this.pageLengthSelection == 'All') {\n                return 'Showing ' + this.totalCount + ' entries';\n            }\n            var start = ((this.page - 1) * this.pageLengthSelection) + 1;\n            var end = start + this.pageLengthSelection - 1;\n            if (start < 0) {\n                start = 1;\n            }\n            if (end < start) {\n                end = start;\n            }\n            if (end > this.totalCount) {\n                end = this.totalCount;\n            }\n            if (this.totalCount === 0) {\n                return '0 entries';\n            } else {\n                return 'Showing ' + start + (start === end ? '' : ' to ' + end) + ' of ' + this.totalCount + ' entries';\n            }\n        },\n        activeColumns() {\n            var columns = {};\n            Object.keys(this.columns).map(field => {\n                if (_.includes(this.activeFields, field)) {\n                    columns[field] = this.columns[field];\n                }\n            });\n            return columns;\n        },\n        csvColumns() {\n            return _.values(this.activeColumns);\n        },\n        pages() {\n            var start = parseInt(this.page) - 3;\n            var end = parseInt(this.page) + 3;\n            // if start is too low, shift all of [start,end] up\n            if (start < 1) {\n                var diff = 1 - start;\n                start += diff;\n                end += diff;\n            }\n            // if end is too high, shift all of [start,end] down\n            if (end > this.pageCount) {\n                var diff = end - this.pageCount;\n                start -= diff;\n                end -= diff;\n            }\n            // if start is too low again, just set it to 1\n            if (start < 1) {\n                start = 1;\n            }\n            var pages = [];\n            for (var i = start; i <= end; i++) {\n                pages.push(i);\n            }\n            return pages;\n        },\n        queryParamsToSave() {\n            var params = {\n                sort_field: this.sortField,\n                sort_order: this.sortOrder,\n                search: this.search,\n                page: this.page,\n                page_length: this.pageLengthSelection,\n            }\n            if (this.endpointParams) {\n                _.merge(params, this.endpointParams);\n            }\n            // Now that we have all the params, let's check if any of them\n            // would be set to those values by default. If so, we can keep\n            // the URL small by taking them out entirely.\n            for (var field in params) {\n                if (params[field] == this.initialQueryParams[field]) {\n                    delete params[field];\n                }\n            }\n            return params;\n        },\n        savingToCookies() {\n            return Boolean(this.name);\n        },\n    },\n    methods: {\n        refreshSource() {\n            if (this.blockRefresh) {\n                return;\n            }\n\n            //show loading indicator\n            this.loading = true;\n            this.showError = false;\n\n            this.source\n                .get()\n                .then((response) => {\n                    this.response = response;\n                    this.pagedItems = response.items;\n                    this.pageCount = response.pageCount;\n                    let page = response.page >= 1 ? response.page : 1;\n                    if (this.page != page) {\n                        this.page = page;\n                    }\n                    this.totalCount = response.totalCount;\n                    this.generatedItemKeys = {};\n                    //stop loading indicator\n                    this.loading = false;\n                })\n                .catch(err => {\n                    var msg = err && err.data && err.data.message ? err.data.message : '';\n\n                    //stop loading indicator\n                    this.loading = false;\n\n                    if (err == 'Error: Request overridden by newer request.') {\n                        this.showError = false;\n                    } else {\n                        //show error icon\n                        this.showError = true;\n\n                        console && console.log && console.log('Error when accessing paged data:', msg, err);\n                    }\n                })\n                .then(() => {\n                    if (this.csvExportable) {\n                        this.$nextTick(() => this.generateCsvData());\n                    }\n                });\n        },\n        fieldName(columnName) {\n            return this.columns[columnName];\n        },\n        isSortable(field)\n        {\n            if (this.sortable instanceof Array) {\n                return _.includes(this.sortable, field);\n            } else if (this.sortable) {\n                return true;\n            } else {\n                return false;\n            }\n        },\n        setSort(field) {\n            if (this.sortField === field) {\n                this.sortOrder = this.sortOrder === 'D' ? 'A' : 'D';\n                return;\n            } else if (this.defaultSortOrders && this.defaultSortOrders[field]) {\n                this.sortOrder = this.defaultSortOrders[field];\n            } else {\n                this.sortOrder = 'A';\n            }\n\n            this.sortField = field;\n        },\n        sortClass(field) {\n            if (field === this.sortField) {\n                return this.sortOrder === 'D' ? 'fa-sort-amount-desc active-sort pull-right' : 'fa-sort-amount-asc active-sort pull-right';\n            }\n            return 'fa-arrows-v text-muted pull-right';\n        },\n        /**\n         * Return item.field or, if field is a dot-delimited field,\n         * follow the chain of references to the last value.\n         */\n        valueFor(item, field) {\n            var obj = item;\n            var chain = field.split(/\\./);\n            while (obj && chain.length > 0) {\n                obj = obj[chain.shift()];\n            }\n            if (chain.length > 0) {\n                return undefined;\n            } else {\n                return obj;\n            }\n        },\n        getCookies(field) {\n            if (!this.name || !field || Cookies.get(this.name) === undefined) {\n                return null;\n            }\n\n            return JSON.parse(Cookies.get(this.name))[field];\n        },\n        setCookies(field, value) {\n            if (!this.name || !field) {\n                return false;\n            }\n\n            var cookie = Cookies.get(this.name);\n\n            if (cookie) {\n                cookie = JSON.parse(cookie);\n            } else {\n                cookie = {};\n            }\n\n            cookie[field] = value;\n            if (Cookies.set(this.name, cookie)) {\n                return true;\n            }\n\n            return false;\n        },\n        applyQueryParams() {\n            if (this.queryParamSaver) {\n                var params = this.queryParamSaver.get();\n                if (params) {\n                    if (typeof params.sort_field != 'undefined') {\n                        this.sortField = params.sort_field;\n                    }\n                    if (typeof params.sort_order != 'undefined') {\n                        this.sortOrder = params.sort_order;\n                    }\n                    if (typeof params.search != 'undefined') {\n                        this.search = params.search\n                    }\n                    if (typeof params.page != 'undefined') {\n                        this.page = params.page;\n                    }\n                    if (typeof params.page_length != 'undefined') {\n                        this.pageLengthSelection = params.page_length;\n                    }\n                    this.$emit('load-endpoint-params', params);\n                }\n            }\n        },\n        keyFor(item) {\n            if (this.keyField) {\n                return item[this.keyField];\n            }\n            if (item.id) {\n                return item.id;\n            }\n            return this.generateKeyFor(item);\n        },\n        generateKeyFor(item) {\n            var found = null;\n            _.each(this.generatedItemKeys, (saved_item, key) => {\n                if (item === saved_item) {\n                    found = key;\n                }\n            });\n            if (!found) {\n                // make a random key\n                found = new Date().valueOf() + '_' + new String(Math.random()).substr(2);\n                this.generatedItemKeys[found] = item;\n            }\n            return found;\n        },\n        generateCsvData() {\n            // This method depends on this.$refs, so it cannot be a computed property\n            this.csvData = this.pagedItems.map((item) => {\n                var id = this.keyFor(item);\n                var textItem = {};\n                _.each(this.activeFields, (field) => {\n                    textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0] ? this.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;\n                });\n                return textItem;\n            });\n        },\n        resetActiveFields() {\n            this.activeFields = this.defaultActiveFields || Object.keys(this.columns);\n        },\n        storeActiveFieldsToCookies() {\n            var fields = {\n                on: [],\n                off: [],\n            };\n            for (var field in this.columns) {\n                if (_.includes(this.activeFields, field)) {\n                    fields.on.push(field);\n                } else {\n                    fields.off.push(field);\n                }\n            }\n\n            this.setCookies('fields', fields);\n        },\n        getActiveFieldsFromCookies() {\n            var fields = this.getCookies('fields');\n            var defaultOn = this.defaultActiveFields || Object.keys(this.columns);\n            return Object.keys(this.columns).filter(field => {\n                var fieldIsSelected = _.includes(fields.on, field);\n                var fieldIsDeselected = _.includes(fields.off, field);\n                var fieldDefaultsToOn = _.includes(defaultOn, field);\n                return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);\n            });\n        },\n    },\n}\n</script>\n\n<style>\n    .nova-table div.form-group.pull-left.margin-left {\n        margin-left: .5em;\n    }\n\n    .table-loader{\n        opacity: .6;\n        position: absolute;\n        width: 100%;\n        height: 920px;\n        padding-top: 100px;\n        z-index: 1;\n    }\n\n    .pagination{\n        margin: 0 0 20px 0;\n    }\n\n    td.td-scheduled_or_posted_at-styles {\n        width: 115px;\n    }\n\n    .sortable {\n        white-space: nowrap;\n    }\n\n    .sortable i {\n        margin-top: 3px;\n    }\n</style>\n"],"sourceRoot":""}]);
 
 // exports
 
@@ -1848,7 +1855,7 @@ exports.push([module.i, "\n.nova-table div.form-group.pull-left.margin-left {\n 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__buble_loader_node_modules_vue_loader_lib_selector_type_script_index_0_NovaPageSelect_vue__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_3842ae70_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_NovaPageSelect_vue__ = __webpack_require__(16);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(2);
 /* unused harmony namespace reexport */
 var disposed = false
 /* script */
@@ -2284,7 +2291,7 @@ module.exports = require("vue-csv-downloader");
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__buble_loader_node_modules_vue_loader_lib_selector_type_script_index_0_NovaTable_vue__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_79f12a59_hasScoped_false_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_NovaTable_vue__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(1);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(2);
 /* empty harmony namespace reexport */
 var disposed = false
 function injectStyle (context) {
