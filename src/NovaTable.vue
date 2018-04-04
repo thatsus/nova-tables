@@ -113,6 +113,7 @@
                     {{ pageDescriptor }}
                 </span>
             </div>
+            <slot name="bottom-left-bar"></slot>
         </div>
         <div class="pull-right">
             <slot name="bottom-right-bar"></slot>
