@@ -163,6 +163,10 @@ If your parent component using a Nova Table has extra data to send, it should
 be sent via this parameter. Changes to this data will result in a call to the 
 endpoint using the new data.
 
+## endpoint params
+
+TODO: Explain search/columns/page, etc, values sent to endpoint.
+
 # State Persistence
 
 When a Nova Table is given a `name` attribute it will use it to persist some 
@@ -178,6 +182,15 @@ When the table is loaded in a browser with URL params present, the
 `endpoint-params`. A parent component using Nova Tables can handle this event 
 and use it to restore its own previous state.
 
-## endpoint params
+# Custom Data Sources
 
-TODO: Explain search/columns/page, etc, values sent to endpoint.
+TODO
+
+# Contribution
+
+If you find a bug or want to contribute to the code or documentation, you can help by submitting an [issue](https://github.com/thatsus/nova-tables/issues) or a [pull request](https://github.com/thatsus/nova-tables/pulls).
+
+# License
+
+[MIT](http://opensource.org/licenses/MIT)
+
