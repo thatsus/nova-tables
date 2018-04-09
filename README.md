@@ -142,7 +142,7 @@ Example:
     :footer="true"
 >
     <template slot="price-footer" scope="{items}">
-        Sum: @{{ items.reduce((a, b) => a + b.price, 0) }}
+        Sum: {{ items.reduce((a, b) => a + b.price, 0) }}
     </template>
 </nova-table>
 ```
