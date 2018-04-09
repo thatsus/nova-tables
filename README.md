@@ -161,9 +161,9 @@ components by using slots named `top-left-bar`, `top-right-bar`,
 If an `endpoint` is specified, an object passed to the `endpoint-params` 
 attribute will be used as data to the `endpoint` URL.
 
-If your parent component using a Nova Table has extra data to send, it should 
-be sent via this parameter. Changes to this data will result in a call to the 
-endpoint using the new data.
+If your parent component has extra parameters to send to the endpoint, they 
+should be sent as keys on this object. Changes to this object will cause a 
+table refresh.
 
 ## Standard Params
 
