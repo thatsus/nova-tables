@@ -68,7 +68,7 @@ key-field             : string, unique field to use so filter and page
 >
 </nova-table>
 ```
-![Screen_Shot_2017-02-10_at_12.12.24_PM](/uploads/661df8504d77c6fd38a0dd3937172205/Screen_Shot_2017-02-10_at_12.12.24_PM.png)
+![Screen_Shot_2017-02-10_at_12.12.24_PM](https://thatsus.github.io/nova-tables/assets/Screen_Shot_2017-02-10_at_12.12.24_PM.png)
 
 # Example with optional attributes
 
@@ -91,8 +91,8 @@ key-field             : string, unique field to use so filter and page
 >
 </nova-table>
 ```
-![Screen_Shot_2017-02-20_at_1.54.59_PM](/uploads/13c44d8b822e775e9e1d7a7da9d9d8d2/Screen_Shot_2017-02-20_at_1.54.59_PM.png)
-![Screen_Shot_2017-02-20_at_1.57.56_PM](/uploads/cefc81f00a3901429621cf2df80b528b/Screen_Shot_2017-02-20_at_1.57.56_PM.png)
+![Screen_Shot_2017-02-20_at_1.54.59_PM](https://thatsus.github.io/nova-tables/assets/Screen_Shot_2017-02-20_at_1.54.59_PM.png)
+![Screen_Shot_2017-02-20_at_1.57.56_PM](https://thatsus.github.io/nova-tables/assets/Screen_Shot_2017-02-20_at_1.57.56_PM.png)
 
 # Slots
 
@@ -112,7 +112,7 @@ Slots can be used to customize the display of a particular field.
     </template>
 </nova-table>
 ```
-![Screen_Shot_2017-02-10_at_12.12.45_PM](/uploads/1f9afb704904f870c5ffd8f90f9f2ad5/Screen_Shot_2017-02-10_at_12.12.45_PM.png)
+![Screen_Shot_2017-02-10_at_12.12.45_PM](https://thatsus.github.io/nova-tables/assets/Screen_Shot_2017-02-10_at_12.12.45_PM.png)
 
 In this example, the template will be rendered once each time a "price" 
 cell is needed. The name matches the field name. `props.item` will be an
@@ -146,7 +146,7 @@ Example:
     </template>
 </nova-table>
 ```
-![Screen_Shot_2017-05-24_at_5.30.37_PM](/uploads/e2cc1fd3b882979a5ccab60b6bc0971a/Screen_Shot_2017-05-24_at_5.30.37_PM.png)
+![Screen_Shot_2017-05-24_at_5.30.37_PM](https://thatsus.github.io/nova-tables/assets/Screen_Shot_2017-05-24_at_5.30.37_PM.png)
 
 ## Other Slots
 
