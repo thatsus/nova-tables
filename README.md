@@ -5,16 +5,15 @@ NovaTables works with bootstrap out-of-the-box.
 
 NovaTables has several popular optional components out-of-the-box.
 
-Search     : A text box to filter the data.
-CSV        : A button to export the data as CSV.
-Columns    : A dropdown to select which columns are displayed.
-Sort       : A toggle to sort a column.
-Pagination : A page selector and page length selector
-
+* Search
+* CSV download
+* Column selection
+* Sort
+* Pagination
 
 It also has these optional features:
 
-* Customizable cells, customizable header and footer space.
+* Customizable cells, plus customizable header and footer space.
 * Writes some state to the URL for copy-pasting.
 * Writes some state to cookies for user friendliness.
 
