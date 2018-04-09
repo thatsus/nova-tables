@@ -154,7 +154,9 @@ You can insert content in the area with, e.g., the search and page selector
 components by using slots named `top-left-bar`, `top-right-bar`, 
 `bottom-right-bar`, and `bottom-left-bar`.
 
-# Endpoint Params
+# Endpoints
+
+## endpoint-params
 
 If an `endpoint` is specified, an object passed to the `endpoint-params` 
 attribute will be used as data to the `endpoint` URL.
@@ -163,9 +165,32 @@ If your parent component using a Nova Table has extra data to send, it should
 be sent via this parameter. Changes to this data will result in a call to the 
 endpoint using the new data.
 
-## endpoint params
+## Standard Params
 
-TODO: Explain search/columns/page, etc, values sent to endpoint.
+When using `endpoint` these params are always added to the URL query. The 
+server should expect them and use them to return data in the format specified
+in the next section.
+
+```
+page           : int or null, the current page selection, or null for All 
+                 (page numbers start at 1)
+page_length    : int or null, how many items to return on the page, or null
+search         : string, the text from the search box
+search_fields  : string, columns currently visible
+sort_direction : string, A or D, which direction to sort
+sort_field     : string, the field to sort by
+```
+
+## Return format
+
+The server should return a JSON-formatted object with the following fields:
+
+```
+items       : array of objects, the data to show
+page        : int, the id of the page being returned (pages start at 1)
+page_count  : int, the number of pages available
+total_count : int, the number of individual items available
+```
 
 # State Persistence
 
@@ -184,7 +209,101 @@ and use it to restore its own previous state.
 
 # Custom Data Sources
 
-TODO
+The `endpoint` and `items` attributes should be sufficient to setup data
+sources for most purposes.
+
+The `item-source` attribute allows the parent component to pass in a custom 
+object for accessing and managing data. Using a custom source allows the parent 
+component greater access to the object so that it can do things like, e.g., 
+calling `fireChangeEvent` to cause a table refresh.
+
+## Interface
+
+The Source object must implement the following methods. 
+`NovaTable.AbstractSource` implements most of them already and is a great 
+super class for this purpose.
+
+```
+setPage(page, page_length) : 
+    After this is called, the next call to `get` should produce a page of data
+    with the correct length. If page_length is null, all data should be 
+    returned by `get`.
+    This should cause a call to `fireChangeEvent`.
+
+setSearch(search, fields) : 
+    After this is called, the next call to `get` should produce a page of data
+    that matches the `search` string in the given `fields`.
+    This should cause a call to `fireChangeEvent`.
+
+setSort(field, direction) :
+    After this is called, the next call to `get` should produce a page of data
+    sorted according to the `field`, in the direction given by `direction` 
+    which can contain 'A' or 'D'.
+    This should cause a call to `fireChangeEvent`.
+
+onChange(closure) :
+    This should add the given closure to an array of closures that should run
+    whenever the data on this object changes.
+
+fireChangeEvent() :
+    This should run each of the closures added via `onChange`.
+
+get() :
+    This must return a Promise. When successful, the Promise's value should be
+    an object with these fields:
+        items       : array of objects, the data to show
+        page        : int, the id of the page being returned (pages start at 
+                      1)
+        page_count  : int, the number of pages available
+        total_count : int, the number of individual items available
+```
+
+## Built-In ArraySource
+
+The `NovaTable.ArraySource` object may be used for in-memory data. This is the
+source used internally when `items` is supplied.
+
+The array should be passed as the only parameter to the constructor.
+
+In addition to the usual interface, `ArraySource` also implements:
+
+```
+addFilter(closure) :
+    Adds the closure to an array. Each time `get` is called, the closure will 
+    be passed an array of items and must return an array of items.
+```
+
+## Built-In ServerSideSource
+
+The `NovaTable.ServerSideSource` object may be used to access a server 
+endpoint.
+
+The endpoint string should be passed as the only parameter.
+
+In addition to the usual interface, `ServerSideSource` also implements:
+
+```
+addParamMerger(closure) :
+    Adds the closure to an array. Each time `get` is called, before the call 
+    to the server, the endpoint params are sent to these closures. Any changes 
+    made to the object here will be sent to the endpoint.
+```
+
+## Built-In AbstractSource
+
+The parent class `NovaTables.AbstractSource` provides most of an implementation
+of the Source interface. It also exposes this data to its child classes:
+
+```
+this.search         : the string set by setSearch
+this.search_fields  : the array set by setSearch
+this.sort_field     : the string set by setSort
+this.sort_direction : the string 'A' or 'D' set by setSort
+this.page           : the page int set by setPage
+this.page_length    : the page_length int set by setPage
+```
+
+Children of `AbstractSource` must implement the `get` method.
 
 # Contribution
 
