@@ -1,11 +1,5 @@
 
-var elixir = require('./elixir.js');
-
-var webpackConfig;
-
-elixir(function (mix) {
-    webpackConfig = elixir.webpack.config;
-});
+var webpackConfig = require('./webpack.config.js');
 
 module.exports = function (config) {
     config.set({

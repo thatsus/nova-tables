@@ -8,7 +8,7 @@ import AbstractSource from '../src/abstract-source.js';
 import ArraySource from '../src/array-source.js';
 import ServerSideSource from '../src/server-side-source.js';
 
-module.exports = function () {
+export default function() {
 
     it('should have NovaPageSelect', function () {
         assert.equal(NovaTable.NovaPageSelect, NovaPageSelect);

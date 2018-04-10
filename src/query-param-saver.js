@@ -31,4 +31,4 @@ class QueryParamSaver
     }
 };
 
-module.exports = QueryParamSaver;
+export default QueryParamSaver;

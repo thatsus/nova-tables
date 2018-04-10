@@ -8,10 +8,13 @@ import AbstractSource from '../src/abstract-source.js';
 describe('NovaPageSelect', function () {
 
     let vm, theNPS;
+    let constructor;
 
     beforeEach('setup the Vue instance', function (done) {
 
-        vm = new Vue({
+        constructor = Vue.extend(NovaPageSelect);
+
+        vm = new constructor({
             template: `
                 <nova-page-select ref="theNPS"
                     v-model="page"
@@ -29,18 +32,18 @@ describe('NovaPageSelect', function () {
                     pageCount: 100,
                     showJumps: false,
                 };
-            },
+            }
         });
 
         vm.$mount();
 
         theNPS = vm.$refs.theNPS;
-
         Vue.waitTicks(3).then(done);
+        
     });
 
     it('should have loaded', function () {
-        assert(theNPS !== null, "theNPS is null")
+        assert(typeof theNPS !== 'undefined' && theNPS !== null, "theNPS is null")
     });
 
     it('should change pages when next/prev page buttons clicked', function (done) {

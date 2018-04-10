@@ -67,4 +67,4 @@ class ServerSideSource extends AbstractSource
     }
 }
 
-module.exports = ServerSideSource;
+export default ServerSideSource;

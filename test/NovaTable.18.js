@@ -6,7 +6,7 @@ import Vue from 'vue';
 import AbstractSource from '../src/abstract-source.js';
 import Cookies from 'js-cookie';
 
-module.exports = function () {
+export default function() {
 
     let vm, theNovaTable, source;
 

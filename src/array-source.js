@@ -63,4 +63,4 @@ class ArraySource extends AbstractSource
     }
 }
 
-module.exports = ArraySource;
+export default ArraySource;

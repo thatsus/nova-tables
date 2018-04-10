@@ -5,7 +5,7 @@ import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
 import ServerSideSource from '../src/server-side-source.js';
 
-module.exports = function () {
+export default function() {
 
     let vm, theNovaTable, lastRequest;
 

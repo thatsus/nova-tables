@@ -5,7 +5,7 @@ import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import Vue from 'vue';
 
-module.exports = function () {
+export default function() {
 
     let vm, theNovaTable;
 

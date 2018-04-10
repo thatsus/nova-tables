@@ -7,7 +7,6 @@ import VueResourceMocker from 'vue-resource-mocker';
 if (!global.Promise) {
     global.Promise = require('promise');
 }
-
 Vue.use(VueResource);
 Vue.httpMocker = new VueResourceMocker();
 Vue.use(Vue.httpMocker);
