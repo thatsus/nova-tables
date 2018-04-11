@@ -1,6 +1,6 @@
 {
   "name": "nova-tables",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Easy-to-use HTML tables in Vue.js",
   "main": "dist/NovaTable.js",
   "scripts": {
@@ -24,7 +24,7 @@
   "dependencies": {
     "jquery": "^3.2.1",
     "js-cookie": "^2.2.0",
-    "lodash": "^4.16.2",
+    "lodash": "^3.10.1",
     "qs": "^6.5.1",
     "vue": "^2.1.*",
     "vue-csv-downloader": "^1.0.1"
