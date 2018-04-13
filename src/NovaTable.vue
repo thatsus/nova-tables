@@ -198,7 +198,7 @@ export default {
             } else if (this.items) {
                 this.source = new ArraySource(this.items);
             } else if (this.endpoint) {
-                this.source = new ServerSideSource(this.endpoint);
+                this.source = new ServerSideSource(this.endpoint, this.$http);
                 this.source.addParamMerger((params) => {
                     if (this.endpointParams) {
                         _.merge(params, this.endpointParams);
@@ -373,12 +373,16 @@ export default {
                     this.response = response;
                     this.pagedItems = response.items;
                     this.pageCount = response.pageCount;
+                
                     let page = response.page >= 1 ? response.page : 1;
+                
                     if (this.page != page) {
                         this.page = page;
                     }
+                
                     this.totalCount = response.totalCount;
                     this.generatedItemKeys = {};
+                
                     //stop loading indicator
                     this.loading = false;
                 })

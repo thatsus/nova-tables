@@ -1,31 +1,22 @@
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-    devtool: 'source-map',
+    devtool: 'inline-cheap-module-source-map',
     mode: 'production',
     // ensure we are using the version of Vue that supports templates
     resolve: {
         extensions: ['.vue', '.js']
     },
+    externals: [nodeExternals()],
     module: {
         rules: [
             {
                 test: /\.vue$/,
                 loader: 'vue-loader',
-                options: {
-                    buble: {
-                        loader: 'buble-loader',
-                        query: {
-                            objectAssign: 'Object.assign'
-                        }
-                    }
-                }
             },
             {
                 test: /\.js$/,
-                loader: 'buble-loader',
-                query: {
-                    objectAssign: 'Object.assign',
-                },
+                loader: 'babel-loader',
             },
             {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

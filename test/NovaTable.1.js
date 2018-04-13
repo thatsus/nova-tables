@@ -1,98 +1,59 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import ArraySource from '../src/array-source.js';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
+import ArraySource from '../src/array-source.js';
 
 export default function() {
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                 items: [
+                    {name: 'Dave', objectiveQuality: 'Medium'},
+                    {name: 'Dan', objectiveQuality: 'High'},
+                ],
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                }
+            }
+        }
+    );
 
-    let vm, theNovaTable;
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
+    });
 
-    beforeEach('setup the Vue instance', function (done) {
+    it('Sort By First Column If No Sort Is Defined', () => {
+        let tds = wrapper.findAll('td').wrappers;
+        expect(tds.length).toEqual(4);
+        expect(tds[0].text().trim()).toEqual('Dan');
+        expect(tds[1].text().trim()).toEqual('High');
+        expect(tds[2].text().trim()).toEqual('Dave');
+        expect(tds[3].text().trim()).toEqual('Medium');
+    });
 
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :items="items"
-                    :columns="columns"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    items: [
-                        {name: 'Dave', objectiveQuality: 'Medium'},
-                        {name: 'Dan', objectiveQuality: 'High'},
-                    ],
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
+    it('Display Columns In The Correct Order', () => {
+        let ths = wrapper.findAll('th').wrappers;
+        expect(ths.length).toEqual(2);
+        expect(ths[0].text().trim()).toEqual('Name');
+        expect(ths[1].text().trim()).toEqual('Quality');
+    });
+
+    it('Have An ArraySource', () => {
+        expect(wrapper.vm.source).toBeInstanceOf(ArraySource);
+    });
+
+    describe('Does Not Have Other Functions', () => {
+        it('Does Not Contain Buttons', () => {
+            expect(wrapper.findAll('button').length).toEqual(0);
         });
-
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(3).then(done);
+        it('Does Not Contain Inputs', () => {
+            expect(wrapper.findAll('input').length).toEqual(0);
+        });
+        it('Does Not Contain ULs', () => {
+            expect(wrapper.findAll('ul').length).toEqual(0);
+        });
     });
-
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
-    });
-
-    it('should have tags and data in alphabetical order by name', function (done) {
-        Vue.nextTick()
-            .then(() => {
-                let el = $(theNovaTable.$el);
-                assert.equal(el.length, 1);
-
-                let table = el.find('table');
-                assert.equal(table.length, 1);
-
-                let bodyTrs = table.find('tbody').find('tr');
-                assert.equal(bodyTrs.length, 2, 'bodyTrs.length === ' + bodyTrs.length);
-                
-                let bodyTds = table.find('tbody').find('td');
-                assert.equal(bodyTds[0].innerText.trim(), 'Dan');
-                assert.equal(bodyTds[1].innerText.trim(), 'High');
-                assert.equal(bodyTds[2].innerText.trim(), 'Dave');
-                assert.equal(bodyTds[3].innerText.trim(), 'Medium');
-            })
-            .then(done, done);
-    });
-
-    it('should have columns in the right order', function () {
-        let el = $(theNovaTable.$el);
-        assert.equal(el.length, 1);
-
-        let headThs = el.find('th');
-        assert.equal(headThs.length, 2);
-        assert.equal(headThs[0].innerText.trim(), 'Name');
-        assert.equal(headThs[1].innerText.trim(), 'Quality');
-    });
-
-    it('should have an ArraySource', function () {
-        assert(theNovaTable.source instanceof ArraySource);
-    });
-
-    it('should not have other features', function () {
-        let el = $(theNovaTable.$el);
-        assert.equal(el.length, 1);
-
-        // no buttons please
-        assert.equal(el.find('button').length, 0, 'has buttons: ' + el.find('button'));
-
-        // no dropdown lists please
-        assert.equal(el.find('ul').length, 0, 'has uls: ' + el.find('ul'));
-
-        // no search or other inputs please
-        assert.equal(el.find('input').length, 0, 'has inputs: ' + el.find('input'));
-    });
-};
+}

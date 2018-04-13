@@ -1,72 +1,55 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaPageSelect from '../src/NovaPageSelect.vue';
-import Vue from 'vue';
-import AbstractSource from '../src/abstract-source.js';
 
-describe('NovaPageSelect', function () {
-
-    let vm, theNPS;
-    let constructor;
-
-    beforeEach('setup the Vue instance', function (done) {
-
-        constructor = Vue.extend(NovaPageSelect);
-
-        vm = new constructor({
-            template: `
-                <nova-page-select ref="theNPS"
-                    v-model="page"
-                    :page-count="pageCount"
-                    :show-jumps="showJumps"
-                >
-                </nova-page-select>
-            `,
-            components: {
-                NovaPageSelect,
-            },
-            data() {
-                return {
-                    page: 1,
-                    pageCount: 100,
-                    showJumps: false,
-                };
+describe('NovaPageSelect', () => {
+    let wrapper = shallow(
+        NovaPageSelect,
+        {
+            propsData: {
+                pageCount: 100,
+                showJumps: false,
+                value: 1,
             }
+        }
+    );
+    
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
+    });
+
+    describe('Change Pages When Prev/Next Buttons Clicked', () => {
+        describe('Next', () => {
+            it('Event Emitted', () => {
+                let next = wrapper.find('li[name="nextPage"]').find('a');
+                expect(next).toBeDefined();
+                next.trigger('click');
+                expect(wrapper.emitted('input')[0]).toEqual([2]);
+            });
+
+            it('Handle Prop Change', () => {
+                wrapper.setProps({
+                    value: 2
+                });
+                expect(wrapper.vm.page).toEqual(2);
+            })
         });
 
-        vm.$mount();
+        describe('Previous', () => {
+            it('Event Emitted', () => {
+                let prev = wrapper.find('li[name="previousPage"]').find('a');
+                expect(prev).toBeDefined();
+                prev.trigger('click');
+                expect(wrapper.emitted('input')[1]).toEqual([1]);
+            });
 
-        theNPS = vm.$refs.theNPS;
-        Vue.waitTicks(3).then(done);
-        
-    });
-
-    it('should have loaded', function () {
-        assert(typeof theNPS !== 'undefined' && theNPS !== null, "theNPS is null")
-    });
-
-    it('should change pages when next/prev page buttons clicked', function (done) {
-        let el = $(theNPS.$el);
-
-        let next = el.find('li:contains("Next") a');
-        assert(next[0], 'Next selector not found');
-
-        next[0].dispatchEvent(new Event('click'));
-
-        Vue.nextTick()
-            .then(() => {
-                assert.equal(theNPS.page, 2, 'Should go to next page, 2');
-
-                let prev = el.find('li:contains("Previous") a');
-                assert(prev[0], 'Previous selector not found');
-
-                prev[0].dispatchEvent(new Event('click'));
-                return Vue.nextTick();
+            it('Handle Prop Change', () => {
+                wrapper.setProps({
+                    value: 1
+                });
+                expect(wrapper.vm.page).toEqual(1);
             })
-            .then(() => {
-                assert.equal(theNPS.page, 1, 'Should go to prev page, 1');
-            })
-            .then(done, done);
+        });
     });
 });

@@ -1,15 +1,16 @@
+import test1 from './NovaTable.1.js';
+import test2 from './NovaTable.2.js';
 
 // Start with a `describe` for the module we're testing.
-describe('NovaTable', function () {
-
+describe('NovaTable', () => {
     // You can nest `describe` within `describe` if you have a need to group 
     // tests together.
     // And this makes it easier to break down this complicated test suite into
     // multiple files. NovaTable.1.js here exports a closure.
-    describe('1. barebones with items attribute', require('./NovaTable.1.js'));
-
-    describe('2. barebones with endpoint attribute', require('./NovaTable.2.js'));
-
+    
+    describe('1. Barebones With Items Attribute', test1);
+    describe('2. Barebones With Endpoint Attribute', test2);
+/*
     describe('3. barebones with itemSource attribute', require('./NovaTable.3.js'));
     
     describe('4. slots', require('./NovaTable.4.js'));
@@ -49,4 +50,5 @@ describe('NovaTable', function () {
     describe('21. csvExportable with itemSource', require('./NovaTable.21.js'));
 
     describe('22. expose some things', require('./NovaTable.22.js'));
+*/
 });
