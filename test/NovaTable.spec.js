@@ -1,5 +1,13 @@
 import test1 from './NovaTable.1.js';
 import test2 from './NovaTable.2.js';
+import test3 from './NovaTable.3.js';
+import test4 from './NovaTable.4.js';
+import test5 from './NovaTable.5.js';
+import test6 from './NovaTable.6.js';
+import test7 from './NovaTable.7.js';
+import test8 from './NovaTable.8.js';
+import test9 from './NovaTable.9.js';
+import test10 from './NovaTable.10.js';
 
 // Start with a `describe` for the module we're testing.
 describe('NovaTable', () => {
@@ -8,25 +16,18 @@ describe('NovaTable', () => {
     // And this makes it easier to break down this complicated test suite into
     // multiple files. NovaTable.1.js here exports a closure.
     
-    describe('1. Barebones With Items Attribute', test1);
-    describe('2. Barebones With Endpoint Attribute', test2);
+    describe('1. Barebones With items Attribute', test1);
+    describe('2. Barebones With endpoint Attribute', test2);
+    describe('3. Barebones With itemSource Attribute', test3);
+// Need to wait for burgh to publist to npmjs
+//    describe('4. Slots', test4);
+    describe('5. Footer', test5);
+    describe('6. Searchable With itemSource Attribute', test6);
+    describe('7. AdjustableColumns With itemSource Attribute', test7);
+    describe('8. Sortable=True With itemSource Attribute', test8);
+    describe('9. Sortable=Array With itemSource Attribute', test9);
+    describe('10. Sortable=True With defaultSortField And itemSource Attributes', test10);
 /*
-    describe('3. barebones with itemSource attribute', require('./NovaTable.3.js'));
-    
-    describe('4. slots', require('./NovaTable.4.js'));
-
-    describe('5. footer', require('./NovaTable.5.js'));
-
-    describe('6. searchable with itemSource attribute', require('./NovaTable.6.js'));
-    
-    describe('7. adjustableColumns with itemSource attribute', require('./NovaTable.7.js'));
-
-    describe('8. sortable=true with itemSource', require('./NovaTable.8.js'));
-
-    describe('9. sortable=Array with itemSource', require('./NovaTable.9.js'));
-
-    describe('10. defaultSortField with itemSource', require('./NovaTable.10.js'));
-
     describe('11. defaultActiveFields with itemSource', require('./NovaTable.11.js'));
 
     describe('12. pageLength with itemSource', require('./NovaTable.12.js'));

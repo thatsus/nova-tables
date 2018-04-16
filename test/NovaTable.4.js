@@ -1,62 +1,37 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 
 export default function() {
-
-    let vm, theNovaTable;
-
-    beforeEach('setup the Vue instance', function (done) {
-
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :items="items"
-                    :columns="columns"
-                >
-                    <template slot="name" slot-scope="props">
-                        {{ props.item.name.toUpperCase() }}
-                    </template>
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                items: [
+                    {name: 'Dan', objectiveQuality: 'High'},
+                    {name: 'Dave', objectiveQuality: 'Medium'},
+                ],
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                },
             },
-            data() {
-                return {
-                    items: [
-                        {name: 'Dan', objectiveQuality: 'High'},
-                        {name: 'Dave', objectiveQuality: 'Medium'},
-                    ],
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
-        });
+            scopedSlots: {
+                name: '<span slot-scope="{item}">{{ item.name.toUpperCase() }} </span>',
+            }
+        }
+    );
 
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(3)
-            .then(done);
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
-    });
-
-    it('should use slot for name', function () {
-        let el = $(theNovaTable.$el);
-
-        assert(el.text().match(/DAN/));
-        assert(el.text().match(/High/));
-        assert(el.text().match(/DAVE/));
-        assert(el.text().match(/Medium/));
-        assert(el.text().match(/DAN[\s]*High[\s]*DAVE[\s]*Medium/));
+    it('should use slot for name', () => {
+        expect(wrapper.text()).toMatch(/DAN/);
+        expect(wrapper.text()).toMatch(/High/);
+        expect(wrapper.text()).toMatch(/DAVE/);
+        expect(wrapper.text()).toMatch(/Medium/);
+        expect(wrapper.text()).toMatch(/DAN[\s]*High[\s]*DAVE[\s]*Medium/);
     });
 }
