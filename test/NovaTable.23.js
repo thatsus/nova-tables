@@ -35,7 +35,6 @@ module.exports = function () {
                 <nova-table ref="theNovaTable"
                     endpoint="/my-endpoint"
                     :columns="columns"
-                    :emit-data-loaded="true"
                     @data-loaded="dataLoaded"
                 >
                 </nova-table>
