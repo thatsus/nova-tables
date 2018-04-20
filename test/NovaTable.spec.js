@@ -49,4 +49,6 @@ describe('NovaTable', function () {
     describe('21. csvExportable with itemSource', require('./NovaTable.21.js'));
 
     describe('22. expose some things', require('./NovaTable.22.js'));
+
+    describe('23. emit data loaded', require('./NovaTable.23.js'));
 });

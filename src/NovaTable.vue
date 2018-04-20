@@ -169,6 +169,7 @@ export default {
         'defaultSortOrders',
         'name',
         'keyField',
+        'emitDataLoaded',
     ],
     data() {
         return {
@@ -380,6 +381,10 @@ export default {
                     }
                     this.totalCount = response.totalCount;
                     this.generatedItemKeys = {};
+
+                    if (this.emitDataLoaded) {
+                        this.$emit('data-loaded', this.response);
+                    }
                     //stop loading indicator
                     this.loading = false;
                 })
