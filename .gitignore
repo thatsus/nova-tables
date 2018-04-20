@@ -1,2 +1,4 @@
 .git
 sftp-config.json
+node_modules
+package-lock.json

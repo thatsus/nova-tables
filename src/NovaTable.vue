@@ -379,7 +379,8 @@ export default {
                         this.page = page;
                     }
                     this.totalCount = response.totalCount;
-                    this.generatedItemKeys = {};
+                    this.generatedItemKeys = {};    
+                    this.$emit('data-loaded', this.response);
                     //stop loading indicator
                     this.loading = false;
                 })
