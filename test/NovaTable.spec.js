@@ -8,6 +8,11 @@ import test7 from './NovaTable.7.js';
 import test8 from './NovaTable.8.js';
 import test9 from './NovaTable.9.js';
 import test10 from './NovaTable.10.js';
+import test11 from './NovaTable.11.js';
+import test12 from './NovaTable.12.js';
+import test13 from './NovaTable.13.js';
+import test14 from './NovaTable.14.js';
+import test15 from './NovaTable.15.js';
 
 // Start with a `describe` for the module we're testing.
 describe('NovaTable', () => {
@@ -27,17 +32,12 @@ describe('NovaTable', () => {
     describe('8. Sortable=True With itemSource Attribute', test8);
     describe('9. Sortable=Array With itemSource Attribute', test9);
     describe('10. Sortable=True With defaultSortField And itemSource Attributes', test10);
+    describe('11. DefaultActiveFields With itemSource Attributes', test11);
+    describe('12. PageLength With itemSource Attribute', test12);
+    describe('13. PageLength Higher Than Total With itemSource Attribute', test13);
+    describe('14. PageLengthOptions With itemSource Attribute', test14);
+    describe('15. DefaultSortOrders With itemSource Attribute', test15);
 /*
-    describe('11. defaultActiveFields with itemSource', require('./NovaTable.11.js'));
-
-    describe('12. pageLength with itemSource', require('./NovaTable.12.js'));
-
-    describe('13. pageLength higher than total with itemSource', require('./NovaTable.13.js'));
-
-    describe('14. pageLengthOptions with itemSource', require('./NovaTable.14.js'));
-
-    describe('15. defaultSortOrders with itemSource', require('./NovaTable.15.js'));
-
     describe('16. name with itemSource', require('./NovaTable.16.js'));
 
     describe('17. queryParamSaver with itemSource', require('./NovaTable.17.js'));
