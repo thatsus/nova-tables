@@ -8,7 +8,7 @@ import WaitTicks from '../src/wait-ticks.js';
 export default function() {
     let localVue, lastRequest, wrapper;
 
-    beforeEach('Setup the Local Vue Instance', (done) => {
+    beforeEach('Setup The Local Vue Instance', (done) => {
         localVue = createLocalVue();
         localVue.use(VueResource);
         localVue.httpMocker = new VueResourceMocker();

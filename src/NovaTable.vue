@@ -113,6 +113,7 @@
                     {{ pageDescriptor }}
                 </span>
             </div>
+            <slot name="bottom-left-bar"></slot>
         </div>
         <div class="pull-right">
             <slot name="bottom-right-bar"></slot>
@@ -381,8 +382,8 @@ export default {
                     }
                 
                     this.totalCount = response.totalCount;
-                    this.generatedItemKeys = {};
-                
+                    this.generatedItemKeys = {};    
+                    this.$emit('data-loaded', this.response);
                     //stop loading indicator
                     this.loading = false;
                 })

@@ -20,6 +20,7 @@ import test19 from './NovaTable.19.js';
 import test20 from './NovaTable.20.js';
 import test21 from './NovaTable.21.js';
 import test22 from './NovaTable.22.js';
+import test23 from './NovaTable.23.js';
 
 // Start with a `describe` for the module we're testing.
 describe('NovaTable', () => {
@@ -46,9 +47,9 @@ describe('NovaTable', () => {
     describe('16. Name With itemSource', test16);
     describe('17. QueryParamSaver With itemSource', test17);
     describe('18. Cookie Persistance With itemSource', test18);
-// This test makes test 2 fail for some reason /shrug
     describe('19. Endpoint-params', test19);
     describe('20. KeyField With items', test20);
     describe('21. CsvExportable With itemSource', test21);
     describe('22. Expose Some Things', test22);
+    describe('23. Emit Data Loaded', test23);
 });

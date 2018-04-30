@@ -40,43 +40,16 @@ export default function() {
                     endpoint: '/my-endpoint',
                     columns: {
                         name: 'Name',
-                        objectiveQuality: 'Quality'
-                    }
-                }
+                        objectiveQuality: 'Quality',
+                    },
+                },
             }
         );
 
-        localVue.waitTicks(3).then(done);
+        localVue.waitTicks(4).then(done);
     });
 
-    it('Loaded', () => {
-        expect(wrapper.isVueInstance()).toBe(true);
-        expect(wrapper).toBeDefined();
-        expect(wrapper).not.toBeNull();
-    });
-
-    it('Have A ServerSideSource', () => {
-        expect(wrapper.vm.source).toBeInstanceOf(ServerSideSource);
-    });
-
-    it('Display Columns In The Correct Order', () => {
-        let ths = wrapper.findAll('th').wrappers;
-        expect(ths.length).toEqual(2);
-        expect(ths[0].text().trim()).toEqual('Name');
-        expect(ths[1].text().trim()).toEqual('Quality');
-    });
-
-    it('Request The Correct Order-By', () => {
-        expect(lastRequest.query.sort_field).toEqual('name');
-        expect(lastRequest.query.sort_direction).toEqual('A');
-    });
-
-    it('Get The Correct Data', () => {
-        let tds = wrapper.findAll('td').wrappers;
-        expect(tds.length).toEqual(4);
-        expect(tds[0].text().trim()).toEqual('Dan');
-        expect(tds[1].text().trim()).toEqual('High');
-        expect(tds[2].text().trim()).toEqual('Dave');
-        expect(tds[3].text().trim()).toEqual('Medium');
+    it('Emits DataLoaded Event', () => {
+        expect(wrapper.emitted('data-loaded')).toBeTruthy();
     });
 };
