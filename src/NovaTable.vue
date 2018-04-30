@@ -533,7 +533,11 @@ export default {
                 var id = this.keyFor(item);
                 var textItem = {};
                 _.each(this.activeFields, (field) => {
-                    textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0] ? this.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;
+                    if (this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0]) {
+                        textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field][0].textContent.trim();
+                    } else {
+                        textItem[this.columns[field]] = null;    
+                    }
                 });
                 return textItem;
             });

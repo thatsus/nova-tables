@@ -1,142 +1,96 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 import AbstractSource from '../src/abstract-source.js';
 
 export default function() {
 
-    let vm, theNovaTable, source;
-
-    beforeEach('setup the Vue instance', function (done) {
-
-        source = new AbstractSource();
-        source.get = function () {
-            return Promise.resolve({
-                items: [
-                    {name: 'Dave', objectiveQuality: 'Medium', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
-                    {name: 'Dan', objectiveQuality: 'High', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
-                ],
-                totalCount: 2,
-                pageCount: 1,
-                page: 1,
-            });
-        };
-
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :item-source="source"
-                    :columns="columns"
-                    :endpoint-params="endpointParams"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    source: source,
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                        fieldA: 'Field A',
-                    },
-                    endpointParams: {},
-                };
-            },
+    let source = new AbstractSource();
+    source.get = function () {
+        return Promise.resolve({
+            items: [
+                {name: 'Dave', objectiveQuality: 'Medium', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
+                {name: 'Dan', objectiveQuality: 'High', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
+            ],
+            totalCount: 2,
+            pageCount: 1,
+            page: 1,
         });
+    };
 
-        vm.$mount();
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                itemSource: source,
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                    fieldA: 'Field A',
+                },
+                endpointParams: {},
+            }
+        }
+    );
 
-        theNovaTable = vm.$refs.theNovaTable;
-
-        done();
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have loaded', function () {
-        Vue.waitTicks(3)
-            .then(() => {
-                assert(theNovaTable !== null, "theNovaTable is null")
-            });
-    });
-
-    it('should save some stuff to the url', function (done) {
-        Vue.waitTicks(3)
-            .then(() => {
-                assert.equal(vm.endpointParams, theNovaTable.endpointParams);
-
-                let caughtData;
-                theNovaTable.queryParamSaver = {
-                    get() {
-                        return {};
-                    },
-                    set(data) {
-                        caughtData = data;
-                    }
-                };
-                vm.endpointParams = {x: 34};
-
-                Vue.waitTicks(6)
-                    .then(() => {
-                        assert(caughtData, 'no data was caught');
-                        assert.equal(34, caughtData.x);
-                    })
-                    .then(done, done);
-            });
-    });
-
-    it('should load some stuff from the url', function (done) {
-
-        // mounted uses nextTick, so we can setup this mock before that happens
-        theNovaTable.queryParamSaver = {
+    it('Saves To URL', () => {
+        let caughtData;
+        wrapper.vm.queryParamSaver = {
             get() {
-                return {
-                    sort_field: 'lmnop',
-                };
+                return {};
             },
             set(data) {
+                caughtData = data;
             }
         };
 
-        // ... and now we can expect our mock to be used
-        Vue.waitTicks(3)
-            .then(() => {
-                assert.equal('lmnop', theNovaTable.sortField);
-            })
-            .then(done, done);
+        wrapper.vm.endpointParams = {x: 34};
+
+        expect(caughtData.x).toEqual(34);
     });
 
-    it('should not save default stuff to url', function (done) {
-        Vue.nextTick()
-            .then(() => {
-                theNovaTable.initialQueryParams = {
-                    a: 15,
+    it('Loads From URL', () => {
+        wrapper.vm.queryParamSaver = {
+            get() {
+                return {
+                    sort_field: 'lmnop'
                 };
+            },
+            set(data) {
+                // Do nothing
+            }
+        };
 
-                let caughtData;
-                theNovaTable.queryParamSaver = {
-                    get() {
-                        return {};
-                    },
-                    set(data) {
-                        caughtData = data;
-                    }
-                };
-                vm.endpointParams = {
-                    x: 34,
-                    a: 15,
-                };
+        wrapper.vm.applyQueryParams();
+        expect(wrapper.vm.sortField).toEqual('lmnop');
+    });
 
-                Vue.waitTicks(6)
-                    .then(() => {
-                        assert(caughtData, 'no data was caught');
-                        assert.equal(34, caughtData.x);
-                        assert(typeof caughtData.a === 'undefined');
-                    })
-                    .then(done, done);
-            });
+    it('Does Not Save Defaults To URL', () => {
+        let caughtData;
+
+        wrapper.vm.initialQueryParams = {
+            a: 15,
+        };
+        wrapper.vm.queryParamSaver = {
+            get() {
+                return {};
+            },
+            set(data) {
+                caughtData = data;
+            }
+        };
+
+        wrapper.vm.endpointParams = {
+            x: 34,
+            a: 15,
+        };
+
+        expect(caughtData.x).toEqual(34);
+        expect(caughtData.a).not.toBeDefined();
     });
 }

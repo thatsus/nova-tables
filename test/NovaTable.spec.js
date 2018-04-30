@@ -13,6 +13,13 @@ import test12 from './NovaTable.12.js';
 import test13 from './NovaTable.13.js';
 import test14 from './NovaTable.14.js';
 import test15 from './NovaTable.15.js';
+import test16 from './NovaTable.16.js';
+import test17 from './NovaTable.17.js';
+import test18 from './NovaTable.18.js';
+import test19 from './NovaTable.19.js';
+import test20 from './NovaTable.20.js';
+import test21 from './NovaTable.21.js';
+import test22 from './NovaTable.22.js';
 
 // Start with a `describe` for the module we're testing.
 describe('NovaTable', () => {
@@ -21,35 +28,27 @@ describe('NovaTable', () => {
     // And this makes it easier to break down this complicated test suite into
     // multiple files. NovaTable.1.js here exports a closure.
     
-    describe('1. Barebones With items Attribute', test1);
-    describe('2. Barebones With endpoint Attribute', test2);
-    describe('3. Barebones With itemSource Attribute', test3);
-// Need to wait for burgh to publist to npmjs
-//    describe('4. Slots', test4);
+    describe('1. Barebones With items', test1);
+    describe('2. Barebones With endpoint', test2);
+    describe('3. Barebones With itemSource', test3);
+    describe('4. Slots', test4);
     describe('5. Footer', test5);
-    describe('6. Searchable With itemSource Attribute', test6);
-    describe('7. AdjustableColumns With itemSource Attribute', test7);
-    describe('8. Sortable=True With itemSource Attribute', test8);
-    describe('9. Sortable=Array With itemSource Attribute', test9);
-    describe('10. Sortable=True With defaultSortField And itemSource Attributes', test10);
-    describe('11. DefaultActiveFields With itemSource Attributes', test11);
-    describe('12. PageLength With itemSource Attribute', test12);
-    describe('13. PageLength Higher Than Total With itemSource Attribute', test13);
-    describe('14. PageLengthOptions With itemSource Attribute', test14);
-    describe('15. DefaultSortOrders With itemSource Attribute', test15);
-/*
-    describe('16. name with itemSource', require('./NovaTable.16.js'));
-
-    describe('17. queryParamSaver with itemSource', require('./NovaTable.17.js'));
-
-    describe('18. Cookie persistance with itemSource', require('./NovaTable.18.js'));
-
-    describe('19. endpoint-params', require('./NovaTable.19.js'));
-
-    describe('20. keyField with items', require('./NovaTable.20.js'));
-
-    describe('21. csvExportable with itemSource', require('./NovaTable.21.js'));
-
-    describe('22. expose some things', require('./NovaTable.22.js'));
-*/
+    describe('6. Searchable With itemSource', test6);
+    describe('7. AdjustableColumns With itemSource', test7);
+    describe('8. Sortable=True With itemSource', test8);
+    describe('9. Sortable=Array With itemSource', test9);
+    describe('10. Sortable=True With defaultSortField And itemSource', test10);
+    describe('11. DefaultActiveFields With itemSource', test11);
+    describe('12. PageLength With itemSource', test12);
+    describe('13. PageLength Higher Than Total With itemSource', test13);
+    describe('14. PageLengthOptions With itemSource', test14);
+    describe('15. DefaultSortOrders With itemSource', test15);
+    describe('16. Name With itemSource', test16);
+    describe('17. QueryParamSaver With itemSource', test17);
+    describe('18. Cookie Persistance With itemSource', test18);
+// This test makes test 2 fail for some reason /shrug
+    describe('19. Endpoint-params', test19);
+    describe('20. KeyField With items', test20);
+    describe('21. CsvExportable With itemSource', test21);
+    describe('22. Expose Some Things', test22);
 });

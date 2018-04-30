@@ -1,110 +1,83 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 import AbstractSource from '../src/abstract-source.js';
 import Cookies from 'js-cookie';
 
 export default function() {
 
-    let vm, theNovaTable, source;
+    let source = new AbstractSource();
+    source.get = function () {
+        return Promise.resolve({
+            items: [
+                {name: 'Dave', objectiveQuality: 'Medium', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
+                {name: 'Dan', objectiveQuality: 'High', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
+            ],
+            totalCount: 2,
+            pageCount: 1,
+            page: 1,
+        });
+    };
 
-    beforeEach('setup the Vue instance', function (done) {
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                itemSource: source,
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                    fieldA: 'Field A',
+                },
+                endpointParams: {},
+                name: 'happy-cow',
+            }
+        }
+    );
 
-        source = new AbstractSource();
-        source.get = function () {
-            return Promise.resolve({
-                items: [
-                    {name: 'Dave', objectiveQuality: 'Medium', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
-                    {name: 'Dan', objectiveQuality: 'High', fieldA: 2, fieldB: "hat", fieldC: "0.0"},
-                ],
-                totalCount: 2,
-                pageCount: 1,
-                page: 1,
-            });
-        };
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
+    });
 
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :item-source="source"
-                    :columns="columns"
-                    :endpoint-params="endpointParams"
-                    name="happy-cow"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    source: source,
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                        fieldA: 'Field A',
-                    },
-                    endpointParams: {},
-                };
-            },
+    describe('Saves To Cookie', () => {
+        wrapper.vm.activeFields = ['name', 'objectiveQuality'];
+
+        let cookie = Cookies.get('happy-cow');
+        let happyCow = JSON.parse(cookie);
+        let fields = happyCow.fields;
+        
+        it('Sets Cookie', () => {
+            expect(typeof cookie).toEqual('string');
+            expect(typeof happyCow).toEqual('object');
+            expect(typeof fields).toEqual('object');
         });
 
-        vm.$mount();
+        it('Sets ON Fields', () => {
+            expect(fields.on).toBeInstanceOf(Array);
+            expect(fields.on.length).toEqual(2);
+            expect(fields.on[0]).toEqual('name');
+            expect(fields.on[1]).toEqual('objectiveQuality');
+        });
 
-        theNovaTable = vm.$refs.theNovaTable;
-
-        done();
+        it('Sets OFF Fields', () => {
+            expect(fields.off).toBeInstanceOf(Array);
+            expect(fields.off.length).toEqual(1);
+            expect(fields.off[0]).toEqual('fieldA');
+        });
     });
 
-    it('should have loaded', function () {
-        Vue.waitTicks(3)
-            .then(() => {
-                assert(theNovaTable !== null, "theNovaTable is null")
-            });
-    });
-
-    it('should save some stuff to cookies', function (done) {
-        Vue.waitTicks(3)
-            .then(() => {
-                theNovaTable.activeFields = ['name', 'objectiveQuality'];
-                return Vue.waitTicks(3);
-            })
-            .then(() => {
-                let cookie = Cookies.get('happy-cow');
-                assert(typeof cookie == 'string', 'no happy-cow cookie');
-                let happyCow = JSON.parse(cookie);
-                assert(typeof happyCow == 'object', 'no happy-cow');
-                let fields = happyCow.fields;
-                assert(typeof fields == 'object', 'no happy-cow.fields');
-                assert(fields.on instanceof Array, 'no happy-cow.fields.on array');
-                assert.equal(2, fields.on.length);
-                assert.equal('name', fields.on[0]);
-                assert.equal('objectiveQuality', fields.on[1]);
-                assert(fields.off instanceof Array);
-                assert.equal(1, fields.off.length);
-                assert.equal('fieldA', fields.off[0]);
-            })
-            .then(done, done);
-    });
-
-    it('should load some stuff from cookies', function (done) {
+    it('Loads From Cookie', () => {
         Cookies.set('happy-cow', {
             fields: {
                 on: ['name'],
                 off: ['fieldA'],
             }
         });
-        Vue.waitTicks(3)
-            .then(() => {
-                assert.equal(2, theNovaTable.activeFields.length);
-                // name is explicit
-                assert.equal('name', theNovaTable.activeFields[0]);
-                // objectiveQuality is implicit because it's not deactivated
-                assert.equal('objectiveQuality', theNovaTable.activeFields[1]);
-            })
-            .then(done, done);
+
+        expect(wrapper.vm.activeFields.length).toEqual(2);
+        expect(wrapper.vm.activeFields[0]).toEqual('name'); //Explicitly set
+        expect(wrapper.vm.activeFields[1]).toEqual('objectiveQuality'); //Implicitly set
     });
 
 }

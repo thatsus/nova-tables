@@ -17,40 +17,30 @@ export default function() {
         });
     };
 
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :item-source="source"
-                    :columns="columns"
-                    name="testName"
-                    :endpoint-params="endpointParams"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    source: source,
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                        fieldA: 'Field A',
-                    },
-                    endpointParams: {},
-                };
-            },
-        });
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                itemSource: source,
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                    fieldA: 'Field A',
+                },
+                name: 'testName',
+                endpointParams: {},
+            }
+        }
+    );
 
-    let wrapper = 
-
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have queryParamSaver', function () {
-        assert(theNovaTable.queryParamSaver);
+    it('Has queryParamSaver', () => {
+        expect(wrapper.vm.queryParamSaver).toBeDefined();
+        expect(wrapper.vm.queryParamSaver).not.toBeNull();
     });
-
 }

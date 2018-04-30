@@ -1,19 +1,21 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { createLocalVue, shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 import AbstractSource from '../src/abstract-source.js';
+import VueResource from 'vue-resource';
+import VueResourceMocker from 'vue-resource-mocker';
+import WaitTicks from '../src/wait-ticks.js';
 
 export default function() {
+    let localVue, lastRequest, wrapper;
 
-    let vm, theNovaTable, lastRequest;
+    beforeEach('Setup the Local Vue Instance', (done) => {
+        localVue = createLocalVue();
+        localVue.use(VueResource);
+        localVue.httpMocker = new VueResourceMocker();
+        localVue.use(localVue.httpMocker);
+        localVue.use(WaitTicks);
 
-    beforeEach('setup the Vue instance', function (done) {
-
-        lastRequest = null;
-
-        Vue.httpMocker.setRoutes({
+        localVue.httpMocker.setRoutes({
             GET: {
                 '/my-endpoint': function (request) {
                     lastRequest = request;
@@ -30,70 +32,51 @@ export default function() {
             },
         });
 
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    endpoint="/my-endpoint"
-                    :endpoint-params="endpointParams"
-                    :columns="columns"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
+        wrapper = shallow(
+            NovaTable,
+            {
+                localVue: localVue,
+                propsData: {
+                    endpoint: '/my-endpoint',
                     columns: {
                         name: 'Name',
                         objectiveQuality: 'Quality',
                     },
-                    endpointParams: {ohai: 1334},
-                };
-            },
-        });
+                    endpointParams: {
+                        ohai: 1334
+                    },
+                }
+            }
+        );
 
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(4)
-            .then(done);
+        localVue.waitTicks(3).then(done);
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null");
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should pass endpoint params along', function (done) {
-        assert(lastRequest);
-        assert(lastRequest.query);
-        assert.equal(1334, lastRequest.query.ohai);
-
+    it('Passes Endpoint Params', () => {
+        expect(lastRequest).not.toBeNull();
+        expect(lastRequest.query).not.toBeNull();
+        expect(lastRequest.query.ohai).toEqual('1334');
+        
         lastRequest = null;
-
-        vm.endpointParams = {as: 'heck'};
-        Vue.waitTicks(3)
-            .then(() => {
-                assert(lastRequest);
-                assert(lastRequest.query);
-                assert.equal('undefined', typeof lastRequest.query.ohai);
-                assert.equal('heck', lastRequest.query.as);
-            })
-            .then(done, done);
+        wrapper.vm.endpointParams = {as: 'heck'};
+        
+        expect(lastRequest).not.toBeNull();
+        expect(lastRequest.query).not.toBeNull();
+        expect(lastRequest.query.ohai).toBeUndefined();
+        expect(lastRequest.query.as).toEqual('heck');
     });
 
-    it('should not panic on undefined or null', function (done) {
-        vm.endpointParams = null;
-        Vue.nextTick()
-            .then(() => {
-                assert(lastRequest);
-                vm.endpointParams = undefined;
-                return Vue.nextTick();
-            })
-            .then(() => {
-                assert(lastRequest);
-            })
-            .then(done, done);
+    it('Handles Undefined/Null', () => {
+        wrapper.vm.endpointParams = null;
+        expect(lastRequest).not.toBeNull();
+        
+        wrapper.vm.endpointParams = undefined;
+        expect(lastRequest).not.toBeNull();
     });
 }

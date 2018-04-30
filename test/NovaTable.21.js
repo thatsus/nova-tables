@@ -1,70 +1,51 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { mount } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
-import AbstractSource from '../src/abstract-source.js';
 
 export default function() {
 
-    let vm, theNovaTable;
+    let wrapper = mount(
+        NovaTable,
+        {
+            propsData: {
+                items: [
+                    {name: 'Dave', objectiveQuality: 'Medium'},
+                    {name: 'Dan', objectiveQuality: 'High'},
+                ],
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                },
+                keyField: 'name',
+                csvExportable: true,
+            }
+        }
+    );
 
-    beforeEach('setup the Vue instance', function (done) {
-
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :items="items"
-                    :columns="columns"
-                    keyField="name"
-                    :csv-exportable="true"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    items: [
-                        {name: 'Dave', objectiveQuality: 'Medium'},
-                        {name: 'Dan', objectiveQuality: 'High'},
-                    ],
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
-        });
-
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(3)
-            .then(done);
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
+    it('Has Data For CSV', () => {
+        wrapper.vm.generateCsvData();
+        expect(wrapper.vm.csvData).toBeInstanceOf(Array);
+
+        expect(wrapper.vm.csvData[0].Name).toEqual('Dan');
+        expect(wrapper.vm.csvData[0].Quality).toEqual('High');
+        expect(wrapper.vm.csvData[1].Name).toEqual('Dave');
+        expect(wrapper.vm.csvData[1].Quality).toEqual('Medium');
     });
 
-    it('should have data for csv', function () {
-        assert.equal("Dan", theNovaTable.csvData[0].Name);
-        assert.equal("High", theNovaTable.csvData[0].Quality);
-        assert.equal("Dave", theNovaTable.csvData[1].Name);
-        assert.equal("Medium", theNovaTable.csvData[1].Quality);
-    });
+    it('Displays CSV Download Link', () => {
+        let a = wrapper.find('a[download="export.csv"]');
+        expect(a.exists()).toBeTruthy();
 
-    it('should have csv-download child', function () {
-        let el = $(theNovaTable.$el);
-        let a = el.find('a[download="export.csv"]');
-        assert(a[0], 'No CSV anchor tag found');
-        let href = a[0].href;
-        assert(/Dan/.test(href), 'Dan is not in CSV link');
-        assert(/Dave/.test(href), 'Dave is not in CSV link');
-        assert(/High/.test(href), 'High is not in CSV link');
-        assert(/Medium/.test(href), 'Medium is not in CSV link');
+        let href = a.element.href;
+
+        expect(href).toMatch(/Dan/);
+        expect(href).toMatch(/Dave/);
+        expect(href).toMatch(/High/);
+        expect(href).toMatch(/Medium/);
     });
 }
