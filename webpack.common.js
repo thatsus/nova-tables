@@ -1,7 +1,13 @@
 const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-    devtool: 'inline-cheap-module-source-map',
+    entry: [
+        './src/NovaTable.vue'
+    ],
+    output: {
+        filename: 'NovaTable.js',
+        path: __dirname + '/dist',
+    },
     mode: 'production',
     // ensure we are using the version of Vue that supports templates
     resolve: {
