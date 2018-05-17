@@ -1,99 +1,67 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { mount } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 import AbstractSource from '../src/abstract-source.js';
 
-module.exports = function () {
+export default function() {
 
-    let vm, theNovaTable, source;
-
-    beforeEach('setup the Vue instance', function (done) {
-
-        source = new AbstractSource();
-        source.get = function () {
-            return Promise.resolve({
-                items: [
-                    {name: 'Dave', objectiveQuality: 'Medium'},
-                    {name: 'Dan', objectiveQuality: 'High'},
-                    {name: 'Marshal', objectiveQuality: '?'},
-                    {name: 'Clint', objectiveQuality: '?'},
-                    {name: 'Jesse', objectiveQuality: '?'},
-                ],
-                totalCount: 10,
-                pageCount: 2,
-                page: 1,
-            });
-        };
-
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :item-source="source"
-                    :columns="columns"
-                    :adjustable-columns="true"
-                    :page-length="5"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    source: source,
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
+    let source = new AbstractSource();
+    source.get = function () {
+        return Promise.resolve({
+            items: [
+                {name: 'Dave', objectiveQuality: 'Medium'},
+                {name: 'Dan', objectiveQuality: 'High'},
+                {name: 'Marshal', objectiveQuality: '?'},
+                {name: 'Clint', objectiveQuality: '?'},
+                {name: 'Jesse', objectiveQuality: '?'},
+            ],
+            totalCount: 10,
+            pageCount: 2,
+            page: 1,
         });
+    };
 
-        vm.$mount();
+    //Need to use mount instead of shallow to handle the page selector
+    let wrapper = mount(
+        NovaTable,
+        {
+            propsData: {
+                itemSource: source,
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                },
+                adjustableColumns: true,
+                pageLength: 5
+            }
+        }
+    );    
 
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(3)
-            .then(done);
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
+    it('Displays Only 5 Rows', () => {
+        expect(wrapper.vm.source.page_length).toEqual(5);
     });
 
-    it('should request only 5 items', function () {
-        assert.equal(5, source.page_length, `page_length is ${source.page_length}`);
+    it('Displays The Correct Indexes', () => {
+        expect(wrapper.vm.pageLengthSelection).toBeTruthy();
+        expect(wrapper.vm.pageCount).toBeGreaterThan(1);
+        expect(wrapper.text()).toMatch(/Showing 1 to 5 of 10 entries/);
     });
 
-    it('should show the indexes of entries', function () {
-        assert(theNovaTable.pageLengthSelection, 'pageLengthSelection is falsy');
-        assert(theNovaTable.pageCount > 1, 'pageCount is not greater than 1');
-        assert($(theNovaTable.$el).text().match(/Showing 1 to 5 of 10 entries/), `Couldn't find "Showing 1 to 5 of 10 entries" in ${$(theNovaTable.$el).text()}`);
+    it('Displays The Page Selector', () => {
+        expect(wrapper.find('ul.pagination').exists()).toBeTruthy();
+        expect(wrapper.find('ul.pagination').text()).toMatch(/Previous.*1.*2.*Next/);
     });
 
-    it('should have page buttons', function () {
-        let el = $(theNovaTable.$el);
-        let pagination = el.find('ul.pagination');
-
-        assert.equal(1, pagination.length, 'Pagination not found?');
-        assert(pagination.text().match(/Previous.*1.*2.*Next/));
+    it('Changes Pages When Page Buttons Are Clicked', () => {
+        let page2 = wrapper.findAll('ul.pagination li').at(2).find('a');
+        expect(page2).toBeDefined();
+        
+        page2.trigger('click');
+        expect(wrapper.vm.source.page).toEqual(2);
     });
-
-    it('should change pages when number page button clicked', function (done) {
-        let el = $(theNovaTable.$el);
-        let page2 = el.find('ul.pagination li:contains(2) a');
-
-        assert(page2[0], 'Page 2 selector not found');
-
-        page2[0].dispatchEvent(new Event('click'));
-
-        Vue.nextTick()
-            .then(() => {
-                assert.equal(2, source.page, 'page not set to 2');
-            })
-            .then(done, done);
-    });
-
 }

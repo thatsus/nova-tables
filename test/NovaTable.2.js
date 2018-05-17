@@ -1,17 +1,21 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { createLocalVue, shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 import ServerSideSource from '../src/server-side-source.js';
+import VueResource from 'vue-resource';
+import VueResourceMocker from 'vue-resource-mocker';
+import WaitTicks from '../src/wait-ticks.js';
 
-module.exports = function () {
+export default function() {
+    let localVue, lastRequest, wrapper;
 
-    let vm, theNovaTable, lastRequest;
+    beforeEach('Setup The Local Vue Instance', (done) => {
+        localVue = createLocalVue();
+        localVue.use(VueResource);
+        localVue.httpMocker = new VueResourceMocker();
+        localVue.use(localVue.httpMocker);
+        localVue.use(WaitTicks);
 
-    beforeEach('setup the Vue instance', function (done) {
-
-        Vue.httpMocker.setRoutes({
+        localVue.httpMocker.setRoutes({
             GET: {
                 '/my-endpoint': function (request) {
                     lastRequest = request;
@@ -28,62 +32,51 @@ module.exports = function () {
             },
         });
 
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    endpoint="/my-endpoint"
-                    :columns="columns"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
+        wrapper = shallow(
+            NovaTable,
+            {
+                localVue: localVue,
+                propsData: {
+                    endpoint: '/my-endpoint',
                     columns: {
                         name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
-        });
+                        objectiveQuality: 'Quality'
+                    }
+                }
+            }
+        );
 
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(4)
-            .then(done);
+        localVue.waitTicks(3).then(done);
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have a ServerSideSource', function () {
-        assert(theNovaTable.source instanceof ServerSideSource);
+    it('Have A ServerSideSource', () => {
+        expect(wrapper.vm.source).toBeInstanceOf(ServerSideSource);
     });
 
-    it('should have tags and data in alphabetical order by name', function () {
-        let el = $(theNovaTable.$el);
-        assert.equal(el.length, 1);
-
-        let table = el.find('table');
-        assert.equal(table.length, 1);
-
-        let bodyTrs = table.find('tbody').find('tr');
-        assert.equal(bodyTrs.length, 2, 'bodyTrs.length === ' + bodyTrs.length + ' ' + bodyTrs.html());
-        
-        let bodyTds = table.find('tbody').find('td');
-        assert.equal(bodyTds[0].innerText.trim(), 'Dan');
-        assert.equal(bodyTds[1].innerText.trim(), 'High');
-        assert.equal(bodyTds[2].innerText.trim(), 'Dave');
-        assert.equal(bodyTds[3].innerText.trim(), 'Medium');
+    it('Display Columns In The Correct Order', () => {
+        let ths = wrapper.findAll('th').wrappers;
+        expect(ths.length).toEqual(2);
+        expect(ths[0].text().trim()).toEqual('Name');
+        expect(ths[1].text().trim()).toEqual('Quality');
     });
 
-    it('should have asked for order-by name alphabetized', function () {
-        assert.equal('name', lastRequest.query.sort_field);
-        assert.equal('A', lastRequest.query.sort_direction);
+    it('Request The Correct Order-By', () => {
+        expect(lastRequest.query.sort_field).toEqual('name');
+        expect(lastRequest.query.sort_direction).toEqual('A');
+    });
+
+    it('Get The Correct Data', () => {
+        let tds = wrapper.findAll('td').wrappers;
+        expect(tds.length).toEqual(4);
+        expect(tds[0].text().trim()).toEqual('Dan');
+        expect(tds[1].text().trim()).toEqual('High');
+        expect(tds[2].text().trim()).toEqual('Dave');
+        expect(tds[3].text().trim()).toEqual('Medium');
     });
 };

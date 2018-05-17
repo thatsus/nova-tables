@@ -1,61 +1,39 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 
-module.exports = function () {
+export default function() {
 
-    let vm, theNovaTable;
-
-    beforeEach('setup the Vue instance', function (done) {
-
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :items="items"
-                    :columns="columns"
-                    :footer="true"
-                >
-                    <template slot="name-footer" slot-scope="props">
-                        Names: {{ props.items.length }}
-                    </template>
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                items: [
+                    {name: 'Dan', objectiveQuality: 'High'},
+                    {name: 'Dave', objectiveQuality: 'Medium'},
+                ],
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                },
+                footer: true
             },
-            data() {
-                return {
-                    items: [
-                        {name: 'Dan', objectiveQuality: 'High'},
-                        {name: 'Dave', objectiveQuality: 'Medium'},
-                    ],
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
-        });
+            slots: {
+                'name-footer': '<span>Names: 2</span>'
+            }
+        }
+    );
 
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(3)
-            .then(done);
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
+    it('Shows Footer', () => {
+        expect(wrapper.find('tfoot')).toBeDefined();
     });
 
-    it('should show the footer', function () {
-        assert.equal(1, $(theNovaTable.$el).find('tfoot').length, 'No footer?');
-    });
-
-    it('should have the footer slot', function () {
-        assert($(theNovaTable.$el).text().match(/Names: 2/), 'Footer text is wrong: ' + $(theNovaTable.$el).text());
+    it('Has The Footer Slot', () => {
+        expect(wrapper.text()).toMatch(/Names: 2/);
     });
 }

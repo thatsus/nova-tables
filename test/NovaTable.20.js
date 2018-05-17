@@ -1,56 +1,34 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 import AbstractSource from '../src/abstract-source.js';
 
-module.exports = function () {
+export default function() {
 
-    let vm, theNovaTable;
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                items: [
+                    {name: 'Dave', objectiveQuality: 'Medium'},
+                    {name: 'Dan', objectiveQuality: 'High'},
+                ],
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                },
+                keyField: 'name',
+            }
+        }
+    );
 
-    beforeEach('setup the Vue instance', function (done) {
-
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :items="items"
-                    :columns="columns"
-                    keyField="name"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    items: [
-                        {name: 'Dave', objectiveQuality: 'Medium'},
-                        {name: 'Dan', objectiveQuality: 'High'},
-                    ],
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
-        });
-
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(3)
-            .then(done);
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
-    });
-
-    it('should have the references to rows', function () {
-        assert(theNovaTable.$refs['cell.Dan.name']);
-        assert(theNovaTable.$refs['cell.Dave.name']);
+    it('Has References To Rows', () => {
+        expect(wrapper.vm.$refs['cell.Dan.name']).toBeDefined();
+        expect(wrapper.vm.$refs['cell.Dave.name']).toBeDefined();
     });
 }

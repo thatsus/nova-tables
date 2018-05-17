@@ -5,12 +5,13 @@ import $ from 'jquery';
 
 class ServerSideSource extends AbstractSource
 {
-    constructor(endpoint) {
+    constructor(endpoint, http) {
         super();
         this.endpoint = endpoint;
         this.paramMergers = [];
         this.throttle = new TimeoutThrottle();
         this.slug = null;
+        this.http = http || Vue.http;
     }
 
     addParamMerger(closure) {
@@ -47,7 +48,7 @@ class ServerSideSource extends AbstractSource
         return new Promise((resolve) => {
             this.throttle.throttle(() => {
                 resolve(
-                    Vue.http
+                    this.http
                     .get(this.buildRequestUrl())
                     .then(response => {
                         if (slug !== this.slug) {
@@ -67,4 +68,4 @@ class ServerSideSource extends AbstractSource
     }
 }
 
-module.exports = ServerSideSource;
+export default ServerSideSource;

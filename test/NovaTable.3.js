@@ -1,121 +1,105 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 
-module.exports = function () {
+export default function() {
+    // Our own special source just for tracking what methods get 
+    // called by NovaTable
+    let source = {
+        calls: {
+            setPage: [],
+            setSort: [],
+            onChange: [],
+            setSearch: [],
+            get: [],
+        },
+        setSearch() {
+            this.calls.setSearch.push(arguments);
+        },
+        setPage() {
+            this.calls.setPage.push(arguments);
+        },
+        setSort() {
+            this.calls.setSort.push(arguments);
+        },
+        onChange() {
+            this.calls.onChange.push(arguments);
+        },
+        get() {
+            this.calls.get.push(arguments);
+            return Promise.resolve({
+                items: [
+                    {name: 'Dan', objectiveQuality: 'High'},
+                    {name: 'Dave', objectiveQuality: 'Medium'},
+                ],
+                totalCount: 2,
+                pageCount: 1,
+                page: 1,
+            });
+        },
+    };
 
-    let vm, theNovaTable, source;
-
-    beforeEach('setup the Vue instance', function (done) {
-
-        // Our own special source just for tracking what methods get 
-        // called by NovaTable
-        source = {
-            calls: {
-                setPage: [],
-                setSort: [],
-                onChange: [],
-                setSearch: [],
-                get: [],
+    let wrapper = shallow(
+        NovaTable,
+        {
+            propsData: {
+                itemSource: source,
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'quality',
+                },
             },
-            setSearch() {
-                this.calls.setSearch.push(arguments);
-            },
-            setPage() {
-                this.calls.setPage.push(arguments);
-            },
-            setSort() {
-                this.calls.setSort.push(arguments);
-            },
-            onChange() {
-                this.calls.onChange.push(arguments);
-            },
-            get() {
-                this.calls.get.push(arguments);
-                return Promise.resolve({
-                    items: [
-                        {name: 'Dan', objectiveQuality: 'High'},
-                        {name: 'Dave', objectiveQuality: 'Medium'},
-                    ],
-                    totalCount: 2,
-                    pageCount: 1,
-                    page: 1,
-                });
-            },
-        };
-
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    :item-source="source"
-                    :columns="columns"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    source: source,
-                    columns: {
-                        name: 'Name',
-                        objectiveQuality: 'Quality',
-                    },
-                };
-            },
-        });
-
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(3)
-            .then(done);
+        }
+    );
+    
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
     });
 
-    it('should have loaded', function () {
-        assert(theNovaTable !== null, "theNovaTable is null")
+    it('Has Custom Source', () => {
+        expect(wrapper.vm.source).toEqual(source);
     });
 
-    it('should have source set to the object we gave', function () {
-        assert.equal(source, theNovaTable.source, 'Has different source');
-    });
-
-    it('should have called the methods we expected', function () {
+    describe('Calls The Correct Methods', () => {
         // setPage is called twice, once explicitly and once when we set 
         // the value of pageLengthSelection
-        assert.equal(2, source.calls.setPage.length, `setPage called ${source.calls.setPage.length} times`);
-        assert.equal(1, source.calls.setPage[0][0], `setPage page was set to ${source.calls.setPage[0][0]}`);
-        assert.equal(null, source.calls.setPage[0][1], `setPage pageLength was set to ${source.calls.setPage[0][1]}`);
+        it('setPage', () => {
+            expect(wrapper.vm.source.calls.setPage.length).toEqual(2);
+            expect(wrapper.vm.source.calls.setPage[0][0]).toEqual(1);
+            expect(wrapper.vm.source.calls.setPage[0][1]).toBeUndefined();
+        });
 
         // setSearch is called once when activeColumns is set
-        assert.equal(1, source.calls.setSearch.length, `setSearch called ${source.calls.setSearch.length} times`);
-        assert.equal('', source.calls.setSearch[0][0], `setSearch search was set to ${source.calls.setSearch[0][0]}`);
-        assert.equal('name-objectiveQuality', source.calls.setSearch[0][1].slice().sort().join('-'), `setSearch search was set to ${source.calls.setSearch[0][1]}`);
+        it('setSearch', () => {
+            expect(wrapper.vm.source.calls.setSearch.length).toEqual(1);
+            expect(wrapper.vm.source.calls.setSearch[0][0]).toEqual('');
+            expect(wrapper.vm.source.calls.setSearch[0][1].slice().sort().join('-')).toEqual('name-objectiveQuality');
+        });
 
         // setSort is called once, when softField is set
         // sortOrder doesn't get set in this test, and so it doesn't imply
         // a call to setSort
-        assert.equal(1, source.calls.setSort.length, `setSort called ${source.calls.setSort.length} times`);
-        assert.equal('name', source.calls.setSort[0][0], `setSort sort was set to ${source.calls.setSort[0][0]}`);
-        assert.equal('A', source.calls.setSort[0][1], `setSort sortOrder was set to ${source.calls.setSort[0][1]}`);
+        it('setSort', () => {
+            expect(wrapper.vm.source.calls.setSort.length).toEqual(1);
+            expect(wrapper.vm.source.calls.setSort[0][0]).toEqual('name');
+            expect(wrapper.vm.source.calls.setSort[0][1]).toEqual('A');
+        });
 
-        assert.equal(1, source.calls.onChange.length, `onChange called ${source.calls.onChange.length} times`);
-        assert(source.calls.onChange[0][0] instanceof Function, `onChange closure was not a Function`);
+        it('onChange', () => {
+            expect(wrapper.vm.source.calls.onChange.length).toEqual(1);
+            expect(wrapper.vm.source.calls.onChange[0][0]).toBeInstanceOf(Function);
+        });
     });
 
-    it('should change the page when the itemSource gets', function (done) {
-        let el = $(theNovaTable.$el);
-        assert(el.text().match(/Dan/), 'Before change: No Dan found');
-        assert(el.text().match(/High/), 'Before change: No High found');
-        assert(el.text().match(/Dave/), 'Before change: No Dave found');
-        assert(el.text().match(/Medium/), 'Before change: No Medium found');
-        assert(el.text().match(/Dan[\s]*High[\s]*Dave[\s]*Medium/), 'Before change: Values not found in expected order: ' + el.text());
-
-        source.get = function () {
+    it('Change Page When itemSource GETs', () => {
+        expect(wrapper.text()).toMatch(/Dan/);
+        expect(wrapper.text()).toMatch(/High/);
+        expect(wrapper.text()).toMatch(/Dave/);
+        expect(wrapper.text()).toMatch(/Medium/);
+        expect(wrapper.text()).toMatch(/Dan\s*High\s*Dave\s*Medium/);
+        
+        wrapper.vm.source.get = function () {
             return Promise.resolve({
                 items: [
                     {name: 'Dave', objectiveQuality: 'Medium'},
@@ -125,15 +109,14 @@ module.exports = function () {
                 page: 1,
             });
         };
-        theNovaTable.refreshSource();
-        Vue.waitTicks(3)
-            .then(() => {
-                assert(!el.text().match(/Dan/), 'After change: Dan found');
-                assert(!el.text().match(/High/), 'After change: High found');
-                assert(el.text().match(/Dave/), 'After change: No Dan found');
-                assert(el.text().match(/Medium/), 'After change: No Medium found');
-                assert(el.text().match(/Dave[\s]*Medium/), 'After change: Values not found in expected order');
-            })
-            .then(done, done);
+
+        wrapper.vm.refreshSource();
+        wrapper.vm.$nextTick().then(() => {
+            expect(wrapper.text()).not.toMatch(/Dan/);
+            expect(wrapper.text()).not.toMatch(/High/);
+            expect(wrapper.text()).toMatch(/Dave/);
+            expect(wrapper.text()).toMatch(/Medium/);
+            expect(wrapper.text()).toMatch(/Dave\s*Medium/);
+        });
     });
 }

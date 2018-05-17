@@ -4,12 +4,12 @@
             <span v-if="isDisabled('previous')"><i class="fa fa-angle-double-left"></i></span>
             <a v-else href="javascript:void(0)" @click="setPage('first')"><i class="fa fa-angle-double-left"></i></a>
         </li>
-        <li :class="classFor('previous')">
+        <li :class="classFor('previous')" name="previousPage">
             <span v-if="isDisabled('previous')">Previous</span>
             <a v-else href="javascript:void(0)" @click="setPage('previous')">Previous</a>
         </li>
         <li v-for="p in pages" :class="classFor(p)"><a href="javascript:void(0)" @click="setPage(p)">{{ p }}</a></li>
-        <li :class="classFor('next')">
+        <li :class="classFor('next')" name="nextPage">
             <span v-if="isDisabled('next')">Next</span>
             <a v-else href="javascript:void(0)" @click="setPage('next')">Next</a>
         </li>

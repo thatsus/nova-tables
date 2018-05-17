@@ -1,17 +1,25 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
+import { createLocalVue, shallow } from '@vue/test-utils';
 import NovaTable from '../src/NovaTable.vue';
-import Vue from 'vue';
 import ServerSideSource from '../src/server-side-source.js';
+import VueResource from 'vue-resource';
+import VueResourceMocker from 'vue-resource-mocker';
+import WaitTicks from '../src/wait-ticks.js';
 
-module.exports = function () {
+export default function() {
+    let localVue, lastRequest, wrapper;
 
-    let vm, theNovaTable, lastRequest, responseData;
+    beforeEach('Setup The Local Vue Instance', (done) => {
+        localVue = createLocalVue();
+        localVue.use(VueResource);
+        localVue.httpMocker = new VueResourceMocker();
+        localVue.use(localVue.httpMocker);
+        localVue.use(WaitTicks);
 
-    beforeEach('setup the Vue instance', function (done) {
-
-        responseData = {
+        localVue.httpMocker.setRoutes({
+            GET: {
+                '/my-endpoint': function (request) {
+                    lastRequest = request;
+                    return {
                         items: [
                             {name: 'Dan', objectiveQuality: 'High'},
                             {name: 'Dave', objectiveQuality: 'Medium'},
@@ -20,53 +28,28 @@ module.exports = function () {
                         pageCount: 1,
                         page: 1,
                     };
-
-        Vue.httpMocker.setRoutes({
-            GET: {
-                '/my-endpoint': (request) => {
-                    lastRequest = request;
-                    return responseData;
                 },
             },
         });
 
-        vm = new Vue({
-            template: `
-                <nova-table ref="theNovaTable"
-                    endpoint="/my-endpoint"
-                    :columns="columns"
-                    @data-loaded="dataLoaded"
-                >
-                </nova-table>
-            `,
-            components: {
-                'nova-table': NovaTable,
-            },
-            data() {
-                return {
-                    data: null,
+        wrapper = shallow(
+            NovaTable,
+            {
+                localVue: localVue,
+                propsData: {
+                    endpoint: '/my-endpoint',
                     columns: {
                         name: 'Name',
                         objectiveQuality: 'Quality',
                     },
-                };
-            },
-            methods: {
-                dataLoaded(eventData) {
-                    this.data = eventData;
-                }
+                },
             }
-        });
+        );
 
-        vm.$mount();
-
-        theNovaTable = vm.$refs.theNovaTable;
-
-        Vue.waitTicks(4)
-            .then(done);
+        localVue.waitTicks(4).then(done);
     });
 
-    it('should have emitted event data-loaded', function () {
-        assert.equal(responseData,vm.data);
+    it('Emits DataLoaded Event', () => {
+        expect(wrapper.emitted('data-loaded')).toBeTruthy();
     });
 };

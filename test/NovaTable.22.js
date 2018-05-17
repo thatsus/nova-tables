@@ -1,28 +1,24 @@
-import $ from 'jquery';
-import _ from 'lodash';
-import assert from 'assert';
 import NovaTable from '../src/NovaTable.vue';
 import NovaPageSelect from '../src/NovaPageSelect.vue';
-import Vue from 'vue';
 import AbstractSource from '../src/abstract-source.js';
 import ArraySource from '../src/array-source.js';
 import ServerSideSource from '../src/server-side-source.js';
 
-module.exports = function () {
+export default function() {
 
-    it('should have NovaPageSelect', function () {
-        assert.equal(NovaTable.NovaPageSelect, NovaPageSelect);
+    it('Has NovaPageSelect', () => {
+        expect(NovaTable.NovaPageSelect).toEqual(NovaPageSelect);
     });
 
-    it('should have ArraySource', function () {
-        assert.equal(NovaTable.ArraySource, ArraySource);
+    it('Has ArraySource', () => {
+        expect(NovaTable.ArraySource).toEqual(ArraySource);
     });
 
-    it('should have ServerSideSource', function () {
-        assert.equal(NovaTable.ServerSideSource, ServerSideSource);
+    it('Has ServerSideSource', () => {
+        expect(NovaTable.ServerSideSource).toEqual(ServerSideSource);
     });
 
-    it('should have AbstractSource', function () {
-        assert.equal(NovaTable.AbstractSource, AbstractSource);
+    it('Has AbstractSource', () => {
+        expect(NovaTable.AbstractSource).toEqual(AbstractSource);
     });
 }

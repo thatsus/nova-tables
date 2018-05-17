@@ -199,7 +199,7 @@ export default {
             } else if (this.items) {
                 this.source = new ArraySource(this.items);
             } else if (this.endpoint) {
-                this.source = new ServerSideSource(this.endpoint);
+                this.source = new ServerSideSource(this.endpoint, this.$http);
                 this.source.addParamMerger((params) => {
                     if (this.endpointParams) {
                         _.merge(params, this.endpointParams);
@@ -374,10 +374,13 @@ export default {
                     this.response = response;
                     this.pagedItems = response.items;
                     this.pageCount = response.pageCount;
+                
                     let page = response.page >= 1 ? response.page : 1;
+                
                     if (this.page != page) {
                         this.page = page;
                     }
+                
                     this.totalCount = response.totalCount;
                     this.generatedItemKeys = {};    
                     this.$emit('data-loaded', this.response);
@@ -531,7 +534,11 @@ export default {
                 var id = this.keyFor(item);
                 var textItem = {};
                 _.each(this.activeFields, (field) => {
-                    textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0] ? this.$refs['cell.' + id + '.' + field][0].innerText.trim() : null;
+                    if (this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0]) {
+                        textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field][0].textContent.trim();
+                    } else {
+                        textItem[this.columns[field]] = null;    
+                    }
                 });
                 return textItem;
             });

@@ -7,7 +7,6 @@ import VueResourceMocker from 'vue-resource-mocker';
 if (!global.Promise) {
     global.Promise = require('promise');
 }
-
 Vue.use(VueResource);
 Vue.httpMocker = new VueResourceMocker();
 Vue.use(Vue.httpMocker);
@@ -38,6 +37,7 @@ Vue.waitTicks = function (n) {
     }
     return promise;
 };
+
 
 // Require all test files using special Webpack feature
 // https://webpack.github.io/docs/context.html#require-context
