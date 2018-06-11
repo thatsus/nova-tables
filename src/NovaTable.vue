@@ -135,7 +135,7 @@ import AbstractSource from './abstract-source.js';
 import ArraySource from './array-source.js';
 import Cookies from 'js-cookie';
 import CsvDownload from 'vue-csv-downloader';
-import NovaPageSelect from './NovaPageSelect';
+import NovaPageSelect from './NovaPageSelect.vue';
 import QueryParamSaver from './query-param-saver.js';
 import ServerSideSource from './server-side-source.js';
 
