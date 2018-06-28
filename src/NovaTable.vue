@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="nova-table-container">
-            <table class="display table table-bordered table-condensed fb-table table-striped responsive"
+            <table :class="tableClass"
                    width="100%">
                 <thead>
                     <tr class='sorting-header-gray'>
@@ -169,6 +169,7 @@ export default {
         'defaultSortOrders',
         'name',
         'keyField',
+        'tableCssClass',
     ],
     data() {
         return {
@@ -275,6 +276,13 @@ export default {
         },
     },
     computed: {
+        tableClass() {
+            if (this.tableCssClass) {
+                return this.tableCssClass;
+            } else {
+                return 'display table table-bordered table-condensed fb-table table-striped responsive';
+            }
+        },
         pageDescriptor() {
             if (this.pageLengthSelection == 'All') {
                 return 'Showing ' + this.totalCount + ' entries';
