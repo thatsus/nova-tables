@@ -75,7 +75,7 @@
                     </tr>
                 </thead>
                 <transition-group tag="tbody" class="tableBody" name="nova-rows">
-                    <tr v-for="item in pagedItems" :key="keyFor(item)" :class="getRowCallbackClass(item)">
+                    <tr v-for="item in pagedItems" :key="keyFor(item)" :class="getRowClass(item)">
                         <td v-for="(name, field) in activeColumns" :class="'td-' + field + '-styles'" :ref="'cell.' + keyFor(item) + '.' + field">
                             <slot :name="field" :item="item">
                                 {{ valueFor(item, field) }}
@@ -151,27 +151,30 @@ export default {
         CsvDownload,
         NovaPageSelect,
     },
-    props: [
-        'items',
-        'endpoint',
-        'endpointParams',
-        'columns',
-        'searchable',
-        'adjustableColumns',
-        'sortable',
-        'defaultSortField',
-        'csvExportable',
-        'defaultActiveFields',
-        'itemSource',
-        'pageLength',
-        'pageLengthOptions',
-        'footer',
-        'defaultSortOrders',
-        'name',
-        'keyField',
-        'tableCssClass',
-        'rowClassCallback',
-    ],
+    props: {
+        items:                null,
+        endpoint:             null,
+        endpointParams:       null,
+        columns:              null,
+        searchable:           null,
+        adjustableColumns:    null,
+        sortable:             null,
+        defaultSortField:     null,
+        csvExportable:        null,
+        defaultActiveFields:  null,
+        itemSource:           null,
+        pageLength:           null,
+        pageLengthOptions:    null,
+        footer:               null,
+        defaultSortOrders:    null,
+        name:                 null,
+        keyField:             null,
+        tableClass:           {
+                                    type:       String,
+                                    default:    'display table table-bordered table-condensed fb-table table-striped responsive',
+                               },
+        rowClassCallback:     null,
+    },
     data() {
         return {
             activeFields: [],
@@ -277,13 +280,6 @@ export default {
         },
     },
     computed: {
-        tableClass() {
-            if (this.tableCssClass) {
-                return this.tableCssClass;
-            } else {
-                return 'display table table-bordered table-condensed fb-table table-striped responsive';
-            }
-        },
         pageDescriptor() {
             if (this.pageLengthSelection == 'All') {
                 return 'Showing ' + this.totalCount + ' entries';
@@ -368,7 +364,7 @@ export default {
         },
     },
     methods: {
-        getRowCallbackClass(item) {
+        getRowClass(item) {
             if (!this.rowClassCallback) {
                 return;
             }
