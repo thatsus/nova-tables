@@ -1,4 +1,4 @@
-import { mount } from '@vue/test-utils';
+import { shallow } from '@vue/test-utils'
 import NovaTable from '../src/NovaTable.vue';
 
 export default function() {
@@ -12,7 +12,7 @@ export default function() {
         }
     };
 
-    let wrapper = mount(
+    let wrapper = shallow(
         NovaTable,
         {
             propsData: {
@@ -39,8 +39,6 @@ export default function() {
 
     it('Loaded', () => {
         expect(wrapper.isVueInstance()).toBe(true);
-        expect(wrapper).toBeDefined();
-        expect(wrapper).not.toBeNull();
     });
 
 
