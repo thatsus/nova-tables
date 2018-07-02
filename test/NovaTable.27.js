@@ -31,7 +31,7 @@ export default function() {
                     objectiveQuality: 'Quality',
                 },
                 keyField: 'name',
-                rowClass: callback,
+                rowClass: 'custom-row-class',
             }
         }
     );
@@ -40,20 +40,12 @@ export default function() {
         expect(wrapper.isVueInstance()).toBe(true);
     });
 
-
-
-    it('Applies the Correct Class to a Row When a Callback is Passed In', () => {
+    it('Applies the Correct Class to a Row When a String is Passed In', () => {
         const table = wrapper.find('table');
-        let warningRows = table.element.getElementsByClassName('table-warning');
-        expect(warningRows.length).toEqual(2);
-        for (let i = 0; i < warningRows.length; i++) {
-            expect(warningRows[i].getElementsByTagName('td')[0].innerHTML.trim()).toEqual(expect.stringMatching(/^Alfred$|^Ronnie$/));
+        let rows = table.element.getElementsByClassName('custom-row-class');
+        expect(rows.length).toEqual(8);
+        for (let i = 0; i < rows.length; i++) {
+            expect(rows[i].className).toEqual('custom-row-class');
         }
-        let dangerRows = table.element.getElementsByClassName('table-danger');
-        expect(dangerRows.length).toEqual(1);
-        for (let i = 0; i < dangerRows.length; i++) {
-            expect(dangerRows[i].getElementsByTagName('td')[0].innerHTML.trim()).toEqual(expect.stringMatching('Donovan'));
-        }        
-
     });
 }

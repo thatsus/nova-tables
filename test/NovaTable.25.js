@@ -1,9 +1,9 @@
-import { mount } from '@vue/test-utils';
+import { shallow } from '@vue/test-utils'
 import NovaTable from '../src/NovaTable.vue';
 
 export default function() {
 
-    let wrapper = mount(
+    let wrapper = shallow(
         NovaTable,
         {
             propsData: {
@@ -23,11 +23,9 @@ export default function() {
 
     it('Loaded', () => {
         expect(wrapper.isVueInstance()).toBe(true);
-        expect(wrapper).toBeDefined();
-        expect(wrapper).not.toBeNull();
     });
 
-    it('Has the Correct Table Class When Passed In As Prop', () => {
+    it('Has the Correct Table Class When Passed In As String', () => {
         expect(typeof wrapper.vm.tableClass).toEqual('string');
         expect(wrapper.vm.tableClass).toEqual('custom-class');
         const table = wrapper.find('table');

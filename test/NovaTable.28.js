@@ -4,11 +4,15 @@ import NovaTable from '../src/NovaTable.vue';
 export default function() {
 
 
-    let callback = function(item) {
-        if (item.objectiveQuality == 'Low') {
-            return 'table-warning';
-        } else if (item.objectiveQuality == 'Very Low') {
-            return 'table-danger';
+    let callback = function(items) {
+        let item = items.find((x) => {
+            return x.name == 'Ronnie';
+        });
+
+        if (item !== undefined) {
+            return 'table-ronnie-present';
+        } else {
+            return 'table-ronnie-absent';
         }
     };
 
@@ -31,7 +35,7 @@ export default function() {
                     objectiveQuality: 'Quality',
                 },
                 keyField: 'name',
-                rowClass: callback,
+                tableClass: callback,
             }
         }
     );
@@ -40,20 +44,8 @@ export default function() {
         expect(wrapper.isVueInstance()).toBe(true);
     });
 
-
-
-    it('Applies the Correct Class to a Row When a Callback is Passed In', () => {
+    it('Applies the Correct Class to a Table When a Callback is Passed In', () => {
         const table = wrapper.find('table');
-        let warningRows = table.element.getElementsByClassName('table-warning');
-        expect(warningRows.length).toEqual(2);
-        for (let i = 0; i < warningRows.length; i++) {
-            expect(warningRows[i].getElementsByTagName('td')[0].innerHTML.trim()).toEqual(expect.stringMatching(/^Alfred$|^Ronnie$/));
-        }
-        let dangerRows = table.element.getElementsByClassName('table-danger');
-        expect(dangerRows.length).toEqual(1);
-        for (let i = 0; i < dangerRows.length; i++) {
-            expect(dangerRows[i].getElementsByTagName('td')[0].innerHTML.trim()).toEqual(expect.stringMatching('Donovan'));
-        }        
-
+        expect(table.element.className).toEqual('table-ronnie-present');
     });
 }

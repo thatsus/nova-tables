@@ -53,10 +53,15 @@ name                  : string, if present some data is saved to cookies and
                         some to the URL, see State Persistence section
 key-field             : string, unique field to use so filter and page 
                         transitions are smooth and do not briefly mix records
-table-class           : string, the CSS class to apply to the table. If undefined, 
-                        some default Bootstrap classes will be applied
-row-class-callback    : function, a callback to apply a CSS class to a row. An item
-                        object will be sent to the callback
+table-class           : string|function, the CSS class to apply to the table. If undefined, 
+                        some default Bootstrap classes will be applied. When a 
+                        function is given, an array containing all items
+                        will be sent to the callback and you can return a 
+                        CSS class conditionally
+row-class             : string|function, the CSS class to apply to all rows
+                        in the table. When a function is given, an item
+                        object will be sent to the callback and you can
+                        return a CSS class conditionally
 ```
 
 
@@ -101,18 +106,6 @@ row-class-callback    : function, a callback to apply a CSS class to a row. An i
 
 You can optionally supply a callback method that will apply a CSS class to a row.
 
-In the parent vue model, you would define a method that accepts an `item` object and returns a css class name:
-
-```
-rowClassCallback(item) {
-    if (item.price > 4.00) {
-        return 'table-danger';
-    } else if (item.price > 2.50) {
-        return 'table-warning';
-    }
-}
-```
-
 ```
 <nova-table
     :items="[{description: 'Banana',     price: 0.66, price_type: 'per lbs'},
@@ -129,7 +122,15 @@ rowClassCallback(item) {
     :csv-exportable="1"
     :page-length="5"
     :page-length-options="[5, 50, 100]"
-    :row-class-callback="rowClassCallback"
+    :row-class-callback="function (item) {
+        if (item.price > 4.00) {
+            return 'table-danger';
+        } else if (item.price > 2.50) {
+            return 'table-warning';
+        } else {
+            return "";
+        }
+    }"
 >
 </nova-table>
 ```
