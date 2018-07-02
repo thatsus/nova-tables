@@ -173,7 +173,7 @@ export default {
                                     type:       String,
                                     default:    'display table table-bordered table-condensed fb-table table-striped responsive',
                                },
-        rowClassCallback:     null,
+        rowClass:             null,
     },
     data() {
         return {
@@ -365,10 +365,16 @@ export default {
     },
     methods: {
         getRowClass(item) {
-            if (!this.rowClassCallback) {
-                return;
+            if (!this.rowClass) {
+                return '';
             }
-            return this.rowClassCallback(item);
+            if (typeof this.rowClass === 'string') {
+                return this.rowClass;
+            } else if (typeof this.rowClass === 'function') {
+                return this.rowClass(item);
+            } else {
+                return '';   
+            }                     
         },
         refreshSource() {
             if (this.blockRefresh) {
