@@ -1,0 +1,35 @@
+import { mount } from '@vue/test-utils';
+import NovaTable from '../src/NovaTable.vue';
+
+export default function() {
+
+    let wrapper = mount(
+        NovaTable,
+        {
+            propsData: {
+                items: [
+                    {name: 'Dave', objectiveQuality: 'Medium'},
+                    {name: 'Dan', objectiveQuality: 'High'},
+                ],
+                columns: {
+                    name: 'Name',
+                    objectiveQuality: 'Quality',
+                },
+                keyField: 'name',
+            }
+        }
+    );
+
+    it('Loaded', () => {
+        expect(wrapper.isVueInstance()).toBe(true);
+        expect(wrapper).toBeDefined();
+        expect(wrapper).not.toBeNull();
+    });
+
+    it('Has a Default Table Class When No Prop Is Passed In', () => {
+        expect(typeof wrapper.vm.tableClass).toEqual('string');
+        expect(wrapper.vm.tableClass).toEqual('display table table-bordered table-condensed fb-table table-striped responsive');
+        const table = wrapper.find('table');
+        expect(table.element.className).toEqual('display table table-bordered table-condensed fb-table table-striped responsive');
+    });
+}

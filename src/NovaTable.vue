@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="nova-table-container">
-            <table class="display table table-bordered table-condensed fb-table table-striped responsive"
+            <table :class="tableClass"
                    width="100%">
                 <thead>
                     <tr class='sorting-header-gray'>
@@ -75,7 +75,7 @@
                     </tr>
                 </thead>
                 <transition-group tag="tbody" class="tableBody" name="nova-rows">
-                    <tr v-for="item in pagedItems" :key="keyFor(item)">
+                    <tr v-for="item in pagedItems" :key="keyFor(item)" :class="getRowClass(item)">
                         <td v-for="(name, field) in activeColumns" :class="'td-' + field + '-styles'" :ref="'cell.' + keyFor(item) + '.' + field">
                             <slot :name="field" :item="item">
                                 {{ valueFor(item, field) }}
@@ -151,25 +151,30 @@ export default {
         CsvDownload,
         NovaPageSelect,
     },
-    props: [
-        'items',
-        'endpoint',
-        'endpointParams',
-        'columns',
-        'searchable',
-        'adjustableColumns',
-        'sortable',
-        'defaultSortField',
-        'csvExportable',
-        'defaultActiveFields',
-        'itemSource',
-        'pageLength',
-        'pageLengthOptions',
-        'footer',
-        'defaultSortOrders',
-        'name',
-        'keyField',
-    ],
+    props: {
+        items:                null,
+        endpoint:             null,
+        endpointParams:       null,
+        columns:              null,
+        searchable:           null,
+        adjustableColumns:    null,
+        sortable:             null,
+        defaultSortField:     null,
+        csvExportable:        null,
+        defaultActiveFields:  null,
+        itemSource:           null,
+        pageLength:           null,
+        pageLengthOptions:    null,
+        footer:               null,
+        defaultSortOrders:    null,
+        name:                 null,
+        keyField:             null,
+        tableClass:           {
+                                    type:       String,
+                                    default:    'display table table-bordered table-condensed fb-table table-striped responsive',
+                               },
+        rowClassCallback:     null,
+    },
     data() {
         return {
             activeFields: [],
@@ -359,6 +364,12 @@ export default {
         },
     },
     methods: {
+        getRowClass(item) {
+            if (!this.rowClassCallback) {
+                return;
+            }
+            return this.rowClassCallback(item);
+        },
         refreshSource() {
             if (this.blockRefresh) {
                 return;

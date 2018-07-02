@@ -53,6 +53,10 @@ name                  : string, if present some data is saved to cookies and
                         some to the URL, see State Persistence section
 key-field             : string, unique field to use so filter and page 
                         transitions are smooth and do not briefly mix records
+table-class           : string, the CSS class to apply to the table. If undefined, 
+                        some default Bootstrap classes will be applied
+row-class-callback    : function, a callback to apply a CSS class to a row. An item
+                        object will be sent to the callback
 ```
 
 
@@ -92,6 +96,43 @@ key-field             : string, unique field to use so filter and page
 ```
 ![Screen_Shot_2017-02-20_at_1.54.59_PM](https://thatsus.github.io/nova-tables/assets/Screen_Shot_2017-02-20_at_1.54.59_PM.png)
 ![Screen_Shot_2017-02-20_at_1.57.56_PM](https://thatsus.github.io/nova-tables/assets/Screen_Shot_2017-02-20_at_1.57.56_PM.png)
+
+# Using a callback method to apply a CSS class to a row
+
+You can optionally supply a callback method that will apply a CSS class to a row.
+
+In the parent vue model, you would define a method that accepts an `item` object and returns a css class name:
+
+```
+rowClassCallback(item) {
+    if (item.price > 4.00) {
+        return 'table-danger';
+    } else if (item.price > 2.50) {
+        return 'table-warning';
+    }
+}
+```
+
+```
+<nova-table
+    :items="[{description: 'Banana',     price: 0.66, price_type: 'per lbs'},
+             {description: 'Orange',     price: 1.50, price_type: 'each' },
+             {description: 'Blueberry',  price: 4.00, price_type: 'per lbs'},
+             {description: 'Strawberry', price: 3.00, price_type: 'per lbs'},
+             {description: 'Guava',      price: 5.50, price_type: 'per lbs'},
+             {description: 'Clementine', price: 1.10, price_type: 'each'},
+             {description: 'Apple',      price: 2.05, price_type: 'per lbs'}]"
+    :columns="{'description': 'Item', 'price': 'Price'}"
+    :searchable="1"
+    :adjustable-columns="1"
+    :sortable="1"
+    :csv-exportable="1"
+    :page-length="5"
+    :page-length-options="[5, 50, 100]"
+    :row-class-callback="rowClassCallback"
+>
+</nova-table>
+```
 
 # Slots
 

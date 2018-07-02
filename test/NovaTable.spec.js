@@ -21,6 +21,9 @@ import test20 from './NovaTable.20.js';
 import test21 from './NovaTable.21.js';
 import test22 from './NovaTable.22.js';
 import test23 from './NovaTable.23.js';
+import test24 from './NovaTable.24.js';
+import test25 from './NovaTable.25.js';
+import test26 from './NovaTable.26.js';
 
 // Start with a `describe` for the module we're testing.
 describe('NovaTable', () => {
@@ -52,4 +55,7 @@ describe('NovaTable', () => {
     describe('21. CsvExportable With itemSource', test21);
     describe('22. Expose Some Things', test22);
     describe('23. Emit Data Loaded', test23);
+    describe('24. Default Table Class', test24);
+    describe('25. Override Table Class', test25);
+    describe('26. Row Callback Applies Class to Row', test26);
 });
