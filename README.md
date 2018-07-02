@@ -122,13 +122,13 @@ You can optionally supply a callback method that will apply a CSS class to a row
     :csv-exportable="1"
     :page-length="5"
     :page-length-options="[5, 50, 100]"
-    :row-class-callback="function (item) {
+    :row-class="function (item) {
         if (item.price > 4.00) {
             return 'table-danger';
         } else if (item.price > 2.50) {
             return 'table-warning';
         } else {
-            return "";
+            return '';
         }
     }"
 >
