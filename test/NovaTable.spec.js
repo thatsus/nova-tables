@@ -25,6 +25,7 @@ import test24 from './NovaTable.24.js';
 import test25 from './NovaTable.25.js';
 import test26 from './NovaTable.26.js';
 import test27 from './NovaTable.27.js';
+import test28 from './NovaTable.28.js';
 
 // Start with a `describe` for the module we're testing.
 describe('NovaTable', () => {
@@ -60,4 +61,5 @@ describe('NovaTable', () => {
     describe('25. Override Table Class', test25);
     describe('26. Row Callback Applies Class to Row', test26);
     describe('27. Row String Applies Class to Row', test27);
+    describe('28. Table Callback Applies Class to Table', test28);
 });

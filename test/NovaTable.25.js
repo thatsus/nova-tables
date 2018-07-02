@@ -25,7 +25,7 @@ export default function() {
         expect(wrapper.isVueInstance()).toBe(true);
     });
 
-    it('Has the Correct Table Class When Passed In As Prop', () => {
+    it('Has the Correct Table Class When Passed In As String', () => {
         expect(typeof wrapper.vm.tableClass).toEqual('string');
         expect(wrapper.vm.tableClass).toEqual('custom-class');
         const table = wrapper.find('table');

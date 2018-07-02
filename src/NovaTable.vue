@@ -62,7 +62,7 @@
             </div>
         </div>
         <div class="nova-table-container">
-            <table :class="tableClass"
+            <table :class="getTableClass(items)"
                    width="100%">
                 <thead>
                     <tr class='sorting-header-gray'>
@@ -169,10 +169,7 @@ export default {
         defaultSortOrders:    null,
         name:                 null,
         keyField:             null,
-        tableClass:           {
-                                    type:       String,
-                                    default:    'display table table-bordered table-condensed fb-table table-striped responsive',
-                               },
+        tableClass:           null,
         rowClass:             null,
     },
     data() {
@@ -372,6 +369,18 @@ export default {
                 return this.rowClass;
             } else if (typeof this.rowClass === 'function') {
                 return this.rowClass(item);
+            } else {
+                return '';   
+            }                     
+        },
+        getTableClass(items) {
+            if (!this.tableClass) {
+                return 'display table table-bordered table-condensed fb-table table-striped responsive';
+            }
+            if (typeof this.tableClass === 'string') {
+                return this.tableClass;
+            } else if (typeof this.tableClass === 'function') {
+                return this.tableClass(items);
             } else {
                 return '';   
             }                     

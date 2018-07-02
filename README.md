@@ -53,12 +53,15 @@ name                  : string, if present some data is saved to cookies and
                         some to the URL, see State Persistence section
 key-field             : string, unique field to use so filter and page 
                         transitions are smooth and do not briefly mix records
-table-class           : string, the CSS class to apply to the table. If undefined, 
-                        some default Bootstrap classes will be applied
-row-class-callback    : string|function, the CSS class to apply to all rows
+table-class           : string|function, the CSS class to apply to the table. If undefined, 
+                        some default Bootstrap classes will be applied. When a 
+                        function is given, an array containing all items
+                        will be sent to the callback and you can return a 
+                        CSS class conditionally
+row-class             : string|function, the CSS class to apply to all rows
                         in the table. When a function is given, an item
                         object will be sent to the callback and you can
-                        return a CSS class conditionally based on the item
+                        return a CSS class conditionally
 ```
 
 
