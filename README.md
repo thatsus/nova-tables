@@ -192,7 +192,7 @@ Example:
 ## Other Slots
 
 You can insert content in the area with, e.g., the search and page selector 
-components by using slots named `top-left-bar`, `top-right-bar`, 
+components by using slots named `top-left-bar`, `top-center-bar`, `top-right-bar`, 
 `bottom-right-bar`, and `bottom-left-bar`.
 
 # Endpoints
