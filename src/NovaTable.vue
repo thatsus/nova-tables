@@ -1,6 +1,13 @@
 
 <template>
     <div class="nova-table clearfix">
+
+      <div style="position: absolute; left: 50%;">
+        <div style="position: relative; left: -50%;">
+            <slot name="top-center-bar"></slot>
+        </div>
+      </div>
+
         <div class="toggle-columns form-group pull-left">
             <div class="form-inline">
 
