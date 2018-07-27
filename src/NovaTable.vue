@@ -592,6 +592,7 @@ export default {
 
     .sortable {
         white-space: nowrap;
+        padding-right: 16px;
     }
 
     .sortable i {
