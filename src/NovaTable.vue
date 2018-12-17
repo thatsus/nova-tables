@@ -118,9 +118,9 @@
         <div class="pull-right">
             <slot name="bottom-right-bar"></slot>
 
-            <nova-page-select 
-                v-if="pageLengthSelection && pageCount > 1" 
-                v-model="page" 
+            <nova-page-select
+                v-if="pageLengthSelection && pageCount > 1"
+                v-model="page"
                 :page-count="pageCount"
             >
             </nova-page-select>
@@ -240,9 +240,9 @@ export default {
         });
     },
     watch: {
-        search() {
+        search: _.debounce(function() {
             this.source.setSearch(this.search, this.activeFields);
-        },
+        }, 350),
         activeFields() {
             this.storeActiveFieldsToCookies();
             this.source.setSearch(this.search, this.activeFields);
@@ -370,8 +370,8 @@ export default {
             } else if (typeof this.rowClass === 'function') {
                 return this.rowClass(item);
             } else {
-                return '';   
-            }                     
+                return '';
+            }
         },
         getTableClass(items) {
             if (!this.tableClass) {
@@ -382,8 +382,8 @@ export default {
             } else if (typeof this.tableClass === 'function') {
                 return this.tableClass(items);
             } else {
-                return '';   
-            }                     
+                return '';
+            }
         },
         refreshSource() {
             if (this.blockRefresh) {
@@ -400,15 +400,15 @@ export default {
                     this.response = response;
                     this.pagedItems = response.items;
                     this.pageCount = response.pageCount;
-                
+
                     let page = response.page >= 1 ? response.page : 1;
-                
+
                     if (this.page != page) {
                         this.page = page;
                     }
-                
+
                     this.totalCount = response.totalCount;
-                    this.generatedItemKeys = {};    
+                    this.generatedItemKeys = {};
                     this.$emit('data-loaded', this.response);
                     //stop loading indicator
                     this.loading = false;
@@ -563,7 +563,7 @@ export default {
                     if (this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0]) {
                         textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field][0].textContent.trim();
                     } else {
-                        textItem[this.columns[field]] = null;    
+                        textItem[this.columns[field]] = null;
                     }
                 });
                 return textItem;
