@@ -14,7 +14,7 @@
                     </button>
 
                     <ul v-if="adjustableColumns" class="dropdown-menu dropdown-menu--toggle-col">
-                        <li v-for="(name, field) in columns">
+                        <li v-for="(name, field) in nonExcludedColumns(columns)">
                             <a @click.stop>
                                 <label>
                                     <input type="checkbox" :value="field" v-model="activeFields"> {{ name }}
@@ -162,6 +162,7 @@ export default {
         defaultSortField:     null,
         csvExportable:        null,
         defaultActiveFields:  null,
+        excludeSelectFields:  [],
         itemSource:           null,
         pageLength:           null,
         pageLengthOptions:    null,
@@ -596,6 +597,11 @@ export default {
                 var fieldDefaultsToOn = _.includes(defaultOn, field);
                 return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);
             });
+        },
+        nonExcludedColumns(columns) {
+            return columns.filter( function(name, field) {
+                return this.excludeSelectFields.includes(field);
+            })
         },
     },
 }

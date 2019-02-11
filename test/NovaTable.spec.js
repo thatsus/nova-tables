@@ -26,14 +26,15 @@ import test25 from './NovaTable.25.js';
 import test26 from './NovaTable.26.js';
 import test27 from './NovaTable.27.js';
 import test28 from './NovaTable.28.js';
+import test29 from './NovaTable.29.js';
 
 // Start with a `describe` for the module we're testing.
 describe('NovaTable', () => {
-    // You can nest `describe` within `describe` if you have a need to group 
+    // You can nest `describe` within `describe` if you have a need to group
     // tests together.
     // And this makes it easier to break down this complicated test suite into
     // multiple files. NovaTable.1.js here exports a closure.
-    
+
     describe('1. Barebones With items', test1);
     describe('2. Barebones With endpoint', test2);
     describe('3. Barebones With itemSource', test3);
@@ -62,4 +63,5 @@ describe('NovaTable', () => {
     describe('26. Row Callback Applies Class to Row', test26);
     describe('27. Row String Applies Class to Row', test27);
     describe('28. Table Callback Applies Class to Table', test28);
+    describe('29. ExcludeSelectFields hides fields from list', test29);
 });
