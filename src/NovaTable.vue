@@ -601,7 +601,7 @@ export default {
         nonExcludedColumns() {
             return Object.keys(this.columns).filter( function(field) {
                 return this.excludeSelectFields.includes(field);
-            })
+            }, this)
         },
     },
 }
