@@ -162,7 +162,7 @@ export default {
         defaultSortField:     null,
         csvExportable:        null,
         defaultActiveFields:  null,
-        excludeSelectFields:  [],
+        excludeSelectFields:  null,
         itemSource:           null,
         pageLength:           null,
         pageLengthOptions:    null,
@@ -579,7 +579,7 @@ export default {
                 off: [],
             };
             for (var field in this.columns) {
-                if (_.includes(this.activeFields, field)) {
+                if (_.includes(this.activeFields, field) || (this.excludeSelectFields && _.includes(this.excludeSelectFields, field))) {
                     fields.on.push(field);
                 } else {
                     fields.off.push(field);
@@ -599,9 +599,13 @@ export default {
             });
         },
         nonExcludedColumns() {
-            return Object.keys(this.columns).filter( function(field) {
-                return this.excludeSelectFields.includes(field);
-            }, this)
+            if (this.adjustableColumns && this.excludeSelectFields) {
+                return Object.keys(this.columns).filter( function(field) {
+                    return !(this.excludeSelectFields && _.includes(this.excludeSelectFields, field));
+                }, this)
+            } else {
+                return this.activeColumns()
+            }
         },
     },
 }
