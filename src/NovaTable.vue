@@ -599,7 +599,7 @@ export default {
             });
         },
         nonExcludedColumns() {
-            return this.columns.filter( function(name, field) {
+            return Object.keys(this.columns).filter( function(field) {
                 return this.excludeSelectFields.includes(field);
             })
         },
