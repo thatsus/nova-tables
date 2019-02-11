@@ -600,11 +600,23 @@ export default {
         },
         nonExcludedColumns() {
             if (this.adjustableColumns && this.excludeSelectFields) {
-                return Object.keys(this.columns).filter( function(field) {
+
+                var columns = {};
+
+                columns = Object.keys(this.columns).filter( function(field) {
                     return !(this.excludeSelectFields && _.includes(this.excludeSelectFields, field));
-                }, this)
+                }, this);
+
+                Object.keys(this.columns).map(field => {
+                    if (_.includes(this.activeFields, field)) {
+                        columns[field] = this.columns[field];
+                    }
+                });
+
+                return columns;
+
             } else {
-                return this.activeColumns()
+                return this.columns
             }
         },
     },
