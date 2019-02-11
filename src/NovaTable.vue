@@ -604,10 +604,10 @@ export default {
                 var columns = {};
 
                 columns = Object.keys(this.columns).filter( function(field) {
-                    return !(this.excludeSelectFields && _.includes(this.excludeSelectFields, field));
+                    return !(_.includes(this.excludeSelectFields, field));
                 }, this);
 
-                Object.keys(this.columns).map(field => {
+                Object.keys(columns).map(field => {
                     if (_.includes(this.activeFields, field)) {
                         columns[field] = this.columns[field];
                     }
