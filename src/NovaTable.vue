@@ -14,7 +14,7 @@
                     </button>
 
                     <ul v-if="adjustableColumns" class="dropdown-menu dropdown-menu--toggle-col">
-                        <li v-for="(name, field) in columns">
+                        <li v-for="(name, field) in nonExcludedColumns()">
                             <a @click.stop>
                                 <label>
                                     <input type="checkbox" :value="field" v-model="activeFields"> {{ name }}
@@ -162,6 +162,7 @@ export default {
         defaultSortField:     null,
         csvExportable:        null,
         defaultActiveFields:  null,
+        alwaysActiveFields:   null,
         itemSource:           null,
         pageLength:           null,
         pageLengthOptions:    null,
@@ -578,7 +579,7 @@ export default {
                 off: [],
             };
             for (var field in this.columns) {
-                if (_.includes(this.activeFields, field)) {
+                if (_.includes(this.activeFields, field) || (this.alwaysActiveFields && _.includes(this.alwaysActiveFields, field))) {
                     fields.on.push(field);
                 } else {
                     fields.off.push(field);
@@ -596,6 +597,27 @@ export default {
                 var fieldDefaultsToOn = _.includes(defaultOn, field);
                 return fieldIsSelected || (fieldDefaultsToOn && !fieldIsDeselected);
             });
+        },
+        nonExcludedColumns() {
+            if (this.adjustableColumns && this.alwaysActiveFields) {
+
+                var columns = {};
+
+                columns = Object.keys(this.columns).filter( function(field) {
+                    return !(_.includes(this.alwaysActiveFields, field));
+                }, this);
+
+                Object.keys(columns).map(field => {
+                    if (_.includes(this.activeFields, field)) {
+                        columns[field] = this.columns[field];
+                    }
+                });
+
+                return columns;
+
+            } else {
+                return this.columns
+            }
         },
     },
 }

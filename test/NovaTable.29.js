@@ -8,8 +8,8 @@ export default function() {
     source.get = function () {
         return Promise.resolve({
             items: [
-                {name: 'Dave', objectiveQuality: 'Medium'},
-                {name: 'Dan', objectiveQuality: 'High'},
+                {name: 'Dave', objectiveQuality: 'Medium', eyes:'Blue'},
+                {name: 'Dan', objectiveQuality: 'High', eyes:'Less Blue'},
             ],
             totalCount: 2,
             pageCount: 1,
@@ -25,9 +25,11 @@ export default function() {
                 columns: {
                     name: 'Name',
                     objectiveQuality: 'Quality',
+                    eyes: 'Eye Color',
                 },
                 adjustableColumns: true,
                 defaultActiveFields: ['name'],
+                alwaysActiveFields: ['name'],
             }
         }
     );
@@ -38,11 +40,17 @@ export default function() {
         expect(wrapper).not.toBeNull();
     });
 
-    it('Has The Correct Default Fields', () => {
+    it('Doesnt show excluded field in Selector', () => {
         let columnSelectors = wrapper.findAll('ul.dropdown-menu input[type="checkbox"]');
 
         expect(columnSelectors.length).toEqual(2);
-        expect(columnSelectors.at(0).element.checked).toBeTruthy();
+        expect(columnSelectors.at(0).element.checked).toBeFalsy();
         expect(columnSelectors.at(1).element.checked).toBeFalsy();
+    });
+
+    it('Displays the field although it is excluded from selector', () => {
+        let ths = wrapper.findAll('th').wrappers;
+        expect(ths.length).toEqual(1);
+        expect(ths[0].text().trim()).toEqual('Name');
     });
 }
