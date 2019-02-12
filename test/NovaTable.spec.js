@@ -63,5 +63,5 @@ describe('NovaTable', () => {
     describe('26. Row Callback Applies Class to Row', test26);
     describe('27. Row String Applies Class to Row', test27);
     describe('28. Table Callback Applies Class to Table', test28);
-    describe('29. ExcludeSelectFields hides fields from list', test29);
+    describe('29. alwaysActiveFields hides fields from list', test29);
 });

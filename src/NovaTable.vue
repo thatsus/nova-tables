@@ -162,7 +162,7 @@ export default {
         defaultSortField:     null,
         csvExportable:        null,
         defaultActiveFields:  null,
-        excludeSelectFields:  null,
+        alwaysActiveFields:   null,
         itemSource:           null,
         pageLength:           null,
         pageLengthOptions:    null,
@@ -579,7 +579,7 @@ export default {
                 off: [],
             };
             for (var field in this.columns) {
-                if (_.includes(this.activeFields, field) || (this.excludeSelectFields && _.includes(this.excludeSelectFields, field))) {
+                if (_.includes(this.activeFields, field) || (this.alwaysActiveFields && _.includes(this.alwaysActiveFields, field))) {
                     fields.on.push(field);
                 } else {
                     fields.off.push(field);
@@ -599,12 +599,12 @@ export default {
             });
         },
         nonExcludedColumns() {
-            if (this.adjustableColumns && this.excludeSelectFields) {
+            if (this.adjustableColumns && this.alwaysActiveFields) {
 
                 var columns = {};
 
                 columns = Object.keys(this.columns).filter( function(field) {
-                    return !(_.includes(this.excludeSelectFields, field));
+                    return !(_.includes(this.alwaysActiveFields, field));
                 }, this);
 
                 Object.keys(columns).map(field => {

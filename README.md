@@ -42,7 +42,8 @@ default-sort-orders   : object, keys are fields, values are 'A' or 'D', to
                         indicate the order to sort by on first click
 csv-exportable        : boolean, if true, show the CSV download button
 default-active-fields : array, only show these columns at load time
-exclude-select-fields : array, column ids to hide from dropdown
+always-active-fields  : array, always show these column, do not allow them to be 
+                        hidden.
 page-length           : int, if non-zero, include the pagination element if the
                         count exceeds this length
 page-length-options   : array, if present, include a drop up to select the page

@@ -29,7 +29,7 @@ export default function() {
                 },
                 adjustableColumns: true,
                 defaultActiveFields: ['name'],
-                excludeSelectFields: ['name'],
+                alwaysActiveFields: ['name'],
             }
         }
     );
