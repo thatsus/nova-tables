@@ -601,13 +601,14 @@ export default {
         nonExcludedColumns() {
             if (this.adjustableColumns && this.alwaysActiveFields) {
 
+                var fields = {};
                 var columns = {};
 
-                columns = Object.keys(this.columns).filter( function(field) {
+                fields = Object.keys(this.columns).filter( function(field) {
                     return !(_.includes(this.alwaysActiveFields, field));
                 }, this);
 
-                columns.map(field => {
+                Object.values(fields).map(field => {
                     columns[field] = this.columns[field];
                 });
 

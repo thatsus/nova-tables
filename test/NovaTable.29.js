@@ -49,7 +49,7 @@ export default function() {
     });
 
     it('Shows correct column names in Selector', () => {
-        let columnSelectorText = wrapper.findAll('ul.dropdown-menu label');
+        let columnSelectorText = wrapper.findAll('ul.dropdown-menu li').wrappers;
 
         expect(columnSelectorText[0].text().trim()).toEqual('Quality');
     });
