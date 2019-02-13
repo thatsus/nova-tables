@@ -607,10 +607,8 @@ export default {
                     return !(_.includes(this.alwaysActiveFields, field));
                 }, this);
 
-                Object.keys(columns).map(field => {
-                    if (_.includes(this.activeFields, field)) {
-                        columns[field] = this.columns[field];
-                    }
+                columns.map(field => {
+                    columns[field] = this.columns[field];
                 });
 
                 return columns;
