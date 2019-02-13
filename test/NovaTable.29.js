@@ -48,6 +48,12 @@ export default function() {
         expect(columnSelectors.at(1).element.checked).toBeFalsy();
     });
 
+    it('Shows correct column names in Selector', () => {
+        let columnSelectorText = wrapper.findAll('ul.dropdown-menu li').wrappers;
+
+        expect(columnSelectorText[0].text().trim()).toEqual('Quality');
+    });
+
     it('Displays the field although it is excluded from selector', () => {
         let ths = wrapper.findAll('th').wrappers;
         expect(ths.length).toEqual(1);
