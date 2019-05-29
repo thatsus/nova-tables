@@ -276,6 +276,11 @@ export default {
                 this.queryParamSaver.set(this.queryParamsToSave);
             }
         },
+        items() {
+            if (this.source instanceof ArraySource) {
+                this.source = new ArraySource(this.items);
+            }
+        },
     },
     computed: {
         pageDescriptor() {
