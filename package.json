@@ -1,6 +1,6 @@
 {
   "name": "nova-tables",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "Easy-to-use HTML tables in Vue.js",
   "main": "dist/NovaTable.js",
   "scripts": {
