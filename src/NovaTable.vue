@@ -279,6 +279,9 @@ export default {
         items() {
             if (this.source instanceof ArraySource) {
                 this.source = new ArraySource(this.items);
+                this.source.setPage(this.page, this.pageLengthSelection);
+                this.source.onChange(() => this.refreshSource());
+                this.refreshSource();
             }
         },
     },
