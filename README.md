@@ -65,6 +65,8 @@ row-class             : string|function, the CSS class to apply to all rows
                         in the table. When a function is given, an item
                         object will be sent to the callback and you can
                         return a CSS class conditionally
+skip-csv-cache        : boolean, if true, will skip any csv data caching and will
+                        calculate the csv data when the download button is clicked
 ```
 
 
@@ -167,6 +169,9 @@ correspond to any field on the items.
 
 Note: The `slot-scope` attribute of template was called `scope` prior to Vue
 2.5.
+
+Note: If any of these slots load data asynchronously, that data will be missing from any CSV
+download unless the `skip-csv-cache` prop is true.
 
 ## Footer Slots
 

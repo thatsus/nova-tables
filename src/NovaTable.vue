@@ -39,15 +39,9 @@
 
         <div class="pull-right">
             <slot name="top-right-bar"></slot>
-            <csv-download
-                    v-if="csvExportable"
-                    :fields="csvColumns"
-                    :data="csvData"
-            >
-                <button class="btn btn-default btn-spacing" type="button" >
-                    <i class="fa fa-file-excel-o" aria-hidden="true"></i> CSV
-                </button>
-            </csv-download>
+            <a v-if="csvExportable" class="btn btn-default btn-spacing" @click="csvDownload">
+                <i class="fa fa-file-excel-o" aria-hidden="true"></i> CSV
+            </a>
         </div>
         <!-- loading indicator -->
         <div v-if="loading">
@@ -131,10 +125,10 @@
 
 <script>
 import _ from 'lodash';
+import json2csv from 'json2csv';
 import AbstractSource from './abstract-source.js';
 import ArraySource from './array-source.js';
 import Cookies from 'js-cookie';
-import CsvDownload from 'vue-csv-downloader';
 import NovaPageSelect from './NovaPageSelect.vue';
 import QueryParamSaver from './query-param-saver.js';
 import ServerSideSource from './server-side-source.js';
@@ -148,7 +142,6 @@ export default {
 
     /* Regular Stuff */
     components: {
-        CsvDownload,
         NovaPageSelect,
     },
     props: {
@@ -172,6 +165,7 @@ export default {
         keyField:             null,
         tableClass:           null,
         rowClass:             null,
+        skipCsvCache:         null,
     },
     data() {
         return {
@@ -370,6 +364,18 @@ export default {
         },
     },
     methods: {
+        csvDownload() {
+            if (!this.csvExportable) {
+                return;
+            }
+            if (this.skipCsvCache) {
+                this.generateCsvData();
+            }
+            let anchor = document.createElement('a');
+            anchor.href = this.csvData.length ? "data:text/csv," + encodeURIComponent(json2csv({data: this.csvData, fields: this.csvColumns})) : 'javascript:void(0);';
+            anchor.download = 'export.csv';
+            anchor.click();
+        },
         getRowClass(item) {
             if (!this.rowClass) {
                 return '';
