@@ -125,7 +125,6 @@
 
 <script>
 import _ from 'lodash';
-import json2csv from 'json2csv';
 import AbstractSource from './abstract-source.js';
 import ArraySource from './array-source.js';
 import Cookies from 'js-cookie';
@@ -371,8 +370,12 @@ export default {
             if (this.skipCsvCache) {
                 this.generateCsvData();
             }
+            // Gotta use blob URI because IE/Edge don't support data URI
+            let formatted = this.csvData.map(row => [...Object.values(row), '\n'].map(val => val.indexOf(',') == -1 ? val : '"' + val + '"'));
+            formatted = [[...this.csvColumns, '\n'], ...formatted]; //Add the header row
+            let blob = new Blob(formatted, {type: 'text/csv'});
             let anchor = document.createElement('a');
-            anchor.href = this.csvData.length ? "data:text/csv," + encodeURIComponent(json2csv({data: this.csvData, fields: this.csvColumns})) : 'javascript:void(0);';
+            anchor.href = window.URL.createObjectURL(blob);
             anchor.download = 'export.csv';
             anchor.click();
         },
