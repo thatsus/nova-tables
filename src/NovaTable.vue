@@ -274,6 +274,7 @@ export default {
             if (this.source instanceof ArraySource) {
                 this.source = new ArraySource(this.items);
                 this.source.setPage(this.page, this.pageLengthSelection);
+                this.source.setSort(this.sortField, this.sortOrder);
                 this.source.onChange(() => this.refreshSource());
                 this.refreshSource();
             }
