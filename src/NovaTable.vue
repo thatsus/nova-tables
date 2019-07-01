@@ -3,44 +3,42 @@
     <div class="nova-table clearfix">
         <div class="toggle-columns form-group pull-left">
             <div class="form-inline">
-
                 <div class="form-group pull-left">
                     <input v-if="searchable" v-model="search" placeholder="Search" class="form-control">
                 </div>
 
                 <div class="form-group absolute pull-left margin-left">
-                    <button class="btn btn-default btn-spacing" type="button" data-toggle="dropdown" aria-expanded="false" v-if="adjustableColumns">
-                        <i class="fa fa-columns"></i>
+                    <button v-if="adjustableColumns" class="btn btn-default btn-spacing" type="button" data-toggle="dropdown" aria-expanded="false">
+                        <i class="fa fa-columns" />
                     </button>
 
                     <ul v-if="adjustableColumns" class="dropdown-menu dropdown-menu--toggle-col">
                         <li v-for="(name, field) in nonExcludedColumns()">
                             <a @click.stop>
                                 <label>
-                                    <input type="checkbox" :value="field" v-model="activeFields"> {{ name }}
+                                    <input v-model="activeFields" type="checkbox" :value="field"> {{ name }}
                                 </label>
                             </a>
                         </li>
                         <li v-if="savingToCookies">
-                            <a @click="resetActiveFields" class="btn">
+                            <a class="btn" @click="resetActiveFields">
                                 Reset to Default
                             </a>
                         </li>
                     </ul>
-                    <i class="fa fa-exclamation-circle" title="There was a problem with your last request." v-if="showError"></i>
+                    <i v-if="showError" class="fa fa-exclamation-circle" title="There was a problem with your last request." />
                 </div>
 
                 <div class="form-group absolute pull-left margin-left">
-                    <slot name="top-left-bar"></slot>
+                    <slot name="top-left-bar" />
                 </div>
-
             </div>
         </div>
 
         <div class="pull-right">
-            <slot name="top-right-bar"></slot>
+            <slot name="top-right-bar" />
             <a v-if="csvExportable" class="btn btn-default btn-spacing" @click="csvDownload">
-                <i class="fa fa-file-excel-o" aria-hidden="true"></i> CSV
+                <i class="fa fa-file-excel-o" aria-hidden="true" /> CSV
             </a>
         </div>
         <!-- loading indicator -->
@@ -48,7 +46,7 @@
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <div class="well table-loader">
-                        <i class="fa fa-circle-o-notch fa-4x fa-spin"></i>
+                        <i class="fa fa-circle-o-notch fa-4x fa-spin" />
                         <br>
                         Loading...
                     </div>
@@ -57,12 +55,13 @@
         </div>
         <div class="nova-table-container">
             <table :class="getTableClass(items)"
-                   width="100%">
+                   width="100%"
+            >
                 <thead>
-                    <tr class='sorting-header-gray'>
+                    <tr class="sorting-header-gray">
                         <th v-for="(name, field) in activeColumns" :style="{ cursor: isSortable(field) ? 'pointer' : 'default' }" :class="{ sortable: isSortable(field) }" @click="isSortable(field) ? setSort(field) : null">
                             <div>
-                                <i v-if="isSortable(field)" class="fa" :class="sortClass(field)" aria-hidden="true"></i>
+                                <i v-if="isSortable(field)" class="fa" :class="sortClass(field)" aria-hidden="true" />
                                 <span>{{ name }}</span>
                             </div>
                         </th>
@@ -70,7 +69,7 @@
                 </thead>
                 <transition-group tag="tbody" class="tableBody" name="nova-rows">
                     <tr v-for="item in pagedItems" :key="keyFor(item)" :class="getRowClass(item)">
-                        <td v-for="(name, field) in activeColumns" :class="'td-' + field + '-styles'" :ref="'cell.' + keyFor(item) + '.' + field">
+                        <td v-for="(name, field) in activeColumns" :ref="'cell.' + keyFor(item) + '.' + field" :class="'td-' + field + '-styles'">
                             <slot :name="field" :item="item">
                                 {{ valueFor(item, field) }}
                             </slot>
@@ -83,20 +82,19 @@
                 <tfoot v-if="footer">
                     <tr class="sorting-header-gray">
                         <td v-for="(name, field) in activeColumns">
-                            <slot :name="field + '-footer'" :items="pagedItems" :response="response">
-                            </slot>
+                            <slot :name="field + '-footer'" :items="pagedItems" :response="response" />
                         </td>
                     </tr>
                 </tfoot>
             </table>
         </div>
         <div class="pull-left inline">
-            <div class="dropup" v-if="pageLengthSelection">
+            <div v-if="pageLengthSelection" class="dropup">
                 <template v-if="pageLengthOptions">
                     Show
-                    <button class="btn btn-default dropdown-toggle" type="button" id="page-length-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <button id="page-length-dropdown" class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         {{ pageLengthSelection }}
-                        <span class="caret"></span>
+                        <span class="caret" />
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="page-length-dropdown">
                         <li v-for="option in pageLengthOptions"><a href="javascript:void(0);" @click="pageLengthSelection = option">{{ option }}</a></li>
@@ -107,18 +105,16 @@
                     {{ pageDescriptor }}
                 </span>
             </div>
-            <slot name="bottom-left-bar"></slot>
+            <slot name="bottom-left-bar" />
         </div>
         <div class="pull-right">
-            <slot name="bottom-right-bar"></slot>
+            <slot name="bottom-right-bar" />
 
             <nova-page-select
                 v-if="pageLengthSelection && pageCount > 1"
                 v-model="page"
                 :page-count="pageCount"
-            >
-            </nova-page-select>
-
+            />
         </div>
     </div>
 </template>
@@ -144,48 +140,48 @@ export default {
         NovaPageSelect,
     },
     props: {
-        items:                null,
-        endpoint:             null,
-        endpointParams:       null,
-        columns:              null,
-        searchable:           null,
-        adjustableColumns:    null,
-        sortable:             null,
-        defaultSortField:     null,
-        csvExportable:        null,
-        defaultActiveFields:  null,
-        alwaysActiveFields:   null,
-        itemSource:           null,
-        pageLength:           null,
-        pageLengthOptions:    null,
-        footer:               null,
-        defaultSortOrders:    null,
-        name:                 null,
-        keyField:             null,
-        tableClass:           null,
-        rowClass:             null,
-        skipCsvCache:         null,
+        items:               null,
+        endpoint:            null,
+        endpointParams:      null,
+        columns:             null,
+        searchable:          null,
+        adjustableColumns:   null,
+        sortable:            null,
+        defaultSortField:    null,
+        csvExportable:       null,
+        defaultActiveFields: null,
+        alwaysActiveFields:  null,
+        itemSource:          null,
+        pageLength:          null,
+        pageLengthOptions:   null,
+        footer:              null,
+        defaultSortOrders:   null,
+        name:                null,
+        keyField:            null,
+        tableClass:          null,
+        rowClass:            null,
+        skipCsvCache:        null,
     },
     data() {
         return {
-            activeFields: [],
-            sortField: '',
-            sortOrder: 'A',
-            search: '',
-            source: new ArraySource([]),
-            pagedItems: [],
-            response: null,
-            totalCount: 0,
-            pageCount: 1,
-            page: 1,
+            activeFields:        [],
+            sortField:           '',
+            sortOrder:           'A',
+            search:              '',
+            source:              new ArraySource([]),
+            pagedItems:          [],
+            response:            null,
+            totalCount:          0,
+            pageCount:           1,
+            page:                1,
             pageLengthSelection: null,
-            loading: false,
-            showError: false,
-            blockRefresh: true,
-            initialQueryParams: {},
-            generatedItemKeys: {},
-            csvData: [],
-            queryParamSaver: this.name ? new QueryParamSaver(this.name) : null,
+            loading:             false,
+            showError:           false,
+            blockRefresh:        true,
+            initialQueryParams:  {},
+            generatedItemKeys:   {},
+            csvData:             [],
+            queryParamSaver:     this.name ? new QueryParamSaver(this.name) : null,
         };
     },
     mounted() {
@@ -248,18 +244,10 @@ export default {
             this.source.setSort(this.sortField, this.sortOrder)
         },
         page() {
-            if (this.pageLengthSelection == 'All') {
-                this.source.setPage(null, null);
-            } else {
-                this.source.setPage(this.page, this.pageLengthSelection);
-            }
+            this.source.setPage(this.computedPage, this.computedPageLength);
         },
         pageLengthSelection() {
-            if (this.pageLengthSelection == 'All') {
-                this.source.setPage(null, null);
-            } else {
-                this.source.setPage(this.page, this.pageLengthSelection);
-            }
+            this.source.setPage(this.computedPage, this.computedPageLength);
         },
         endpointParams() {
             this.source.fireChangeEvent();
@@ -272,7 +260,7 @@ export default {
         items() {
             if (this.source instanceof ArraySource) {
                 this.source = new ArraySource(this.items);
-                this.source.setPage(this.page, this.pageLengthSelection);
+                this.source.setPage(this.computedPage, this.computedPageLength);
                 this.source.setSort(this.sortField, this.sortOrder);
                 this.source.onChange(() => this.refreshSource());
                 this.refreshSource();
@@ -280,6 +268,22 @@ export default {
         },
     },
     computed: {
+        computedPage() {
+            if (this.pageLengthSelection === 'All') {
+                return null;
+            } else {
+                return this.page;
+            }
+        },
+
+        computedPageLength() {
+            if (this.pageLengthSelection === 'All') {
+                return null;
+            } else {
+                return this.pageLengthSelection;
+            }
+        },
+
         pageDescriptor() {
             if (this.pageLengthSelection == 'All') {
                 return 'Showing ' + this.totalCount + ' entries';
@@ -340,10 +344,10 @@ export default {
         },
         queryParamsToSave() {
             var params = {
-                sort_field: this.sortField,
-                sort_order: this.sortOrder,
-                search: this.search,
-                page: this.page,
+                sort_field:  this.sortField,
+                sort_order:  this.sortOrder,
+                search:      this.search,
+                page:        this.page,
                 page_length: this.pageLengthSelection,
             }
             if (this.endpointParams) {
@@ -593,7 +597,7 @@ export default {
         },
         storeActiveFieldsToCookies() {
             var fields = {
-                on: [],
+                on:  [],
                 off: [],
             };
             for (var field in this.columns) {
