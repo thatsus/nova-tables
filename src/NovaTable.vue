@@ -375,10 +375,13 @@ export default {
             if (this.skipCsvCache) {
                 this.generateCsvData();
             }
+
+            let headers = this.csvColumns.join(',') + '\n';
+            let body    = this.csvData.map(row => row.join(',')).join('\n');
+            let output  = headers + body;
+
             // Gotta use blob URI because IE/Edge don't support data URI
-            let formatted = this.csvData.map(row => [...Object.values(row), '\n'].map(val => val.indexOf(',') == -1 ? val : '"' + val + '"'));
-            formatted = [[...this.csvColumns, '\n'], ...formatted]; //Add the header row
-            let blob = new Blob(formatted, {type: 'text/csv'});
+            let blob = new Blob([output], {type: 'text/csv'});
             let anchor = document.createElement('a');
             anchor.href = window.URL.createObjectURL(blob);
             anchor.download = 'export.csv';
@@ -578,18 +581,23 @@ export default {
             return found;
         },
         generateCsvData() {
+            // Sort fields according to column order
+            let fields = _.keys(this.activeColumns);
+
             // This method depends on this.$refs, so it cannot be a computed property
             this.csvData = this.pagedItems.map((item) => {
-                var id = this.keyFor(item);
-                var textItem = {};
-                _.each(this.activeFields, (field) => {
-                    if (this.$refs['cell.' + id + '.' + field] && this.$refs['cell.' + id + '.' + field][0]) {
-                        textItem[this.columns[field]] = this.$refs['cell.' + id + '.' + field][0].textContent.trim();
+                let id       = this.keyFor(item);
+
+                return fields.map(field => {
+                    let key = 'cell.' + id + '.' + field;
+                    let elem = this.$refs[key];
+
+                    if (elem && elem[0]) {
+                        return elem[0].textContent.trim();
                     } else {
-                        textItem[this.columns[field]] = null;
+                        return null;
                     }
                 });
-                return textItem;
             });
         },
         resetActiveFields() {
