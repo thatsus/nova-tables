@@ -81,7 +81,7 @@
                 </transition-group>
                 <tfoot v-if="footer">
                     <tr class="sorting-header-gray">
-                        <td v-for="(name, field) in activeColumns">
+                        <td v-for="(name, field) in activeColumns" :key="field">
                             <slot :name="field + '-footer'" :items="pagedItems" :response="response" />
                         </td>
                     </tr>
