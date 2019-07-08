@@ -368,6 +368,10 @@ export default {
         },
     },
     methods: {
+        formatCSVRow(row) {
+            return row.map(column => `"${column}"`).join(',');
+        },
+
         csvDownload() {
             if (!this.csvExportable) {
                 return;
@@ -376,15 +380,24 @@ export default {
                 this.generateCsvData();
             }
 
-            let headers = this.csvColumns.join(',') + '\n';
-            let body    = this.csvData.map(row => row.join(',')).join('\n');
-            let output  = headers + body;
+            let headers = this.formatCSVRow(this.csvColumns);
+            let body    = this.csvData.map(this.formatCSVRow);
+            let output  = [ headers, ...body ].join('\n');
 
             // Gotta use blob URI because IE/Edge don't support data URI
             let blob = new Blob([output], {type: 'text/csv'});
-            let anchor = document.createElement('a');
-            anchor.href = window.URL.createObjectURL(blob);
-            anchor.download = 'export.csv';
+            let anchor               = document.createElement('a');
+                anchor.href          = window.URL.createObjectURL(blob);
+                anchor.download      = 'export.csv';
+                anchor.style.display = 'none';
+
+            // Firefox will not download unless it's attached
+            document.body.appendChild(anchor);
+            anchor.addEventListener('click', function() {
+                document.body.removeChild(anchor);
+                anchor = null;
+            }, { once: true });
+
             anchor.click();
         },
         getRowClass(item) {
