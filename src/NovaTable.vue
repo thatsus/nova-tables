@@ -38,7 +38,7 @@
         <div class="pull-right">
             <slot name="top-right-bar" />
             <a v-if="csvExportable" class="btn btn-default btn-spacing" @click="csvDownload">
-                <i class="fa fa-file-excel-o" aria-hidden="true" /> CSV
+                <img src="./csv.svg" onerror="this.src='./csv.png'; this.onerror=null;"> CSV
             </a>
         </div>
         <!-- loading indicator -->
