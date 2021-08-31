@@ -1,29 +1,69 @@
 <template>
     <ul class="pagination pull-right">
         <li v-if="showJumps" :class="classFor('previous')">
-            <span v-if="isDisabled('previous')"><i class="fa fa-angle-double-left"></i></span>
-            <a v-else href="javascript:void(0)" @click="setPage('first')"><i class="fa fa-angle-double-left"></i></a>
+            <span v-if="isDisabled('previous')">
+                <slot name="pagination-first">
+                    <i class="fa fa-angle-double-left"></i>
+                </slot>
+            </span>
+            <a v-else href="javascript:void(0)" @click="setPage('first')">
+                <slot name="pagination-first">
+                    <i class="fa fa-angle-double-left"></i>
+                </slot>
+            </a>
         </li>
         <li :class="classFor('previous')" name="previousPage">
-            <span v-if="isDisabled('previous')">Previous</span>
-            <a v-else href="javascript:void(0)" @click="setPage('previous')">Previous</a>
+            <span v-if="isDisabled('previous')">
+                <slot name="pagination-prev">
+                    Previous
+                </slot>
+            </span>
+            <a v-else href="javascript:void(0)" @click="setPage('previous')">
+                <slot name="pagination-prev">
+                    Previous
+                </slot>
+            </a>
         </li>
-        <li v-for="p in pages" :class="classFor(p)"><a href="javascript:void(0)" @click="setPage(p)">{{ p }}</a></li>
+        <li v-if="showPages" v-for="p in pages" :class="classFor(p)">
+            <a href="javascript:void(0)" @click="setPage(p)">
+                {{ p }}
+            </a>
+        </li>
         <li :class="classFor('next')" name="nextPage">
-            <span v-if="isDisabled('next')">Next</span>
-            <a v-else href="javascript:void(0)" @click="setPage('next')">Next</a>
+            <span v-if="isDisabled('next')">
+                <slot name="pagination-next">
+                    Next
+                </slot>
+            </span>
+            <a v-else href="javascript:void(0)" @click="setPage('next')">
+                <slot name="pagination-next">
+                    Next
+                </slot>
+            </a>
         </li>
         <li v-if="showJumps" :class="classFor('next')">
-            <span v-if="isDisabled('next')"><i class="fa fa-angle-double-right"></i></span>
-            <a v-else href="javascript:void(0)" @click="setPage('last')"><i class="fa fa-angle-double-right"></i></a>
+            <span v-if="isDisabled('next')">
+                <slot name="pagination-last">
+                    <i class="fa fa-angle-double-right"></i>
+                </slot>
+            </span>
+            <a v-else href="javascript:void(0)" @click="setPage('last')">
+                <slot name="pagination-last">
+                    <i class="fa fa-angle-double-right"></i>
+                </slot>
+            </a>
         </li>
-
     </ul>
 </template>
 
 <script>
 export default {
-    props: ['value', 'pageCount', 'showJumps'],
+    props: [
+        'value',
+        'pageCount',
+        'showJumps',
+        'showPages'
+    ],
     data() {
         return {
             page: this.value,
