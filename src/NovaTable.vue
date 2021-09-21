@@ -42,7 +42,7 @@
                 <slot name="top-right-bar" />
                 <a v-if="csvExportable" class="btn btn-default btn-spacing" :class="{['btn-sm']: csvBtnSmall}" @click="csvDownload">
                     <slot name="csv-icon">
-                        <img src="./csv.svg" onerror="this.src='./csv.png'; this.onerror=null;">
+                        <img src="require('csv.svg')" onerror="this.src='@/csv.png'; this.onerror=null;">
                     </slot>
                     CSV
                 </a>
