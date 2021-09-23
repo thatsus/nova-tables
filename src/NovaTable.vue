@@ -207,6 +207,10 @@ export default {
             required: false,
             defaut:   false,
         },
+        searchableFields: {
+            required: false,
+            default:  null,
+        },
     },
     data() {
         return {
@@ -285,11 +289,11 @@ export default {
     },
     watch: {
         search: _.debounce(function() {
-            this.source.setSearch(this.search, this.activeFields);
+            this.source.setSearch(this.search, this.computedSearchableFields);
         }, 350),
         activeFields() {
             this.storeActiveFieldsToCookies();
-            this.source.setSearch(this.search, this.activeFields);
+            this.source.setSearch(this.search, this.computedSearchableFields);
         },
         sortField() {
             this.source.setSort(this.sortField, this.sortOrder)
@@ -322,6 +326,9 @@ export default {
         },
     },
     computed: {
+        computedSearchableFields() {
+            return this.searchableFields ? this.searchableFields : this.activeFields;
+        },
         computedPage() {
             if (this.pageLengthSelection === 'All') {
                 return null;
@@ -329,7 +336,6 @@ export default {
                 return this.page;
             }
         },
-
         computedPageLength() {
             if (this.pageLengthSelection === 'All') {
                 return null;
