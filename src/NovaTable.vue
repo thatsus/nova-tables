@@ -52,6 +52,7 @@
         </div>
         <!-- loading indicator -->
         <div v-if="loading">
+          <slot name="loading-indicator"/>
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <div class="well table-loader">
