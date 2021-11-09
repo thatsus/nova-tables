@@ -52,11 +52,12 @@
         </div>
         <!-- loading indicator -->
         <div v-if="loading">
-          <slot name="loading-indicator"/>
             <div class="row">
                 <div class="col-xs-12 text-center">
                     <div class="well table-loader">
+                      <slot name="loading-indicator">
                         <i class="fa fa-circle-o-notch fa-4x fa-spin" />
+                      </slot>
                         <br>
                         Loading...
                     </div>
