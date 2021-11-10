@@ -57,9 +57,9 @@
                     <div class="well table-loader">
                       <slot name="loading-indicator">
                         <i class="fa fa-circle-o-notch fa-4x fa-spin" />
-                      </slot>
-                        <br>
+                         <br>
                         Loading...
+                      </slot>
                     </div>
                 </div>
             </div>
