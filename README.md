@@ -204,7 +204,7 @@ components by using slots named `top-left-bar`, `top-right-bar`,
 `bottom-right-bar`, and `bottom-left-bar`.
 
 You can insert a custom loading indicator by using the slot named `loading-indicator`. 
-Default loading indicator is Font Awesome circle notch
+Default loading indicator is the Font Awesome circle notch.
 
 # Endpoints
 
