@@ -24,6 +24,10 @@
     {
       "name": "Clint Ziegler",
       "email": "cziegler@thatsus.com"
+    },
+    {
+      "name": "Eric MacLean",
+      "email": "emaclean@thumbstopper.com"
     }
   ],
   "license": "MIT",
