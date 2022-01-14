@@ -445,7 +445,12 @@ export default {
     },
     methods: {
         formatCSVRow(row) {
-            return row.map(column => `"${column}"`).join(',');
+            return row.map(column => {
+                column = column.replaceAll("\n", " ")
+                    .replaceAll("\n ", " ")
+                    .replaceAll("\"", " ");
+                return `"${column}"`
+            }).join(',');
         },
 
         csvDownload() {
