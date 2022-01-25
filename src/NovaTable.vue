@@ -251,7 +251,7 @@ export default {
             } else if (this.items) {
                 this.source = new ArraySource(this.items);
             } else if (this.endpoint) {
-                this.source = new ServerSideSource(this.endpoint, this.$http);
+                this.source = new ServerSideSource(this.endpoint);
                 this.source.addParamMerger((params) => {
                     if (this.endpointParams) {
                         _.merge(params, this.endpointParams);

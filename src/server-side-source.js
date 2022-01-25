@@ -1,17 +1,16 @@
-import Vue from 'vue';
+import axios from 'axios';
 import AbstractSource from './abstract-source.js';
 import TimeoutThrottle from './timeout-throttle.js';
 import $ from 'jquery';
 
 class ServerSideSource extends AbstractSource
 {
-    constructor(endpoint, http) {
+    constructor(endpoint) {
         super();
         this.endpoint = endpoint;
         this.paramMergers = [];
         this.throttle = new TimeoutThrottle();
         this.slug = null;
-        this.http = http || Vue.http;
     }
 
     addParamMerger(closure) {
@@ -42,13 +41,13 @@ class ServerSideSource extends AbstractSource
         }
     }
 
-    get() 
+    get()
     {
         var slug = this.slug = Math.random();
         return new Promise((resolve) => {
             this.throttle.throttle(() => {
                 resolve(
-                    this.http
+                    axios
                     .get(this.buildRequestUrl())
                     .then(response => {
                         if (slug !== this.slug) {
