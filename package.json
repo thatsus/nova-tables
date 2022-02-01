@@ -1,6 +1,6 @@
 {
   "name": "nova-tables",
-  "version": "1.8.3",
+  "version": "1.9.0",
   "description": "Easy-to-use HTML tables in Vue.js",
   "main": "dist/NovaTable.js",
   "scripts": {
@@ -36,6 +36,7 @@
   },
   "homepage": "https://github.com/thatsus/nova-tables#readme",
   "dependencies": {
+    "axios": "0.25.*",
     "jquery": "^3.2.1",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.10",
