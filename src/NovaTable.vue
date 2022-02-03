@@ -448,6 +448,7 @@ export default {
             return row.map(column => {
                 column = column.replaceAll("\n", " ")
                     .replaceAll("\n ", " ")
+                    .replaceAll(/\s+/g," ")
                     .replaceAll("\"", " ");
                 return `"${column}"`
             }).join(',');
@@ -687,7 +688,11 @@ export default {
                     let elem = this.$refs[key];
 
                     if (elem && elem[0]) {
-                        return elem[0].textContent.trim();
+                        return Array.from(elem[0].childNodes)
+                                .filter(child => !(child instanceof Element) || !child.classList.contains("not-exportable"))
+                                .map(child => child.textContent)
+                                .join('')
+                                .trim();
                     } else {
                         return null;
                     }
