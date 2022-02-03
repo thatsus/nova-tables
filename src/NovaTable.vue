@@ -216,7 +216,6 @@ export default {
     },
     data() {
         return {
-            isExport:            false,
             activeFields:        [],
             sortField:           '',
             sortOrder:           'A',
