@@ -17,11 +17,16 @@ class AbstractSource
         this.onChangeClosures = [];
         this.page = null;
         this.page_length = null;
+        this.page_count = null;
     }
 
-    setPage(page, page_length) {
+    setPage(page, page_length, page_count) {
         this.page = page;
         this.page_length = page_length;
+        this.page_count = page_count;
+        if (this.page > this.page_count){
+            this.page = 1;
+        }
         this.fireChangeEvent();
         return this;
     }
