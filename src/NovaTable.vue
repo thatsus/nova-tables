@@ -261,7 +261,7 @@ export default {
                 throw new Error('No item-source specified');
             }
             this.pageLengthSelection = this.pageLength;
-            this.source.setPage(this.page, this.pageLengthSelection);
+            this.source.setPage(this.page, this.pageLengthSelection, this.pageCount);
             this.source.onChange(() => this.refreshSource());
 
             if (this.getCookies('fields')) {
@@ -304,10 +304,10 @@ export default {
             this.source.setSort(this.sortField, this.sortOrder)
         },
         page() {
-            this.source.setPage(this.computedPage, this.computedPageLength);
+            this.source.setPage(this.computedPage, this.computedPageLength, this.pageCount);
         },
         pageLengthSelection() {
-            this.source.setPage(this.computedPage, this.computedPageLength);
+            this.source.setPage(this.computedPage, this.computedPageLength, this.pageCount);
         },
         endpointParams() {
             this.source.fireChangeEvent();
@@ -320,7 +320,7 @@ export default {
         items() {
             if (this.source instanceof ArraySource) {
                 this.source = new ArraySource(this.items);
-                this.source.setPage(this.computedPage, this.computedPageLength);
+                this.source.setPage(this.computedPage, this.computedPageLength, this.pageCount);
                 this.source.setSort(this.sortField, this.sortOrder);
                 this.source.onChange(() => this.refreshSource());
                 this.refreshSource();
